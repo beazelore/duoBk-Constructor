@@ -1,0 +1,50 @@
+.headertext,
+.formcontainer{
+padding=40px;
+}
+
+
+#book1_list,
+#book2_list {
+width: 100%;
+height: 100%;
+overflow:hidden;
+overflow-y:scroll;
+}
+
+.form-control.active {
+width: 100%;
+overflow-y: scroll;
+height: 100%;
+resize:none;
+
+}
+.textarea-container{
+padding-top: 10px;
+height: 25%;
+}
+.list-container{
+padding-top: 10px;
+height: 65%;
+}
+html,
+body,
+.container-fluid.maincontainer
+{
+height: 100%;
+}
+.row{
+padding-top:10px;
+}
+#form_row1,
+#form_row2,
+#form_row3
+{
+    margin-top:25px;
+}
+
+
+.form-row.gone
+{
+display: none;
+}

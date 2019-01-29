@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<head>
+    <title>Create Book - DuoBk</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/csrf.js"></script>
+    <script type="text/javascript" src="/js/create-book.js"></script>
+</head>
+<body>
+<div class="container-fluid" id="formcontainer">
+    <form method="POST"  id="bookCreateForm">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input id="name" type="text" aria-describedby="nameHelp" class="form-control" name="name"/>
+                <small id="nameHelp" class="form-text text-muted">Supported formats: epub, fb2, duoBk.</small>
+            </div>
+        </div>
+        <div class="form-row">
+            <button type="submit" class="btn btn-primary" id="submitBook">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Task - DuoBk</title>
+    <link href="/css/tasks.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container-fluid" id="formcontainer">
+
+    <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
+
+        <div class="form-row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="bookpicker" id="labelselect">Book:</label>
+                    <select title="Choose duoBook..." class="selectpicker" data-live-search="true" id="bookpicker" aria-describedby="bookHelp" name="book" data-width="100%">
+                    </select>
+                    <small id="bookHelp" class="form-text text-muted">Specify the book, task will be attached to.</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row gone" id="form-row1">
+            <div class="col-sm-2 form-group">
+                <label for="file1">File1:</label>
+                <input id="file1" type="file" aria-describedby="fileHelp" class="form-control-file" name="files"/>
+                <small id="fileHelp" class="form-text text-muted">(epub/fb2)</small>
+            </div>
+            <div class="col-sm-2 form-group">
+                <label for="lang1">Language:</label>
+                <input id="lang1" type="text" class="form-control" name="language1">
+            </div>
+            <div class="col-sm-4 form-group">
+                <label for="author1">Author:</label>
+                <input id="author1" type="text" aria-describedby="author1Help" class="form-control" name="author1">
+                <small id="author1Help" class="form-text text-muted">(In appropriate language)</small>
+            </div>
+            <div class="col-sm-4 form-group">
+                <label for="title1">Title:</label>
+                <input id="title1" type="text" aria-describedby="title1Help" class="form-control" name="title1">
+                <small id="title1Help" class="form-text text-muted">(In appropriate language)</small>
+            </div>
+        </div>
+
+        <div class="form-row gone" id="form-row2">
+            <div class="col-sm-2 form-group">
+                <label for="file2">File2:</label>
+                <input id="file2" type="file" aria-describedby="fileHelp2" class="form-control-file" name="files"/>
+                <small id="fileHelp2" class="form-text text-muted">(epub/fb2)</small>
+            </div>
+            <div class="col-sm-2 form-group">
+                <label for="lang2">Language     </label>
+                <input id="lang2" type="text"  class="form-control" name="language2">
+            </div>
+            <div class="col-sm-4 form-group">
+                <label for="author2">Author:</label>
+                <input id="author2" type="text" aria-describedby="author2Help" class="form-control" name="author1">
+                <small id="author2Help" class="form-text text-muted">(In appropriate language)</small>
+            </div>
+            <div class="col-sm-4 form-group">
+                <label for="title2">Title:</label>
+                <input id="title2" type="text" aria-describedby="title2Help" class="form-control" name="title1">
+                <small id="title2Help" class="form-text text-muted">(In appropriate language)</small>
+            </div>
+        </div>
+        <div class="form-row gone" id="form-row3">
+            <button type="submit" class="btn btn-primary" id="submitfiles">Submit</button>
+        </div>
+    </form>
+</div>
+<div>
+    <span id="result"></span>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/create-task.js"></script>
+<script type="text/javascript" src="/js/csrf.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+</body>
+</html>
