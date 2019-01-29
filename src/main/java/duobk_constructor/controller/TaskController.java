@@ -3,12 +3,12 @@ package duobk_constructor.controller;
 import duobk_constructor.helpers.IndexesForm;
 import duobk_constructor.helpers.UploadForm;
 import duobk_constructor.logic.book.Book;
+import duobk_constructor.model.DuoBook;
+import duobk_constructor.model.Entry;
 import duobk_constructor.model.Task;
 import duobk_constructor.model.User;
 import duobk_constructor.repository.UserRepository;
-import duobk_constructor.service.FileReaderService;
-import duobk_constructor.service.TaskService;
-import duobk_constructor.service.UserService;
+import duobk_constructor.service.*;
 import jdk.nashorn.internal.runtime.JSONFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +32,10 @@ public class TaskController {
     private UserService userService;
     @Autowired
     private FileReaderService fileReaderService;
+    @Autowired
+    private EntryService entryService;
+    @Autowired
+    DuoBookService duoBookService;
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Task> getAllTasks(){
         return taskService.getAll();
@@ -45,13 +49,30 @@ public class TaskController {
         return tasks;
     }
 
-    @RequestMapping(value = "/create/uploadMultiFiles",method = RequestMethod.POST)
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> processUploadedFiles(@ModelAttribute UploadForm form) throws Exception {
-        Book book1 = fileReaderService.read(form.getFiles()[0],form.getLanguage1());
-        Book book2 = fileReaderService.read(form.getFiles()[1],form.getLanguage2());
+    public void processUploadedFiles(@ModelAttribute UploadForm form) throws Exception {
+        DuoBook duoBook = duoBookService.findById(form.getBook());
+        String taskName = new StringBuilder().append(form.getLanguage1()).append('/').append(form.getLanguage2()).append(duoBook.getName()).toString();
+        Book book1 = fileReaderService.read(form.getFiles()[0], form.getLanguage1());
+        Entry entry1= entryService.create(book1.toXML(),form.getAuthor1(),form.getTitle1(),form.getLanguage1(), false);
+        Entry entry2;
+        Book book2;
+        if(form.getBookStatus().equals("NEW")){
+            book2 = fileReaderService.read(form.getFiles()[1],form.getLanguage2());
+            entry2 = entryService.create(book2.toXML(), form.getAuthor2(),form.getTitle2(),form.getLanguage2(), false);
+        }
+        else{
+            entry2 = entryService.createFromBook(duoBook);
+        }
+        taskService.create(taskName, entry1.getId(),entry2.getId(),form.getBook(),"NEW");
+        if(form.getBookStatus().equals("NEW")){
+            // here we should change the status of duoBook to FIRST_PROCESS (no other tasks can be added while book has this status)
+            duoBook.setStatus("FIRST_PROCESS");
+            duoBookService.save(duoBook);
+        }
 
-        return fileReaderService.formBooksResponse(book1,book2);
+        return;
     }
 
     @RequestMapping(value = "/create/new/process")

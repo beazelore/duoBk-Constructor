@@ -22,4 +22,13 @@ public class TaskService {
     public Iterable<Task> getAll(){
         return taskRepository.findAll();
     }
+    public Task create(String name, Integer entryId1, Integer entryId2, Integer bookId, String status){
+        Task task = new Task();
+        task.setName(name);
+        task.setEntry1_id(entryId1);
+        task.setEntry2_id(entryId2);
+        task.setBookId(bookId);
+        task.setStatus(status);
+        return taskRepository.save(task);
+    }
 }

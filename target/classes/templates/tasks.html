@@ -7,8 +7,11 @@
     <title>Tasks - DuoBk</title>
     <link href="/css/tasks.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/tasks.js"></script>
+    <script type="text/javascript" src="/js/csrf.js"></script>
+    <script type="text/javascript" src="/js/userdata.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -57,10 +60,11 @@
         <table class="table" id="mytasksTable">
             <thead class="thead-light">
             <tr>
-                <th scope="col"></th>
-                <th scope="col">Name</th>
-                <th scope="col">Words</th>
-                <th scope="col">Status</th>
+                <th scope="col" class="actionCell">
+                    <span class="glyphicon glyphicon-star"></span>
+                </th>
+                <th scope="col" class="statusCell">Status</th>
+                <th scope="col" class="nameCell">Name</th>
             </tr>
             </thead>
             <tbody>
@@ -75,10 +79,9 @@
         <table class="table" id="alltasksTable">
             <thead class="thead-light">
             <tr>
-                <th scope="col"></th>
-                <th scope="col">Name</th>
-                <th scope="col">Words</th>
-                <th scope="col">Status</th>
+                <th scope="col" class="actionCell"></th>
+                <th scope="col" class="statusCell">Status</th>
+                <th scope="col" class="nameCell">Name</th>
             </tr>
             </thead>
             <tbody>

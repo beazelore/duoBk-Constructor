@@ -9,13 +9,19 @@ import org.springframework.stereotype.Service;
 public class DuoBookService {
     @Autowired
     DuoBookRepository repository;
-    public void create(String name, String status){
+    public DuoBook create(String name, String status){
         DuoBook duoBook = new DuoBook();
         duoBook.setName(name);
         duoBook.setStatus(status);
-        repository.save(duoBook);
+        return repository.save(duoBook);
     }
     public Iterable<DuoBook> getAll(){
         return repository.findAll();
+    }
+    public DuoBook findById(Integer id){
+        return repository.findById(id).get();
+    }
+    public void save(DuoBook duoBook){
+        repository.save(duoBook);
     }
 }

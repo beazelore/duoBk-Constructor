@@ -12,9 +12,7 @@ public class Task {
     }
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "incrementor")
-    @GenericGenerator(name="increment", strategy = "increment")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "unprocessed")
     private String unprocessed;
@@ -32,6 +30,8 @@ public class Task {
     private Integer entry1_id;
     @Column(name = "entry2_id")
     private Integer entry2_id;
+    @Column(name = "name")
+    private String name;
 
 
     public Integer getId() {
@@ -104,5 +104,13 @@ public class Task {
 
     public void setEntry2_id(Integer entry2_id) {
         this.entry2_id = entry2_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -48,3 +48,20 @@ padding-top:10px;
 {
 display: none;
 }
+
+#myTab{
+margin-top:35px;
+}
+
+.actionCell{
+    width:10%;
+    text-align:left;
+}
+.nameCell{
+    width:80%;
+    text-align:left;
+}
+.statusCell{
+    width:10%;
+    text-align:left;
+}

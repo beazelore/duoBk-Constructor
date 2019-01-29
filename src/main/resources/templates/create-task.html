@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Create Task - DuoBk</title>
     <link href="/css/tasks.css" rel="stylesheet" />
 </head>
 <body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li>
+                <a class="nav-item nav-link active" href="#">Tasks</a>
+            </li>
+            <li>
+                <a class="nav-item nav-link" href="#">Rules</a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" id="adminBooks" href="#">Books</a>
+                    <a class="dropdown-item" id="adminTasks" href="#">Tasks</a>
+                    <a class="dropdown-item" id="createBook" href="/admin/createBook">Create Book</a>
+                    <a class="dropdown-item" id="createTask" href="/admin/createTask">Create Task</a>
+                </div>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown link
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" id="logout" href="#">Exit</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div class="container-fluid" id="formcontainer">
 
     <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
@@ -54,12 +88,12 @@
             </div>
             <div class="col-sm-4 form-group">
                 <label for="author2">Author:</label>
-                <input id="author2" type="text" aria-describedby="author2Help" class="form-control" name="author1">
+                <input id="author2" type="text" aria-describedby="author2Help" class="form-control" name="author2">
                 <small id="author2Help" class="form-text text-muted">(In appropriate language)</small>
             </div>
             <div class="col-sm-4 form-group">
                 <label for="title2">Title:</label>
-                <input id="title2" type="text" aria-describedby="title2Help" class="form-control" name="title1">
+                <input id="title2" type="text" aria-describedby="title2Help" class="form-control" name="title2">
                 <small id="title2Help" class="form-text text-muted">(In appropriate language)</small>
             </div>
         </div>
@@ -74,6 +108,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="/js/create-task.js"></script>
 <script type="text/javascript" src="/js/csrf.js"></script>
+<script type="text/javascript" src="/js/userdata.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>

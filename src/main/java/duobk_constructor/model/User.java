@@ -26,9 +26,7 @@ public class User {
     }
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "incrementor")
-    @GenericGenerator(name="increment", strategy = "increment")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     public String getMail() {
