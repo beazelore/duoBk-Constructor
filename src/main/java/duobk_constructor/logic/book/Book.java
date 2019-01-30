@@ -77,17 +77,20 @@ public class Book {
     private Language language;
     public String toXML(){
         StringBuilder builder = new StringBuilder();
+        builder.append("<book>");
         for (Chapter chapter : chapters){
             builder.append("<chapter>");
             for (Paragraph paragraph : chapter.getParagraphs()){
                 builder.append("<p>");
                 for (Sentence sentence : paragraph.getSentences()){
-                    builder.append("<s>").append(sentence.toString()).append("</>");
+                    builder.append("<s>").append(sentence.toString()).append("</s>");
                 }
                 builder.append("</p>");
             }
             builder.append("</chapter>");
         }
+
+        builder.append("</book>");
         return builder.toString();
     }
     public Book(String XML, Language language) throws Exception {

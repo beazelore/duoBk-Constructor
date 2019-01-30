@@ -2,6 +2,7 @@ package duobk_constructor.controller;
 
 import duobk_constructor.helpers.IndexesForm;
 import duobk_constructor.helpers.UploadForm;
+import duobk_constructor.logic.Language;
 import duobk_constructor.logic.book.Book;
 import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.Entry;
@@ -64,7 +65,7 @@ public class TaskController {
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void processUploadedFiles(@ModelAttribute UploadForm form) throws Exception {
+    public void createTask(@ModelAttribute UploadForm form) throws Exception {
         DuoBook duoBook = duoBookService.findById(form.getBook());
         String taskName = new StringBuilder().append(form.getLanguage1()).append('/').append(form.getLanguage2()).append(duoBook.getName()).toString();
         Book book1 = fileReaderService.read(form.getFiles()[0], form.getLanguage1());
@@ -91,11 +92,17 @@ public class TaskController {
     @RequestMapping(value = "/create/new/process")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> processAndSave(@RequestBody IndexesForm indexesForm){
-
-
-
-
         return new ResponseEntity<IndexesForm>(indexesForm, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/preProcess/getEntries"/*,consumes = "text/plain"*/ )
+    public ResponseEntity<?> getAndProcessEntries(/*@RequestBody String taskId*/) throws Exception {
+        Task task = taskService.getTaskById(Integer.parseInt("7"));
+        Entry entry1 = entryService.getEntryById(task.getEntry1_id());
+        Entry entry2 = entryService.getEntryById(task.getEntry2_id());
+        Book book1 = new Book(entry1.getValue(), new Language(entry1.getLanguage()));
+        Book book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
+        return taskService.formBooksResponse(book1,book2);
     }
 
 }

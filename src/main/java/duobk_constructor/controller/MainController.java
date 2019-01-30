@@ -30,10 +30,9 @@ public class MainController {
         return "create-task.html";
     }
 
-    @RequestMapping("/tasks/create/new")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping("/tasks/preProcess")
     public String pickIndexes(){
-        return "new.html";
+        return "pre-process.html";
     }
 
     @RequestMapping("/admin/createBook")

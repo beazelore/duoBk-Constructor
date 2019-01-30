@@ -35,6 +35,7 @@ public class Fb2SAXEventHandler extends DefaultHandler {
                 wasBodyStarted = true;
                 break;
             case "section":
+            case "chapter":
                 if (currentChapter != null)
                     book.addChapter(currentChapter);
                 currentChapter = new Chapter(book);
@@ -61,6 +62,7 @@ public class Fb2SAXEventHandler extends DefaultHandler {
                 wasBodyClosed = true;
                 break;
             case "section":
+            case "chapter":
                 book.addChapter(currentChapter);
                 currentChapter = new Chapter(book);
                 break;

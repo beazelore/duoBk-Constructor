@@ -26,4 +26,7 @@ public class EntryService {
         entry.setValue(duoBook.getBook());
         return entryRepository.save(entry);
     }
+    public Entry getEntryById(Integer id){
+        return entryRepository.findById(id).get();
+    }
 }

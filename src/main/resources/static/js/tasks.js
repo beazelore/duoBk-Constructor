@@ -28,7 +28,7 @@ $(document).ready(function() {
 
     });
     $('.table').on('click', '.dotaskbtn', function (){
-      var id = this.id;
+      var id = this.value;
       $.ajax({
                      type: "POST",
                      data: id,
@@ -36,7 +36,8 @@ $(document).ready(function() {
                      url: "/tasks/take",
                      success: function(){
                         console.log("good");
-                        var btn = document.getElementById(id);
+                        var btnId = "pull"+id;
+                        var btn = document.getElementById(btnId);
                         var i = btn.parentNode.parentNode.rowIndex;
                         console.log(i);
                         document.getElementById("alltasksTable").deleteRow(i);
@@ -45,6 +46,13 @@ $(document).ready(function() {
               });
     });
 
+
+    $('.table').on('click', '.setIndexesbtn', function (){
+      var id = this.value;
+      sessionStorage.setItem("taskId", id);
+      var href = "/tasks/preProcess?id="+id;
+      window.location.href = href;
+      });
 });
 function populateMyTasksAjax(){
     $.ajax({
@@ -66,18 +74,20 @@ function populateTaskTable(table, arrayData, onlyDo){
         var tbody = table.getElementsByTagName('tbody')[0];
         tbody.innerHTML = "";
         for(var i =0; i < arrayData.length; i++){
+            var taskId = arrayData[i].id;
             var newRow = tbody.insertRow(table.length);
             var cell = newRow.insertCell(0);
             if(onlyDo == true)
-              cell.innerHTML = "<button class=\"btn btn-primary dotaskbtn\" href=\"#\" " +"id=\""+arrayData[i].id+"\">"+
+              cell.innerHTML = "<button class=\"btn btn-primary dotaskbtn\" href=\"#\" " +
+              " id=\"" + "pull"+taskId+"\" "+"value=\""+taskId+"\">"+
               "<i class=\"fa fa-briefcase\" ></i>  Do</button>"
             else
-              cell.innerHTML = "<a class=\"btn btn-default\" href=\"#\">"+
-                                "<i class=\"fa fa-cog\" aria-hidden=\"true\"></i></a>"+
-                                "<a class=\"btn btn-default\" href=\"#\">"+
-                                "<i class=\"fa fa-wrench\" aria-hidden=\"true\"></i></a>"+
-                                "<a class=\"btn btn-default\" href=\"#\">"+
-                                "<i class=\"fa fa-check\" aria-hidden=\"true\"></i></a>";
+              cell.innerHTML = "<button class=\"btn btn-default setIndexesbtn\" href=\"#\" "+"value=\""+taskId+"\""+"id=\""+"setIndexes"+taskId+"\">"+
+                                "<i class=\"fa fa-cog\" aria-hidden=\"true\"></i></button>"+
+                                "<button class=\"btn btn-default processbtn\" href=\"#\" "+"value=\""+taskId+"\""+"id=\""+"process"+taskId+"\">"+
+                                "<i class=\"fa fa-wrench\" aria-hidden=\"true\"></i></button>"+
+                                "<button class=\"btn btn-default submitTaskbtn\" href=\"#\" "+"value=\""+taskId+"\""+"id=\""+"submitTask"+taskId+"\">"+
+                                "<i class=\"fa fa-check\" aria-hidden=\"true\"></i></button>";
             cell.setAttribute("class", "actionCell");
             cell = newRow.insertCell(1);
             cell.innerHTML = arrayData[i].status;

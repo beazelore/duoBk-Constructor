@@ -1,12 +1,16 @@
 
 $(document).ready(function() {
+    var taskId = findGetParameter("id");
+    console.log("fromget", taskId);
     sessionStorage.removeItem('indexesStart');
     sessionStorage.removeItem('indexesEnd');
-    var data = sessionStorage.getItem('data');
+    var data = getEntriesDataAjax(taskId);
+    console.log(data);
+    /*var data = sessionStorage.getItem('data');
     var book1 = data.split('!separator!')[0];
     var book2 = data.split('!separator!')[1];
     $('#book1_list').html(book1);
-    $('#book2_list').html(book2);
+    $('#book2_list').html(book2);*/
 
     $('#book1_list').on('change', function(e){
     var value = $('#book1_list option:selected').text();
@@ -18,7 +22,7 @@ $(document).ready(function() {
     $('#active2').html(value);
     });
 
-    $('#startProcess').on('click', function(){
+   /* $('#startProcess').on('click', function(){
     var ind1 = $('#book1_list').val();
     var ind2 = $('#book2_list').val();
     var data = {indexes1 : ind1, indexes2 : ind2};
@@ -59,5 +63,39 @@ $(document).ready(function() {
     }
 
 
-    });
+    });*/
 });
+
+function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    var items = location.search.substr(1).split("&");
+    for (var index = 0; index < items.length; index++) {
+        tmp = items[index].split("=");
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    }
+    return result;
+}
+function getEntriesDataAjax(taskId){
+console.log("before request: ", taskId);
+var result;
+  $.ajax({
+            type: "GET",
+            url: "/tasks/preProcess/getEntries",
+            contentType: "text/plain",
+            data: taskId,
+            success: function(data, textStatus, jqXHR) {
+                console.log("data in ajax", data);
+                result = data;
+                var book1 = data.split('!separator!')[0];
+                var book2 = data.split('!separator!')[1];
+                $('#book1_list').html(book1);
+                $('#book2_list').html(book2);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                    console.log(jqXHR);
+            }
+        });
+        return result;
+}
