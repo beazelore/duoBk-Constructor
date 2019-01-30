@@ -36,9 +36,22 @@ public class TaskController {
     private EntryService entryService;
     @Autowired
     DuoBookService duoBookService;
+
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Task> getAllTasks(){
         return taskService.getAll();
+    }
+
+    @GetMapping(value = "/allWithNoUser")
+    public Iterable<Task> getAllFreeTasks(){return  taskService.getAllFree();}
+
+    @RequestMapping(value = "/take", method = RequestMethod.POST, consumes = "text/plain")
+    public void takeTask(OAuth2Authentication authentication, @RequestBody String id){
+        LinkedHashMap<String, Object> properties = (LinkedHashMap<String, Object>) authentication.getUserAuthentication().getDetails();
+        String email = (String)properties.get("email");
+        Integer userId = userService.getUserIdByMail(email);
+        taskService.setUserId(Integer.parseInt(id), userId);
+        return;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
