@@ -47,12 +47,12 @@ $(document).ready(function() {
     });
 
 
-    $('.table').on('click', '.setIndexesbtn', function (){
+/*    $('.table').on('click', '.setIndexesbtn', function (){
       var id = this.value;
       sessionStorage.setItem("taskId", id);
       var href = "/tasks/preProcess?id="+id;
       window.location.href = href;
-      });
+      });*/
 });
 function populateMyTasksAjax(){
     $.ajax({
@@ -82,12 +82,12 @@ function populateTaskTable(table, arrayData, onlyDo){
               " id=\"" + "pull"+taskId+"\" "+"value=\""+taskId+"\">"+
               "<i class=\"fa fa-briefcase\" ></i>  Do</button>"
             else
-              cell.innerHTML = "<button class=\"btn btn-default setIndexesbtn\" href=\"#\" "+"value=\""+taskId+"\""+"id=\""+"setIndexes"+taskId+"\">"+
-                                "<i class=\"fa fa-cog\" aria-hidden=\"true\"></i></button>"+
-                                "<button class=\"btn btn-default processbtn\" href=\"#\" "+"value=\""+taskId+"\""+"id=\""+"process"+taskId+"\">"+
-                                "<i class=\"fa fa-wrench\" aria-hidden=\"true\"></i></button>"+
-                                "<button class=\"btn btn-default submitTaskbtn\" href=\"#\" "+"value=\""+taskId+"\""+"id=\""+"submitTask"+taskId+"\">"+
-                                "<i class=\"fa fa-check\" aria-hidden=\"true\"></i></button>";
+              cell.innerHTML =  "<a class=\"btn btn-default setIndexesbtn\" href=\"/tasks/preProcess?id="+taskId+"\" "+"value=\""+taskId+"\""+"id=\""+"setIndexes"+taskId+"\">"+
+                                "<i class=\"fa fa-cog\" aria-hidden=\"true\"></i></a>"+
+                                "<a class=\"btn btn-default processbtn\" href=\"/tasks/process?id="+taskId+"\" "+"value=\""+taskId+"\""+"id=\""+"process"+taskId+"\">"+
+                                "<i class=\"fa fa-wrench\" aria-hidden=\"true\"></i></a>"+
+                                "<a class=\"btn btn-default submitTaskbtn\" href=\"#\" "+"value=\""+taskId+"\""+"id=\""+"submitTask"+taskId+"\">"+
+                                "<i class=\"fa fa-check\" aria-hidden=\"true\"></i></a>";
             cell.setAttribute("class", "actionCell");
             cell = newRow.insertCell(1);
             cell.innerHTML = arrayData[i].status;

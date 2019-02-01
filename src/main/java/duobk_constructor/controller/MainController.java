@@ -40,4 +40,7 @@ public class MainController {
     public String createBook(){
         return "create-book.html";
     }
+
+    @RequestMapping("/tasks/process")
+    public String procss(){return  "process.html";}
 }

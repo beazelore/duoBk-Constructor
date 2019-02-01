@@ -11,7 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +91,7 @@ public class TaskService {
     * */
     public String formUnprocessedAfterPreProcess(ArrayList<DuoParagraph> duoParagraphs){
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("<root>");
         for(DuoParagraph paragraph : duoParagraphs){
             stringBuilder.append("<dp indexes1=\"").append(getParagraphsIndexesCSV(paragraph.getParagraphs1())).append("\" ")
                     .append("indexes2=\"").append(getParagraphsIndexesCSV(paragraph.getParagraphs2())).append("\" ")
@@ -85,6 +100,7 @@ public class TaskService {
                     .append(getParagraphsUnprocessedString(paragraph.getParagraphs2(),false))
                     .append("</dp>");
         }
+        stringBuilder.append("</root>");
         return stringBuilder.toString();
     }
     private String getParagraphsIndexesCSV(ArrayList<Paragraph> paragraphs){
@@ -114,5 +130,50 @@ public class TaskService {
             else  stringBuilder.append("</p2>");
         }
         return stringBuilder.toString();
+    }
+    public ResponseEntity<String> unprocessedToHtml(String unprocessed) throws IOException, SAXException, ParserConfigurationException {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(unprocessed.getBytes(StandardCharsets.UTF_8));
+        //InputSource is = new InputSource();
+        //is.setCharacterStream(new StringReader(unprocessed));
+        Document doc = db.parse(stream);
+        NodeList dpList = doc.getElementsByTagName("dp");
+
+
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < dpList.getLength(); i++){
+            Element paragraph = (Element)dpList.item(i);
+            builder.append("<div class=\"row connection\">").append("<div class=\"col-sm\">")
+                    .append("<select multiple class=\"form-control first\">");
+            NodeList p1List = paragraph.getElementsByTagName("p1");
+            NodeList p2List = paragraph.getElementsByTagName("p2");
+            for(int q=0; q<p1List.getLength();q++){
+                Element p1 = (Element) p1List.item(q);
+                builder.append("<option>").append(p1.getAttribute("index")).append(".  ").append(extractTextChildren(p1)).append("</option>");
+            }
+            builder.append("</select>").append("</div>").append("<div class=\"col-sm-1 vertical-center\">" +
+                    "            <div class=\"btn-group-vertical\">" +
+                    "                <button type=\"button\" class=\"btn btn-success\" id=\"").append(i).append("\">Good</button>" +
+                    "                <button type=\"button\" class=\"btn btn-warning\" id=\"").append(i).append("\">Bad</button>" +
+                    "            </div>" +
+                    "        </div>").append("<div class=\"col-sm\">").append("<select multiple class=\"form-control second\">");
+            for(int q=0; q<p2List.getLength();q++){
+                Element p2 = (Element) p2List.item(q);
+                builder.append("<option>").append(p2.getAttribute("index")).append(".  ").append(extractTextChildren(p2)).append("</option>");
+            }
+            builder.append("</select>").append("</div>").append("</div>");
+        }
+        return new ResponseEntity<String>(builder.toString(), HttpStatus.OK);
+    }
+    private String extractTextChildren(Element parentNode) {
+        NodeList childNodes = parentNode.getChildNodes();
+        String result = new String();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() == Node.TEXT_NODE) {
+                result += node.getNodeValue();
+            }
+        }
+        return result;
     }
 }

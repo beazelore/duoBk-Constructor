@@ -20,7 +20,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import duobk_constructor.repository.TaskRepository;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -127,4 +130,13 @@ public class TaskController {
             return true;
         else return false;
     }
+    @RequestMapping(value="process/unprocessedToHTML", method = RequestMethod.GET)
+    public ResponseEntity<?> greeting(@RequestParam(value="id",required = true) String id) throws ParserConfigurationException, SAXException, IOException {
+        Task task = taskService.getTaskById(Integer.parseInt(id));
+        if(task.getUnprocessed() == null){
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        return taskService.unprocessedToHtml(task.getUnprocessed());
+    }
+
 }

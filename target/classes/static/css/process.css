@@ -1,0 +1,31 @@
+select {
+width: 100%;
+overflow-y: auto;
+}
+.btn-group-vertical {
+width: 100%;
+}
+
+.vertical-center {
+  display: flex;
+  align-items: center;
+}
+.form-control.active {
+width: 100%;
+overflow-y: scroll;
+height: 100%
+}
+.textarea-container{
+padding-top: 10px;
+height: 25%;
+}
+html,
+body,
+.container-fluid,
+.witharea
+{
+height: 100%;
+}
+.row.connection {
+padding-top:10px;
+}
