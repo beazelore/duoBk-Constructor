@@ -8,6 +8,7 @@ ArrayList<Integer> start1;
 ArrayList<Integer> start2;
 ArrayList<Integer> end1;
 ArrayList<Integer> end2;
+Integer taskId;
 
     public IndexesForm() {
     }
@@ -44,5 +45,11 @@ ArrayList<Integer> end2;
         this.end2 = end2;
     }
 
+    public Integer getTaskId() {
+        return taskId;
+    }
 
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
+    }
 }

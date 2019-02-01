@@ -3,6 +3,7 @@ package duobk_constructor.service;
 import duobk_constructor.logic.book.Book;
 import duobk_constructor.logic.book.Chapter;
 import duobk_constructor.logic.book.Paragraph;
+import duobk_constructor.logic.book.duo.DuoParagraph;
 import duobk_constructor.model.Task;
 import duobk_constructor.repository.TaskRepository;
 import duobk_constructor.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,6 +37,9 @@ public class TaskService {
         task.setEntry2_id(entryId2);
         task.setBookId(bookId);
         task.setStatus(status);
+        return taskRepository.save(task);
+    }
+    public Task save(Task task){
         return taskRepository.save(task);
     }
     public Task getTaskById(Integer id){
@@ -65,5 +70,49 @@ public class TaskService {
             }
         }
         return new ResponseEntity<String>(builder.toString(), HttpStatus.OK);
+    }
+    /*
+    * after Dijkstra algorithm, we convert it's result to string that will be saved in
+    * "unprocessed" column of Task table in db.
+    * */
+    public String formUnprocessedAfterPreProcess(ArrayList<DuoParagraph> duoParagraphs){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(DuoParagraph paragraph : duoParagraphs){
+            stringBuilder.append("<dp indexes1=\"").append(getParagraphsIndexesCSV(paragraph.getParagraphs1())).append("\" ")
+                    .append("indexes2=\"").append(getParagraphsIndexesCSV(paragraph.getParagraphs2())).append("\" ")
+                    .append("chapter=\"").append(paragraph.getParagraphs1().get(0).getChapter().getIndex()).append("\">")
+                    .append(getParagraphsUnprocessedString(paragraph.getParagraphs1(),true))
+                    .append(getParagraphsUnprocessedString(paragraph.getParagraphs2(),false))
+                    .append("</dp>");
+        }
+        return stringBuilder.toString();
+    }
+    private String getParagraphsIndexesCSV(ArrayList<Paragraph> paragraphs){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i =0; i < paragraphs.size(); i ++){
+            if(i == 0)
+                stringBuilder.append(paragraphs.get(i).getIndex());
+            else
+                stringBuilder.append(',').append(paragraphs.get(i).getIndex());
+        }
+        return stringBuilder.toString();
+    }
+    /*
+     * <p1 id="">....</><p1 id="">....</> <p2 id="">....</p2>
+     *  that's how paraphs are represent in "unprocessed" column of Task table in database
+     */
+    private String getParagraphsUnprocessedString(ArrayList<Paragraph> paragraphs, boolean fromBook1){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Paragraph paragraph : paragraphs){
+            if(fromBook1)
+                stringBuilder.append("<p1 ");
+            else stringBuilder.append("<p2 ");
+            stringBuilder.append("index=\"").append(paragraph.getIndex()).append("\">")
+                    .append(paragraph.toString());
+            if(fromBook1)
+                stringBuilder.append("</p1>");
+            else  stringBuilder.append("</p2>");
+        }
+        return stringBuilder.toString();
     }
 }

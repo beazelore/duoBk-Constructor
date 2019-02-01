@@ -26,10 +26,15 @@ public class Paragraph {
         return index;
     }
 
+    public Chapter getChapter() {
+        return chapter;
+    }
+
     private int index;
     private Chapter chapter;
     public Paragraph(String content, Chapter chapter){
         sentences = new ArrayList<>();
+        this.chapter = chapter;
         ArrayList<String> stringSentences = SentenceBreaker.breakString(content.replace("\n",""), chapter.getBook().getLanguage().toString());
         for (String el : stringSentences){
             sentences.add(new Sentence(el,this));

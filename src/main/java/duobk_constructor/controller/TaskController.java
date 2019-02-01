@@ -2,8 +2,10 @@ package duobk_constructor.controller;
 
 import duobk_constructor.helpers.IndexesForm;
 import duobk_constructor.helpers.UploadForm;
+import duobk_constructor.logic.AStar;
 import duobk_constructor.logic.Language;
 import duobk_constructor.logic.book.Book;
+import duobk_constructor.logic.book.duo.DuoParagraph;
 import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.Entry;
 import duobk_constructor.model.Task;
@@ -89,14 +91,25 @@ public class TaskController {
         return;
     }
 
-    @RequestMapping(value = "/create/new/process")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> processAndSave(@RequestBody IndexesForm indexesForm){
+    @RequestMapping(value = "/preProcess/do")
+    public ResponseEntity<?> processAndSave(@RequestBody IndexesForm indexesForm) throws Exception {
+        Task task = taskService.getTaskById(indexesForm.getTaskId());
+        Entry entry1 = entryService.getEntryById(task.getEntry1_id());
+        Entry entry2 = entryService.getEntryById(task.getEntry2_id());
+        Book book1 = new Book(entry1.getValue(), new Language(entry1.getLanguage()));
+        Book book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
+        AStar aStar = new AStar(book1,book2);
+        aStar.Start(indexesForm.getStart1(),indexesForm.getStart2(),indexesForm.getEnd1(), indexesForm.getEnd2());
+        ArrayList<DuoParagraph> result = aStar.getResult();
+        String unprocessed = taskService.formUnprocessedAfterPreProcess(result);
+        task.setUnprocessed(unprocessed);
+        task.setProcessed(null);
+        taskService.save(task);
         return new ResponseEntity<IndexesForm>(indexesForm, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/preProcess/getEntries"/*,consumes = "text/plain"*/ )
-    public ResponseEntity<?> getAndProcessEntries(/*@RequestBody String taskId*/) throws Exception {
+    @RequestMapping(value = "/preProcess/getEntries",consumes = "text/plain")
+    public ResponseEntity<?> getAndProcessEntries(@RequestBody String taskId) throws Exception {
         Task task = taskService.getTaskById(Integer.parseInt("7"));
         Entry entry1 = entryService.getEntryById(task.getEntry1_id());
         Entry entry2 = entryService.getEntryById(task.getEntry2_id());
@@ -104,5 +117,14 @@ public class TaskController {
         Book book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
         return taskService.formBooksResponse(book1,book2);
     }
-
+    /*
+    * if unprocessed column of task is empty returns true
+    * */
+    @RequestMapping(value = "/preProcess/checkUnprocessed", consumes = "text/plain")
+    public boolean checkUnprocessedEmpty(@RequestBody String taskId){
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        if(task.getUnprocessed() == null)
+            return true;
+        else return false;
+    }
 }

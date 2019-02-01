@@ -60,7 +60,10 @@ public class Book {
     public void formParListAndSetIndexes(){
         paragraphs = new ArrayList<>();
         int indexPar = 0;
+        int indexChapter = 0;
         for (Chapter chapter : chapters){
+            chapter.setIndex(indexChapter);
+            indexChapter++;
             for (Paragraph paragraph : chapter.getParagraphs()){
                 paragraphs.add(paragraph);
                 paragraph.setIndex(indexPar);
@@ -101,6 +104,7 @@ public class Book {
         this.language = book.language;
         this.paragraphs = book.paragraphs;
         this.title = book.title;
+        formParListAndSetIndexes();
     }
 /*
     @Override

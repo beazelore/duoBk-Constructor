@@ -4,8 +4,7 @@ $(document).ready(function() {
     console.log("fromget", taskId);
     sessionStorage.removeItem('indexesStart');
     sessionStorage.removeItem('indexesEnd');
-    var data = getEntriesDataAjax(taskId);
-    console.log(data);
+    getEntriesDataAjax(taskId);
     /*var data = sessionStorage.getItem('data');
     var book1 = data.split('!separator!')[0];
     var book2 = data.split('!separator!')[1];
@@ -22,22 +21,24 @@ $(document).ready(function() {
     $('#active2').html(value);
     });
 
-   /* $('#startProcess').on('click', function(){
+   $('#startProcess').on('click', function(){
     var ind1 = $('#book1_list').val();
     var ind2 = $('#book2_list').val();
     var data = {indexes1 : ind1, indexes2 : ind2};
     if(sessionStorage.getItem('indexesStart') === null){
         sessionStorage.setItem('indexesStart', JSON.stringify(data));
+        document.getElementById("startProcess").innerHTML="Submit";
+        document.getElementById("hint").innerHTML="Now please choose last matching sentences and press SUBMIT";
         console.log('indexesstart set');
     }
     else {
         var startIndexes = JSON.parse(sessionStorage.getItem('indexesStart'));
         console.log('startindexes:');
         console.log(startIndexes);
-        var indexes = {start1: startIndexes.indexes1, start2: startIndexes.indexes2, end1: data.indexes1, end2: data.indexes2};
+        var indexes = {start1: startIndexes.indexes1, start2: startIndexes.indexes2, end1: data.indexes1, end2: data.indexes2, taskId: taskId};
         $.ajax({
             type: "POST",
-            url: "/tasks/create/new/process",
+            url: "/tasks/preProcess/do",
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify(indexes),
@@ -63,7 +64,7 @@ $(document).ready(function() {
     }
 
 
-    });*/
+    });
 });
 
 function findGetParameter(parameterName) {
@@ -80,22 +81,41 @@ function getEntriesDataAjax(taskId){
 console.log("before request: ", taskId);
 var result;
   $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/tasks/preProcess/getEntries",
             contentType: "text/plain",
             data: taskId,
             success: function(data, textStatus, jqXHR) {
                 console.log("data in ajax", data);
-                result = data;
                 var book1 = data.split('!separator!')[0];
                 var book2 = data.split('!separator!')[1];
                 $('#book1_list').html(book1);
                 $('#book2_list').html(book2);
+                checkUnprocessedEmpty(taskId);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                     alert("error");
                     console.log(jqXHR);
             }
         });
-        return result;
+}
+function checkUnprocessedEmpty(taskId){
+ $.ajax({
+            type: "POST",
+            data: taskId,
+            contentType: "text/plain",
+            url: "/tasks/preProcess/checkUnprocessed",
+            success: function(data, textStatus, jqXHR) {
+                if(data == false){
+                    var r = confirm("This task is already in PROCESS stage.\n If you do pre-process again, all the process progress will be gone");
+                    if (r == false) {
+                        window.location.href="/tasks";
+                    }
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                    console.log(jqXHR);
+            }
+        });
 }
