@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta charset="utf-8">
@@ -9,8 +9,42 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/process.js"></script>
+    <script type="text/javascript" src="/js/userdata.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li>
+                <a class="nav-item nav-link active" href="#">Tasks</a>
+            </li>
+            <li>
+                <a class="nav-item nav-link" href="#">Rules</a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" id="adminBooks" href="/admin/books">Books</a>
+                    <a class="dropdown-item" id="adminTasks" href="#">Tasks</a>
+                    <a class="dropdown-item" id="createBook" href="/admin/createBook">Create Book</a>
+                    <a class="dropdown-item" id="createTask" href="/admin/createTask">Create Task</a>
+                </div>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown link
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" id="logout" href="#">Exit</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div class="container-fluid" id="mainContainer">
     <div class="row textarea-container">
         <div class="col-sm witharea">

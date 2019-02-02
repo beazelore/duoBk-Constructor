@@ -43,4 +43,16 @@ public class MainController {
 
     @RequestMapping("/tasks/process")
     public String procss(){return  "process.html";}
+
+    @RequestMapping("/admin/books")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String allBooks(){
+        return "allbooks.html";
+    }
+
+    @RequestMapping("/admin/books/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String editBook(){
+        return "book-edit.html";
+    }
 }

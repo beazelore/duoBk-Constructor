@@ -21,11 +21,11 @@ resize:none;
 }
 .textarea-container{
 padding-top: 10px;
-height: 25%;
+height: 20%;
 }
 .list-container{
 padding-top: 10px;
-height: 65%;
+height: 60%;
 }
 html,
 body,
@@ -36,9 +36,7 @@ height: 100%;
 .row{
 padding-top:10px;
 }
-#form_row1,
-#form_row2,
-#form_row3
+.form-row
 {
     margin-top:25px;
 }

@@ -16,17 +16,17 @@
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li>
-                    <a class="nav-item nav-link" href="/tasks">Tasks</a>
+                    <a class="nav-item nav-link active" href="#">Tasks</a>
                 </li>
                 <li>
                     <a class="nav-item nav-link" href="#">Rules</a>
                 </li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" id="adminBooks" href="#">Books</a>
+                        <a class="dropdown-item" id="adminBooks" href="/admin/books">Books</a>
                         <a class="dropdown-item" id="adminTasks" href="#">Tasks</a>
                         <a class="dropdown-item" id="createBook" href="/admin/createBook">Create Book</a>
                         <a class="dropdown-item" id="createTask" href="/admin/createTask">Create Task</a>

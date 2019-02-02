@@ -1,11 +1,15 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-    <title>Create Task - DuoBk</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Books - DuoBk</title>
     <link href="/css/tasks.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/pre-process.js"></script>
+    <script type="text/javascript" src="/js/allbooks.js"></script>
     <script type="text/javascript" src="/js/csrf.js"></script>
     <script type="text/javascript" src="/js/userdata.js"></script>
 </head>
@@ -43,33 +47,31 @@
         </ul>
     </div>
 </nav>
-<p id="hint">Please select first matching paragraphs of books and press OK.</p>
-<div class="container-fluid maincontainer">
-    <div class="row textarea-container">
-        <div class="col-sm witharea">
-            <textarea class="form-control active" id="active1"></textarea>
-        </div>
-        <div class="col-sm witharea">
-            <textarea class="form-control active" id="active2"></textarea>
-        </div>
-    </div>
-    <div class="row list-container">
-        <div class="col-sm withlist">
-            <select multiple  id="book1_list"   class="form-control book_list" size="3">
-                <option>Link 1</option>
-            </select>
-        </div>
-        <div class="col-sm withlist">
-            <select  multiple id="book2_list" class="form-control book_list" size="3">
-                <option>Link 1</option>
-            </select>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-1 offset-md-12">
-            <button id="startProcess" class="btn btn-primary">OK</button>
-        </div>
-    </div>
+<div><i class="fa fa-pencil" ></i></div>
+<div class="container-fluid">
+    <table class="table" id="allBooksTable">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col" class="actionCell">
+            </th>
+            <th scope="col" class="idCell">Id</th>
+            <th scope="col" class="statusCell">Status</th>
+            <th scope="col" class="nameCell">Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td scope="col" class="actionCell">
+                <a class="btn btn-default">
+                    <i class="fa fa-wrench" aria-hidden="true"></i>
+                </a>
+            </td>
+            <td scope="col" class="idCell">8</td>
+            <td scope="col" class="statusCell">SHIT</td>
+            <td scope="col" class="nameCell">The Book of THe Books</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>

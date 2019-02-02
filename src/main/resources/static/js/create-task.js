@@ -140,7 +140,7 @@ function ajaxSubmitForm(bookStatus) {
 function requestBooks(){
  $.ajax({
         type: "GET",
-        url: "/getAllBooks",
+        url: "/books/getAll",
         success: function(data, textStatus, jqXHR) {
             console.log(data);
             var select = document.getElementById("bookpicker");

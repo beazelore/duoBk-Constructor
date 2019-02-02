@@ -44,11 +44,8 @@ $(document).ready(function() {
             data: JSON.stringify(indexes),
             success: function(data, textStatus, jqXHR) {
                 alert("success");
-                if(jqXHR.statusText != "nocontent"){
-                    console.log(data);
-                    //sessionStorage.setItem('AStar', data.content);
-                    //window.location.href = "/correcting"
-                }
+                var href = "/tasks/process?id="+taskId;
+                window.location.href = href;
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 if(jqXHR.status == 428){

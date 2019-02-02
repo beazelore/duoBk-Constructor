@@ -5,7 +5,7 @@ $(document).ready(function() {
         var name = $("#name")[0].value;
             $.ajax({
                 type: "POST",
-                url: "/createBook",
+                url: "/books/create",
                 data: name,
                 contentType: "text/plain",
                 success: function(textStatus, jqXHR) {
