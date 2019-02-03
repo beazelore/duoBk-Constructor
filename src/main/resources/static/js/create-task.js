@@ -151,15 +151,13 @@ function requestBooks(){
             console.log("ERROR : ", jqXHR.responseText);
         }
     });
-
-
 }
 function populateSelect(select, arrayData){
     for(var i =0; i < arrayData.length; i++){
         var option = document.createElement("option");
         option.text = arrayData[i].name;
         option.setAttribute("value", arrayData[i].id);
-        option.setAttribute("status", arrayData[i].status)
+        option.setAttribute("status", arrayData[i].status);
         select.add(option);
     }
 }

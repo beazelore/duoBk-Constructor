@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit Task - DuoBk</title>
+    <link href="/css/tasks.css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li>
+                <a class="nav-item nav-link active" href="#">Tasks</a>
+            </li>
+            <li>
+                <a class="nav-item nav-link" href="#">Rules</a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" id="adminBooks" href="/admin/books">Books</a>
+                    <a class="dropdown-item" id="adminTasks" href="#">Tasks</a>
+                    <a class="dropdown-item" id="createBook" href="/admin/createBook">Create Book</a>
+                    <a class="dropdown-item" id="createTask" href="/admin/createTask">Create Task</a>
+                </div>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown link
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" id="logout" href="#">Exit</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="name-status-tab" data-toggle="tab" href="#name-status" role="tab" aria-controls="name-status" aria-selected="true">Name/Status</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="unprocessed-tab" data-toggle="tab" href="#unprocessedTab" role="tab"  aria-selected="false">Unprocessed</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="processed-tab" data-toggle="tab" href="#processedTab" role="tab" aria-selected="false">Processed</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="result-tab" data-toggle="tab" href="#resultTab" role="tab" aria-selected="false">Result</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="name-status" role="tabpanel" aria-labelledby="name-status-tab">
+        <div class="container-fluid" id="formcontainer">
+            <form method="POST" id="infoForm">
+                <div class="form-row" id="form_row1">
+                    <div class="col-sm-12 form-group">
+                        <label for="name">Name:</label>
+                        <input id="name" type="text" class="form-control" name="name">
+                    </div>
+                </div>
+
+                <div class="form-row" id="form_row2">
+                    <div class="col-sm-6 from-group">
+                        <label for="userpicker" id="labelselectuser">User:</label>
+                        <select title="Select user..." class="selectpicker" id="userpicker"  data-live-search="true" name="userId" data-width="100%">
+                        </select>
+                    </div>
+                    <div class="col-sm-6 from-group">
+                        <label for="statuspicker" id="labelselect">Status:</label>
+                        <select title="Select status..." class="selectpicker" id="statuspicker" name="status" data-width="100%">
+                            <option value="NEW">NEW</option>
+                            <option value="FIRST_PROCESS">DONE</option>
+                            <option value="PROCESS">REOPENED</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6 from-group">
+                        <label for="bookpicker"   id="labelselectbook">Book:</label>
+                        <select title="Select Book..." class="selectpicker" id="bookpicker" data-live-search="true" name="bookId" data-width="100%">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row" id="form_row3">
+                    <button type="submit" class="btn btn-primary" id="submitTaskInfo">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="unprocessedTab" role="tabpanel">
+        <div class="container-fluid">
+                <div class="form-row">
+                    <textarea id="unprocessedText"  class="form-control" name="unprocessed"></textarea>
+                </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="processedTab" role="tabpanel">
+        <div class="container-fluid">
+                <div class="form-row">
+                    <textarea id="processedText"  class="form-control" name="processed"></textarea>
+                </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="resultTab" role="tabpanel">
+        <div class="container-fluid">
+                <div class="form-row">
+                    <textarea id="resultText"  class="form-control" name="result"></textarea>
+                </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/task-edit.js"></script>
+<script type="text/javascript" src="/js/csrf.js"></script>
+<script type="text/javascript" src="/js/userdata.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+</body>
+</html>

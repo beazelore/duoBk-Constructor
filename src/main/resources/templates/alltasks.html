@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Tasks - DuoBk</title>
+    <title>Admin Tasks - DuoBk</title>
     <link href="/css/tasks.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/tasks.js"></script>
+    <script type="text/javascript" src="/js/alltasks.js"></script>
     <script type="text/javascript" src="/js/csrf.js"></script>
     <script type="text/javascript" src="/js/userdata.js"></script>
 </head>
@@ -18,7 +18,7 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav">
             <li>
-                <a class="nav-item nav-link active" href="/tasks">Tasks</a>
+                <a class="nav-item nav-link active" href="#">Tasks</a>
             </li>
             <li>
                 <a class="nav-item nav-link" href="#">Rules</a>
@@ -29,7 +29,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" id="adminBooks" href="/admin/books">Books</a>
-                    <a class="dropdown-item" id="adminTasks" href="/admin/tasks">Tasks</a>
+                    <a class="dropdown-item" id="adminTasks" href="#">Tasks</a>
                     <a class="dropdown-item" id="createBook" href="/admin/createBook">Create Book</a>
                     <a class="dropdown-item" id="createTask" href="/admin/createTask">Create Task</a>
                 </div>
@@ -47,48 +47,34 @@
         </ul>
     </div>
 </nav>
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="my_tasks" data-toggle="tab" href="#mytasks" role="tab" aria-controls="mytasks" aria-selected="true">My Tasks</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="all_tasks" data-toggle="tab" href="#alltasks" role="tab" aria-controls="alltasks" aria-selected="false">All tasks</a>
-    </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="mytasks" role="tabpanel" aria-labelledby="mytasks">
-        <table class="table" id="mytasksTable">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col" class="actionCell">
-                    <span class="glyphicon glyphicon-star"></span>
-                </th>
-                <th scope="col" class="statusCell">Status</th>
-                <th scope="col" class="nameCell">Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table></div>
-    <div class="tab-pane fade" id="alltasks" role="tabpanel" aria-labelledby="alltasks">
-        <!--<div sec:authorize="hasRole('ROLE_ADMIN')">
-            <div class="container-fluid btn-block">
-                <button class="btn btn-large btn-block btn-info" id="addtaskbtn" type="button">Add Task</button>
-            </div>
-        </div>-->
-        <table class="table" id="alltasksTable">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col" class="actionCell"></th>
-                <th scope="col" class="statusCell">Status</th>
-                <th scope="col" class="nameCell">Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table></div>
+<div><i class="fa fa-pencil" ></i></div>
+<div class="container-fluid">
+    <table class="table" id="allTasksTable">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col" class="actionCell">
+            </th>
+            <th scope="col" class="idCell">Id</th>
+            <th scope="col" class="statusCell">Status</th>
+            <th scope="col" class="statusCell">User</th>
+            <th scope="col" class="nameCell">Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td scope="col" class="actionCell">
+                <a class="btn btn-default">
+                    <i class="fa fa-wrench" aria-hidden="true"></i>
+                </a>
+            </td>
+            <td scope="col" class="idCell">8</td>
+            <td scope="col" class="statusCell">SHIT</td>
+            <td scope="col" class="statusCell">User</td>
+            <td scope="col" class="nameCell">The Book of THe Books</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </body>

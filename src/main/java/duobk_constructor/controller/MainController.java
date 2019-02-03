@@ -50,9 +50,21 @@ public class MainController {
         return "allbooks.html";
     }
 
+    @RequestMapping("/admin/tasks")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String allTasks(){
+        return "alltasks.html";
+    }
+
     @RequestMapping("/admin/books/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editBook(){
         return "book-edit.html";
+    }
+
+    @RequestMapping("/admin/tasks/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String editTask(){
+        return "task-edit.html";
     }
 }

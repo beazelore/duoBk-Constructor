@@ -2,29 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1de2cf33-b101-4bba-975e-a40f50f1cded" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/allbooks.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/book-edit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/allbooks.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/book-edit.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/alltasks.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/task-edit.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/alltasks.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/task-edit.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/duobk_constructor/configuration/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/duobk_constructor/configuration/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/BookContrloller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/BookContrloller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/duobk_constructor/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/duobk_constructor/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/tasks.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/tasks.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/create-book.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/create-book.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/allbooks.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/allbooks.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/create-task.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/create-task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/pre-process.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/pre-process.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/create-book.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/create-book.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/create-task.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/create-task.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pre-process.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pre-process.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/process.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/process.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/userdata.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/userdata.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/tasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/tasks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/duobk_constructor/configuration/SecurityConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/duobk_constructor/configuration/SecurityConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/duobk_constructor/controller/BookContrloller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/duobk_constructor/controller/BookContrloller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/duobk_constructor/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/duobk_constructor/controller/MainController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/duobk_constructor/controller/TaskController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/duobk_constructor/controller/TaskController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/duobk_constructor/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/duobk_constructor/service/UserService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/static/css/tasks.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/css/tasks.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/js/create-book.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/create-book.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/js/create-task.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/create-task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/allbooks.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/allbooks.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/tasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/tasks.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -38,10 +34,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/book-edit.html">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/task-edit.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
+            <state relative-caret-position="102">
+              <caret line="6" column="29" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#335#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -49,48 +48,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/book-edit.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="61" column="22" lean-forward="true" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="22" />
+            <state relative-caret-position="261">
+              <caret line="67" column="1" lean-forward="true" selection-start-line="38" selection-end-line="67" selection-end-column="1" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/create-book.html">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/task-edit.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="46" column="10" selection-start-line="46" selection-start-column="10" selection-end-line="46" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/tasks.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="66" />
-              <folding>
-                <element signature="n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/create-task.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="101" lean-forward="true" selection-start-line="1" selection-start-column="41" selection-end-line="1" selection-end-column="101" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/pre-process.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="66" selection-start-line="9" selection-start-column="66" selection-end-line="9" selection-end-column="66" />
+            <state relative-caret-position="111">
+              <caret line="71" column="129" selection-start-line="71" selection-start-column="129" selection-end-line="71" selection-end-column="129" />
               <folding>
                 <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
               </folding>
@@ -98,38 +66,74 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/process.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="66" selection-start-line="11" selection-start-column="66" selection-end-line="11" selection-end-column="66" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/process.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="30" column="1" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/tasks.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/pre-process.js">
+        <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="275">
+              <caret line="158" selection-start-line="158" selection-end-line="158" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#takeTask#0;class#TaskController#0" />
+                <element signature="method#getUserTasks#0;class#TaskController#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/model/User.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="290">
+              <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/model/Task.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="970">
+              <caret line="108" column="27" selection-start-line="108" selection-start-column="27" selection-end-line="108" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/BookContrloller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="32" column="35" lean-forward="true" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/UserController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
+              <folding>
+                <element signature="e#981#982#0" expanded="true" />
+                <element signature="e#1018#1019#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/UserService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
-              <caret line="46" column="46" lean-forward="true" selection-start-line="46" selection-start-column="46" selection-end-line="46" selection-end-column="46" />
+              <caret line="20" column="68" selection-start-line="20" selection-start-column="68" selection-end-line="20" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/userdata.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -149,6 +153,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>/take</find>
+      <find>data-live-search=&quot;true&quot;</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -157,12 +162,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book_reader/BookReader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book_reader/DuobkBookReader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book_reader/EpubBookReader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book_reader/Fb2BookReader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book_reader/BookReaderService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book_reader/BookReaderBridge.java" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/service/FileReaderService.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/correcting.html" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book_reader/XMLBookReader.java" />
@@ -178,7 +177,6 @@
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/model/Entry.java" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/model/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/model/Task.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/static/js/userdata.js" />
         <option value="$PROJECT_DIR$/src/main/resources/static/js/new.js" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/new.html" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/service/EntryService.java" />
@@ -187,16 +185,11 @@
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/Chapter.java" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/Book.java" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/Paragraph.java" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java" />
         <option value="$PROJECT_DIR$/src/main/resources/static/js/tasks.js" />
         <option value="$PROJECT_DIR$/src/main/resources/static/css/process.css" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java" />
         <option value="$PROJECT_DIR$/src/main/resources/static/js/process.js" />
-        <option value="$PROJECT_DIR$/src/main/resources/templates/tasks.html" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/MainController.java" />
         <option value="$PROJECT_DIR$/src/main/resources/static/js/create-book.js" />
-        <option value="$PROJECT_DIR$/src/main/resources/static/js/create-task.js" />
-        <option value="$PROJECT_DIR$/src/main/resources/static/js/allbooks.js" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/configuration/SecurityConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/BookContrloller.java" />
         <option value="$PROJECT_DIR$/src/main/resources/static/js/book-edit.js" />
@@ -206,8 +199,20 @@
         <option value="$PROJECT_DIR$/src/main/resources/templates/create-task.html" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/pre-process.html" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/process.html" />
-        <option value="$PROJECT_DIR$/src/main/resources/static/css/tasks.css" />
         <option value="$PROJECT_DIR$/src/main/resources/static/js/pre-process.js" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/js/allbooks.js" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/css/tasks.css" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/js/alltasks.js" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/tasks.html" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/alltasks.html" />
+        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/MainController.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/js/create-task.js" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/js/userdata.js" />
+        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/service/UserService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/UserController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/task-edit.html" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/js/task-edit.js" />
       </list>
     </option>
   </component>
@@ -247,7 +252,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -397,6 +401,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -474,21 +479,21 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31543624" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.32416108" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.82818794" visible="true" weight="0.45042494" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.42634562" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.82818794" weight="0.45042494" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.42634562" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3286119" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.74362415" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.25637585" side_tool="true" weight="0.3286119" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.742953" weight="0.3286119" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.25704697" side_tool="true" weight="0.3286119" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.3286119" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -499,7 +504,7 @@
       <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="6" side_tool="true" weight="0.3295302" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31140938" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3248322" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -512,8 +517,8 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3286119" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.74362415" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.25637585" side_tool="true" weight="0.3286119" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.742953" weight="0.3286119" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.25704697" side_tool="true" weight="0.3286119" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.3286119" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -533,7 +538,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java</url>
-          <line>105</line>
+          <line>109</line>
           <properties />
           <option name="timeStamp" value="19" />
         </line-breakpoint>
@@ -553,34 +558,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.9.RELEASE/spring-web-5.0.9.RELEASE.jar!/org/springframework/web/method/annotation/ModelAttributeMethodProcessor.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="102" selection-start-line="102" selection-end-line="102" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.9.RELEASE/spring-web-5.0.9.RELEASE.jar!/org/springframework/web/method/support/HandlerMethodArgumentResolverComposite.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.9.RELEASE/spring-web-5.0.9.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/5.0.9.RELEASE/spring-core-5.0.9.RELEASE.jar!/org/springframework/cglib/proxy/MethodProxy.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="103" selection-start-line="103" selection-end-line="103" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -595,31 +572,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/model/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/model/Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="108" column="27" selection-start-line="108" selection-start-column="27" selection-end-line="108" selection-end-column="27" />
-          <folding>
-            <element signature="e#873#874#0" expanded="true" />
-            <element signature="e#898#899#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/userdata.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="96" selection-start-line="8" selection-start-column="96" selection-end-line="8" selection-end-column="96" />
         </state>
       </provider>
     </entry>
@@ -642,13 +594,6 @@
             <element signature="e#1020#1021#0" expanded="true" />
             <element signature="e#1068#1069#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/UserController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="18" column="16" lean-forward="true" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -714,13 +659,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -805,25 +743,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/MainController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="46" column="35" lean-forward="true" selection-start-line="46" selection-start-column="35" selection-end-line="47" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1693#1694#0" expanded="true" />
-            <element signature="e#1731#1732#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/allbooks.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="16" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/process.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
@@ -872,25 +791,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="72" column="27" lean-forward="true" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#takeTask#0;class#TaskController#0" />
-            <element signature="method#getUserTasks#0;class#TaskController#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/create-task.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="117" column="25" lean-forward="true" selection-start-line="114" selection-start-column="8" selection-end-line="117" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/model/DuoBook.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -898,80 +798,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/BookContrloller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/allbooks.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="48" column="6" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/create-book.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="46" column="10" selection-start-line="46" selection-start-column="10" selection-end-line="46" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/create-task.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="101" lean-forward="true" selection-start-line="1" selection-start-column="41" selection-end-line="1" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/tasks.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="66" />
-          <folding>
-            <element signature="n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/process.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="66" selection-start-line="11" selection-start-column="66" selection-end-line="11" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/process.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="30" column="1" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/tasks.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/book-edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/book-edit.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="61" column="22" lean-forward="true" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -985,10 +811,193 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/process.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="66" selection-start-line="11" selection-start-column="66" selection-end-line="11" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/process.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="1" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/pre-process.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="46" column="46" lean-forward="true" selection-start-line="46" selection-start-column="46" selection-end-line="46" selection-end-column="46" />
+          <caret line="46" column="43" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/allbooks.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="40" column="24" lean-forward="true" selection-end-line="78" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/alltasks.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="37" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/allbooks.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" selection-start-line="18" selection-end-line="38" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/tasks.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1207">
+          <caret line="78" column="37" selection-start-line="78" selection-start-column="37" selection-end-line="78" selection-end-column="37" />
+          <folding>
+            <element signature="n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/tasks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/alltasks.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="51" column="37" selection-start-line="51" selection-start-column="37" selection-end-line="51" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/MainController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="692">
+          <caret line="64" column="32" selection-start-line="64" selection-start-column="32" selection-end-line="64" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/create-book.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="46" column="10" selection-start-line="46" selection-start-column="10" selection-end-line="46" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/create-task.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="48" selection-start-line="48" selection-end-line="50" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/create-task.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="159" column="59" selection-start-line="159" selection-start-column="59" selection-end-line="159" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/book-edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="65" column="43" lean-forward="true" selection-start-line="65" selection-start-column="38" selection-end-line="65" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/BookContrloller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="32" column="35" lean-forward="true" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/userdata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="20" column="68" selection-start-line="20" selection-start-column="68" selection-end-line="20" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
+          <folding>
+            <element signature="e#981#982#0" expanded="true" />
+            <element signature="e#1018#1019#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/model/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/book-edit.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="67" column="1" lean-forward="true" selection-start-line="38" selection-end-line="67" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/model/Task.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="970">
+          <caret line="108" column="27" selection-start-line="108" selection-start-column="27" selection-end-line="108" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/task-edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="71" column="129" selection-start-line="71" selection-start-column="129" selection-end-line="71" selection-end-column="129" />
+          <folding>
+            <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/task-edit.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="29" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#335#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="158" selection-start-line="158" selection-end-line="158" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#takeTask#0;class#TaskController#0" />
+            <element signature="method#getUserTasks#0;class#TaskController#0" />
+          </folding>
         </state>
       </provider>
     </entry>

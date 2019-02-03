@@ -15,8 +15,6 @@ function requestBooks(){
             console.log("ERROR : ", jqXHR.responseText);
         }
     });
-
-
 }
 function populateTaskTable(table, arrayData){
         var tbody = table.getElementsByTagName('tbody')[0];

@@ -25,9 +25,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(path="/tasks")
@@ -44,8 +42,14 @@ public class TaskController {
     DuoBookService duoBookService;
 
     @GetMapping(path="/all")
-    public @ResponseBody Iterable<Task> getAllTasks(){
-        return taskService.getAll();
+    public @ResponseBody Map<String,Task> getAllTasks(){
+        List<Task> list = new ArrayList<>();
+        Map<String,Task> taskWithMail = new HashMap<>();
+        for(Task task : taskService.getAll()){
+            String mail = userService.getById(task.getUserId()).getMail();
+            taskWithMail.put(mail,task);
+        }
+        return taskWithMail;
     }
 
     @GetMapping(value = "/allWithNoUser")
@@ -137,6 +141,21 @@ public class TaskController {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         return taskService.unprocessedToHtml(task.getUnprocessed());
+    }
+
+    @GetMapping(value = "/getById")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody Task getById(@RequestParam(value = "id",required = true) String id ){
+        return taskService.getTaskById(Integer.parseInt(id));
+    }
+
+    @RequestMapping(value = "/update")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void update(@ModelAttribute Task task){
+        Task taskFromDb = taskService.getTaskById(task.getId());
+        task.setEntry1_id(taskFromDb.getEntry1_id());
+        task.setEntry2_id(taskFromDb.getEntry2_id());
+        taskService.save(task);
     }
 
 }
