@@ -14,6 +14,7 @@ width: 100%;
 width: 100%;
 overflow-y: scroll;
 height: 100%
+resize:none;
 }
 .textarea-container{
 padding-top: 10px;
@@ -22,7 +23,9 @@ height: 25%;
 html,
 body,
 .container-fluid,
-.witharea
+.witharea,
+.tab-pane,
+.tab-content,
 {
 height: 100%;
 }

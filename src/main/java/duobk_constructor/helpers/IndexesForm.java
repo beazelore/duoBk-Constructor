@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class IndexesForm {
 
-ArrayList<Integer> start1;
-ArrayList<Integer> start2;
-ArrayList<Integer> end1;
-ArrayList<Integer> end2;
-Integer taskId;
+    private ArrayList<Integer> start1;
+    private ArrayList<Integer> start2;
+    private ArrayList<Integer> end1;
+    private ArrayList<Integer> end2;
+    private Integer taskId;
 
     public IndexesForm() {
     }

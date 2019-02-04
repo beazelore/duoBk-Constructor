@@ -41,6 +41,13 @@ public class Paragraph {
         }
         data = new ParagraphData(this);
     }
+    public Paragraph(String content, String lang){
+        sentences = new ArrayList<>();
+        ArrayList<String> stringSentences = SentenceBreaker.breakString(content.replace("\n",""), lang);
+        for (String el : stringSentences){
+            sentences.add(new Sentence(el,this));
+        }
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -50,4 +57,5 @@ public class Paragraph {
         }
         return  sb.toString();
     }
+
 }

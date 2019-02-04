@@ -67,4 +67,7 @@ public class MainController {
     public String editTask(){
         return "task-edit.html";
     }
+
+    @RequestMapping("/tasks/process/sent")
+    public String processSent(){return  "process-sent.html";}
 }

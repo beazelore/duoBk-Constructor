@@ -11,6 +11,68 @@ $(document).ready(function(){
              var valueSelected = this.value;
             $('#active2').html(valueSelected);
         });
+
+        $('.container-fluid').on('click','.btn-success',function(){
+            var url = "/tasks/process/sent?id="+taskId+"&index="+this.id;
+            openInNewTab(url);
+            var divId = "row-connection"+this.id;
+            var div = document.getElementById(divId);
+            if (div) {
+                div.parentNode.removeChild(div);
+            }
+        });
+
+        $('.container-fluid').on('click','.btn-warning',function(){
+            var divId = "row-connection"+this.id;
+            var div = document.getElementById(divId);
+            var selectOptions1 = $("#"+divId + " select.first option");
+            var selectOptions2 = $("#"+divId + " select.second option");
+            var selectCorrecting1 = document.getElementById("book1_list");
+            var selectCorrecting2 = document.getElementById("book2_list");
+            for(var i =0; i<selectOptions1.length;i++){
+                //console.log(i);
+                //console.log(selectOptions1[i].text);
+                var option = new Option(selectOptions1[i].text);
+                option.setAttribute("dpIndex", this.id);
+                option.setAttribute("value", selectOptions1[i].getAttribute("value"));
+                selectCorrecting1.options[selectCorrecting1.options.length] = option;
+            }
+            for(var i =0; i<selectOptions2.length;i++){
+                var option = new Option(selectOptions2[i].text);
+                option.setAttribute("dpIndex", this.id);
+                option.setAttribute("value", selectOptions2[i].getAttribute("value"));
+                selectCorrecting2.options[selectCorrecting2.options.length] = option;
+            }
+            if (div) {
+                div.parentNode.removeChild(div);
+            }
+        });
+
+        $('#connect').on('click',function(){
+            var ind1 = $('#book1_list').val();
+            var ind2 = $('#book2_list').val();
+            if(ind1.length === 0 || ind2.length === 0)
+                alert("Please select options from both sides");
+            else{
+                var url = "/tasks/process/sent?id="+taskId+"&index=";
+                var indexes = {start1: ind1, start2: ind2};
+                localStorage.setItem("sentIndexes",JSON.stringify(indexes));
+                var select1 = document.getElementById("book1_list");
+                var select2 = document.getElementById("book2_list");
+                for(var i =0; i< ind1.length;i++){
+                    var selector = "#book1_list option[value=\"" + ind1[i] + "\"]"
+                    $(selector).remove();
+                }
+                for(var i =0; i< ind2.length;i++){
+                    var selector = "#book2_list option[value=\"" + ind2[i] + "\"]"
+                    $(selector).remove();
+                }
+                openInNewTab(url);
+            }
+        });
+
+
+
 });
 function getUnprocessed(taskId){
     var url = "/tasks/process/unprocessedToHTML?id=" + taskId;
@@ -47,4 +109,8 @@ function findGetParameter(parameterName) {
         if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
     }
     return result;
+}
+function openInNewTab(url) {
+  var win = window.open(url, '_blank');
+  win.focus();
 }

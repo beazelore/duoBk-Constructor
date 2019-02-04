@@ -3,7 +3,9 @@ package duobk_constructor.service;
 import duobk_constructor.logic.book.Book;
 import duobk_constructor.logic.book.Chapter;
 import duobk_constructor.logic.book.Paragraph;
+import duobk_constructor.logic.book.Sentence;
 import duobk_constructor.logic.book.duo.DuoParagraph;
+import duobk_constructor.logic.book.duo.DuoSentence;
 import duobk_constructor.model.Task;
 import duobk_constructor.repository.TaskRepository;
 import duobk_constructor.repository.UserRepository;
@@ -92,8 +94,9 @@ public class TaskService {
     public String formUnprocessedAfterPreProcess(ArrayList<DuoParagraph> duoParagraphs){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("<root>");
-        for(DuoParagraph paragraph : duoParagraphs){
-            stringBuilder.append("<dp indexes1=\"").append(getParagraphsIndexesCSV(paragraph.getParagraphs1())).append("\" ")
+        for(int i=0; i< duoParagraphs.size(); i++){
+            DuoParagraph paragraph = duoParagraphs.get(i);
+            stringBuilder.append("<dp index=\"").append(i).append("\" indexes1=\"").append(getParagraphsIndexesCSV(paragraph.getParagraphs1())).append("\" ")
                     .append("indexes2=\"").append(getParagraphsIndexesCSV(paragraph.getParagraphs2())).append("\" ")
                     .append("chapter=\"").append(paragraph.getParagraphs1().get(0).getChapter().getIndex()).append("\">")
                     .append(getParagraphsUnprocessedString(paragraph.getParagraphs1(),true))
@@ -143,23 +146,26 @@ public class TaskService {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < dpList.getLength(); i++){
             Element paragraph = (Element)dpList.item(i);
-            builder.append("<div class=\"row connection\">").append("<div class=\"col-sm\">")
+            String dpIndex = paragraph.getAttribute("index");
+            builder.append("<div class=\"row connection\" id=\"row-connection"+dpIndex+"\">").append("<div class=\"col-sm\">")
                     .append("<select multiple class=\"form-control first\">");
             NodeList p1List = paragraph.getElementsByTagName("p1");
             NodeList p2List = paragraph.getElementsByTagName("p2");
             for(int q=0; q<p1List.getLength();q++){
                 Element p1 = (Element) p1List.item(q);
-                builder.append("<option>").append(p1.getAttribute("index")).append(".  ").append(extractTextChildren(p1)).append("</option>");
+                String p1Index = p1.getAttribute("index");
+                builder.append("<option value=\"").append(p1Index).append("\">").append(p1Index).append(".  ").append(extractTextChildren(p1)).append("</option>");
             }
             builder.append("</select>").append("</div>").append("<div class=\"col-sm-1 vertical-center\">" +
                     "            <div class=\"btn-group-vertical\">" +
-                    "                <button type=\"button\" class=\"btn btn-success\" id=\"").append(i).append("\">Good</button>" +
-                    "                <button type=\"button\" class=\"btn btn-warning\" id=\"").append(i).append("\">Bad</button>" +
+                    "                <button type=\"button\" class=\"btn btn-success\" id=\"").append(dpIndex).append("\">Good</button>" +
+                    "                <button type=\"button\" class=\"btn btn-warning\" id=\"").append(dpIndex).append("\">Bad</button>" +
                     "            </div>" +
                     "        </div>").append("<div class=\"col-sm\">").append("<select multiple class=\"form-control second\">");
             for(int q=0; q<p2List.getLength();q++){
                 Element p2 = (Element) p2List.item(q);
-                builder.append("<option>").append(p2.getAttribute("index")).append(".  ").append(extractTextChildren(p2)).append("</option>");
+                String p2Index = p2.getAttribute("index");
+                builder.append("<option value=\"").append(p2Index).append("\">").append(p2.getAttribute("index")).append(".  ").append(extractTextChildren(p2)).append("</option>");
             }
             builder.append("</select>").append("</div>").append("</div>");
         }
@@ -175,5 +181,85 @@ public class TaskService {
             }
         }
         return result;
+    }
+
+    public DuoParagraph getDuoParagraphFromUnprocessed(String unprocessed, String dpIndex, String lang1, String lang2) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(unprocessed.getBytes(StandardCharsets.UTF_8));
+        Document doc = db.parse(stream);
+        NodeList dpList = doc.getElementsByTagName("dp");
+        for(int i =0; i < dpList.getLength();i++){
+            Element dp = (Element)dpList.item(i);
+            if(dp.getAttribute("index").equals(dpIndex)){
+                ArrayList<Paragraph> paragraphs1 = new ArrayList<>();
+                ArrayList<Paragraph> paragraphs2 = new ArrayList<>();
+                NodeList p1List = dp.getElementsByTagName("p1");
+                NodeList p2List = dp.getElementsByTagName("p2");
+                for(int q=0; q<p1List.getLength();q++){
+                    String content = extractTextChildren((Element) p1List.item(q));
+                    Paragraph paragraph = new Paragraph(content,lang1);
+                    paragraphs1.add(paragraph);
+                }
+                for(int q=0; q<p2List.getLength();q++){
+                    String content = extractTextChildren((Element) p2List.item(q));
+                    Paragraph paragraph = new Paragraph(content,lang2);
+                    paragraphs2.add(paragraph);
+                }
+                return new DuoParagraph(paragraphs1,paragraphs2);
+            }
+        }
+        return null;
+    }
+
+    public DuoParagraph getDuoParagraphFromUnprocessed(String unprocessed, ArrayList<String> indexes1, ArrayList<String> indexes2, String lang1, String lang2) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(unprocessed.getBytes(StandardCharsets.UTF_8));
+        Document doc = db.parse(stream);
+        NodeList dpList = doc.getElementsByTagName("dp");
+        ArrayList<Paragraph> paragraphs1 = new ArrayList<>();
+        ArrayList<Paragraph> paragraphs2 = new ArrayList<>();
+        for(int i =0; i < dpList.getLength();i++) {
+            Element dp = (Element) dpList.item(i);
+            NodeList p1List = dp.getElementsByTagName("p1");
+            NodeList p2List = dp.getElementsByTagName("p2");
+            for (int q = 0; q < p1List.getLength(); q++) {
+                Element p1 = (Element) p1List.item(q);
+                if (indexes1.contains(p1.getAttribute("index"))) {
+                    String content = extractTextChildren(p1);
+                    Paragraph paragraph = new Paragraph(content, lang1);
+                    paragraphs1.add(paragraph);
+                }
+            }
+            for (int q = 0; q < p2List.getLength(); q++) {
+                Element p2 = (Element) p2List.item(q);
+                if (indexes2.contains(p2.getAttribute("index"))) {
+                    String content = extractTextChildren(p2);
+                    Paragraph paragraph = new Paragraph(content, lang2);
+                    paragraphs2.add(paragraph);
+                }
+            }
+        }
+        return new DuoParagraph(paragraphs1,paragraphs2);
+    }
+
+    public ResponseEntity<?> formSentenceResponse(ArrayList<DuoSentence> result){
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < result.size(); i++){
+            DuoSentence sentence = result.get(i);
+            builder.append("<div class=\"row connection\">").append("<div class=\"col-sm\">")
+                    .append("<select multiple class=\"form-control first\">");
+            for(Sentence s : sentence.getSentences1())
+                builder.append("<option value=\"").append(s.getIndexInDuo()).append("\">").append(s.getIndexInDuo()).append(".  ").append(s.toString()).append("</option>");
+            builder.append("</select>").append("</div>").append("<div class=\"col-sm-1 vertical-center\">" +
+                    "            <div class=\"btn-group-vertical\">" +
+                    "                <button type=\"button\" class=\"btn btn-success\" id=\"").append(i).append("\">Good</button>" +
+                    "                <button type=\"button\" class=\"btn btn-warning\" id=\"").append(i).append("\">Bad</button>" +
+                    "            </div>" +
+                    "        </div>").append("<div class=\"col-sm\">").append("<select multiple class=\"form-control second\">");
+            for(Sentence s : sentence.getSentences2())
+                builder.append("<option value=\"").append(s.getIndexInDuo()).append("\">").append(s.getIndexInDuo()).append(".  ").append(s.toString()).append("</option>");
+            builder.append("</select>").append("</div>").append("</div>");
+        }
+        return new ResponseEntity<>(builder.toString(), HttpStatus.OK);
     }
 }

@@ -4,6 +4,7 @@ import duobk_constructor.helpers.IndexesForm;
 import duobk_constructor.helpers.UploadForm;
 import duobk_constructor.logic.AStar;
 import duobk_constructor.logic.Language;
+import duobk_constructor.logic.SentenceAStar;
 import duobk_constructor.logic.book.Book;
 import duobk_constructor.logic.book.duo.DuoParagraph;
 import duobk_constructor.model.DuoBook;
@@ -156,6 +157,38 @@ public class TaskController {
         task.setEntry1_id(taskFromDb.getEntry1_id());
         task.setEntry2_id(taskFromDb.getEntry2_id());
         taskService.save(task);
+    }
+
+    @RequestMapping(value = "/process/sent/do")
+    public ResponseEntity<?> doSentenceProcess(@RequestParam(value = "id",required = true) String taskId
+            , @RequestParam(value = "index",required = true) String dpIndex) throws IOException, SAXException, ParserConfigurationException {
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        String unprocessed = task.getUnprocessed();
+        String lang1 = entryService.getEntryById(task.getEntry1_id()).getLanguage();
+        String lang2 = entryService.getEntryById(task.getEntry2_id()).getLanguage();
+        DuoParagraph duoParagraph = taskService.getDuoParagraphFromUnprocessed(unprocessed,dpIndex,lang1,lang2);
+        SentenceAStar aStar = new SentenceAStar();
+        aStar.doAStar(duoParagraph);
+        return taskService.formSentenceResponse(aStar.getResult());
+    }
+
+    @RequestMapping(value = "/process/sent/correcting/do")
+    public ResponseEntity<?> doSentenceProcessFromCorrecting(@RequestParam(value = "id",required = true) String taskId
+            , @RequestBody IndexesForm indexesForm) throws IOException, SAXException, ParserConfigurationException {
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        String unprocessed = task.getUnprocessed();
+        String lang1 = entryService.getEntryById(task.getEntry1_id()).getLanguage();
+        String lang2 = entryService.getEntryById(task.getEntry2_id()).getLanguage();
+        ArrayList<String> indexes1 = new ArrayList<>();
+        for(Integer index : indexesForm.getStart1())
+            indexes1.add(index.toString());
+        ArrayList<String> indexes2 = new ArrayList<>();
+        for(Integer index : indexesForm.getStart2())
+            indexes2.add(index.toString());
+        DuoParagraph duoParagraph = taskService.getDuoParagraphFromUnprocessed(unprocessed,indexes1,indexes2,lang1,lang2);
+        SentenceAStar aStar = new SentenceAStar();
+        aStar.doAStar(duoParagraph);
+        return taskService.formSentenceResponse(aStar.getResult());
     }
 
 }
