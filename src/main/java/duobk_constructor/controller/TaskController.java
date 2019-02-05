@@ -21,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import duobk_constructor.repository.TaskRepository;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -156,6 +157,7 @@ public class TaskController {
         Task taskFromDb = taskService.getTaskById(task.getId());
         task.setEntry1_id(taskFromDb.getEntry1_id());
         task.setEntry2_id(taskFromDb.getEntry2_id());
+        task.setBad(taskFromDb.getBad());
         taskService.save(task);
     }
 
@@ -176,7 +178,7 @@ public class TaskController {
     public ResponseEntity<?> doSentenceProcessFromCorrecting(@RequestParam(value = "id",required = true) String taskId
             , @RequestBody IndexesForm indexesForm) throws IOException, SAXException, ParserConfigurationException {
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
-        String unprocessed = task.getUnprocessed();
+        String bad= task.getBad();
         String lang1 = entryService.getEntryById(task.getEntry1_id()).getLanguage();
         String lang2 = entryService.getEntryById(task.getEntry2_id()).getLanguage();
         ArrayList<String> indexes1 = new ArrayList<>();
@@ -185,10 +187,28 @@ public class TaskController {
         ArrayList<String> indexes2 = new ArrayList<>();
         for(Integer index : indexesForm.getStart2())
             indexes2.add(index.toString());
-        DuoParagraph duoParagraph = taskService.getDuoParagraphFromUnprocessed(unprocessed,indexes1,indexes2,lang1,lang2);
+        DuoParagraph duoParagraph = taskService.getDuoParagraphFromBad(bad,indexes1,indexes2,lang1,lang2);
         SentenceAStar aStar = new SentenceAStar();
         aStar.doAStar(duoParagraph);
         return taskService.formSentenceResponse(aStar.getResult());
+    }
+
+    @RequestMapping(value = "/process/moveToBad")
+    public void moveToBad(@RequestParam(value = "id",required = true) String id, @RequestParam (value = "index",required =  true) String index) throws ParserConfigurationException, SAXException, IOException {
+        Task task = taskService.getTaskById(Integer.parseInt(id));
+        taskService.removeDpFromUnprocessedToBad(task.getUnprocessed(),index,Integer.parseInt(id));
+    }
+
+    @RequestMapping(value = "/process/getBadResponse")
+    public ResponseEntity<?> getBadResponse(@RequestParam(value = "id",required = true) String taskId) throws IOException, SAXException, ParserConfigurationException {
+        String bad = taskService.getTaskById(Integer.parseInt(taskId)).getBad();
+        return taskService.formBadResponse(bad);
+    }
+
+    @RequestMapping(value = "process/sent/finish", consumes = "text/plain")
+    public void finishSentProcess(@RequestParam (value = "id", required = true) String taskId, @RequestBody String dp) throws IOException, SAXException, ParserConfigurationException {
+        taskService.finishSentProcess(dp,taskService.getTaskById(Integer.parseInt(taskId)));
+        return;
     }
 
 }

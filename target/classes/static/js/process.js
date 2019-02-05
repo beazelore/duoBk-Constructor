@@ -1,6 +1,7 @@
 $(document).ready(function(){
     var taskId = findGetParameter("id");
     getUnprocessed(taskId);
+    getBad(taskId);
 
         $('.container-fluid').on('click','select.first option', function(e){
              var valueSelected = this.value;
@@ -25,7 +26,7 @@ $(document).ready(function(){
         $('.container-fluid').on('click','.btn-warning',function(){
             var divId = "row-connection"+this.id;
             var div = document.getElementById(divId);
-            var selectOptions1 = $("#"+divId + " select.first option");
+            /*var selectOptions1 = $("#"+divId + " select.first option");
             var selectOptions2 = $("#"+divId + " select.second option");
             var selectCorrecting1 = document.getElementById("book1_list");
             var selectCorrecting2 = document.getElementById("book2_list");
@@ -42,7 +43,9 @@ $(document).ready(function(){
                 option.setAttribute("dpIndex", this.id);
                 option.setAttribute("value", selectOptions2[i].getAttribute("value"));
                 selectCorrecting2.options[selectCorrecting2.options.length] = option;
-            }
+            }*/
+            unprocessedToBad(taskId,this.id);
+            getBad(taskId);
             if (div) {
                 div.parentNode.removeChild(div);
             }
@@ -71,7 +74,9 @@ $(document).ready(function(){
             }
         });
 
+/*        $("#correctingNavItem").on('click', function(){
 
+        });*/
 
 });
 function getUnprocessed(taskId){
@@ -113,4 +118,37 @@ function findGetParameter(parameterName) {
 function openInNewTab(url) {
   var win = window.open(url, '_blank');
   win.focus();
+}
+
+function unprocessedToBad(taskId, dpIndex){
+    var url = "/tasks/process/moveToBad?id="+taskId+"&index="+dpIndex;
+    $.ajax({
+              type: "GET",
+              url: url,
+              success: function(textStatus, jqXHR) {
+                alert("success");
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                alert("error");
+              }
+           });
+}
+
+function getBad(taskId){
+    var url = "/tasks/process/getBadResponse?id="+taskId;
+    $.ajax({
+              type: "GET",
+              url: url,
+              success: function(data, textStatus, jqXHR) {
+                var p1 = data.split('!separator!')[0];
+                var p2 = data.split('!separator!')[1];
+                $('#book1_list').html(p1);
+                $('#book2_list').html(p2);
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                alert("error");
+              }
+           });
 }

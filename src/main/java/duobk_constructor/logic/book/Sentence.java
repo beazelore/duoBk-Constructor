@@ -23,6 +23,10 @@ public class Sentence {
         this.index = index;
     }
 
+    public Paragraph getParagraph() {
+        return paragraph;
+    }
+
     public Sentence(String value, Paragraph paragraph) {
         this.value = value;
         this.paragraph = paragraph;

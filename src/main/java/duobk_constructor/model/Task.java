@@ -32,6 +32,8 @@ public class Task {
     private Integer entry2_id;
     @Column(name = "name")
     private String name;
+    @Column(name = "bad")
+    private String bad;
 
 
     public Integer getId() {
@@ -112,5 +114,13 @@ public class Task {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBad() {
+        return bad;
+    }
+
+    public void setBad(String bad) {
+        this.bad = bad;
     }
 }
