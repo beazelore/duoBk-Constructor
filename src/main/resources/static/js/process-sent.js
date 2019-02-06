@@ -1,6 +1,7 @@
 $(document).ready(function(){
     var taskId = findGetParameter("id");
     var dpIndex = findGetParameter("index");
+    var chapterIndex = findGetParameter("chapter");
     sessionStorage.removeItem("ds");
     //if we come here from correcting tab of process, no dpIndex will be specified
     //in that case we retrieve our HTML from different endpoint
@@ -28,18 +29,42 @@ $(document).ready(function(){
         getSentProcessHTML(taskId,dpIndex);
 
     $('.container-fluid').on('click','select.first option', function(e){
-         var valueSelected = this.value;
-        $('#checkActive1').html(valueSelected);
+         var textSelected = this.text;
+         var myRegexp = /[0-9]+\. /;
+         $('#checkActive1').html(textSelected.split(myRegexp).pop());
     });
     $('.container-fluid').on('click','select.second option', function(e){
-         var valueSelected = this.value;
-        $('#checkActive2').html(valueSelected);
+         var textSelected = this.text;
+         var myRegexp = /[0-9]+\. /;
+         $('#checkActive2').html(textSelected.split(myRegexp).pop());
+    });
+
+    $('#book1_list').on('change', function(e){
+        var options = $('#book1_list option:selected');
+        var value ="";
+        for(var i =0; i < options.length; i++){
+            var myRegexp = /[0-9]+\. /;
+            var temp = options[i].innerHTML.split(myRegexp).pop();
+            value += temp;
+        }
+        $('#correctingActive1').html(value);
+    });
+
+    $('#book2_list').on('change', function(e){
+        var options = $('#book2_list option:selected');
+        var value ="";
+        for(var i =0; i < options.length; i++){
+            var myRegexp = /[0-9]+\. /;
+            var temp = options[i].innerHTML.split(myRegexp).pop();
+            value += temp;
+        }
+        $('#correctingActive2').html(value);
     });
 
     $('.container-fluid').on('click','.btn-success',function(){
         var cacheString  = sessionStorage.getItem("ds");
         if(cacheString === null){
-            cacheString = "<dp>"
+            cacheString = "<dp chapter=\"" + chapterIndex + "\">";
         }
         cacheString += "<ds>"
         console.log(this.id);
@@ -92,8 +117,9 @@ $(document).ready(function(){
             var ind2 = $('#book2_list').val();
             var cacheString  = sessionStorage.getItem("ds");
             if(cacheString === null){
-                cacheString = "<dp>"
+                cacheString = "<dp chapter=\"" + chapterIndex + "\">";
             }
+            cacheString += "<ds>";
             for(var i =0; i < ind1.length; i ++){
                  var option = $('#book1_list option[value="'+ ind1[i] + '"]')[0];
                  cacheString += "<s1 pIndex=\"" + option.getAttribute("pIndex") + "\" index=\"" + option.getAttribute("value") + "\">";
@@ -117,8 +143,9 @@ $(document).ready(function(){
 
     $("#finishProcess").on('click', function(){
         var cacheString  = sessionStorage.getItem("ds");
-        if(cacheString.includes("<dp>"))
+        if(cacheString.includes("<dp"))
             cacheString += "</dp>";
+        console.log(cacheString);
         var url = "/tasks/process/sent/finish?id=" + taskId;
         $.ajax({
             type: "POST",
@@ -127,7 +154,8 @@ $(document).ready(function(){
             data: cacheString,
             success: function(textStatus, jqXHR) {
                   alert("success");
-                  window.location.href = "/tasks/process?id=" + taskId;
+                  window.close();
+                  //window.location.href = "/tasks/process?id=" + taskId;
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);

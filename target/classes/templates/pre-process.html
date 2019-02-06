@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Create Task - DuoBk</title>
-    <link href="/css/tasks.css" rel="stylesheet" />
+    <link href="/css/process.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/pre-process.js"></script>
@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav">
             <li>
-                <a class="nav-item nav-link active" href="#">Tasks</a>
+                <a class="nav-item nav-link" href="/tasks">Tasks</a>
             </li>
             <li>
                 <a class="nav-item nav-link" href="#">Rules</a>
@@ -25,7 +25,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" id="adminBooks" href="/admin/books">Books</a>
-                    <a class="dropdown-item" id="adminTasks" href="#">Tasks</a>
+                    <a class="dropdown-item" id="adminTasks" href="/admin/tasks">Tasks</a>
                     <a class="dropdown-item" id="createBook" href="/admin/createBook">Create Book</a>
                     <a class="dropdown-item" id="createTask" href="/admin/createTask">Create Task</a>
                 </div>
@@ -43,8 +43,10 @@
         </ul>
     </div>
 </nav>
-<p id="hint">Please select first matching paragraphs of books and press OK.</p>
-<div class="container-fluid maincontainer">
+<div class="container-fluid">
+    <p id="hint">* Please select first matching paragraphs of books and press OK.</p>
+</div>
+<div class="container-fluid">
     <div class="row textarea-container">
         <div class="col-sm witharea">
             <textarea class="form-control active" id="active1"></textarea>
@@ -56,16 +58,14 @@
     <div class="row list-container">
         <div class="col-sm withlist">
             <select multiple  id="book1_list"   class="form-control book_list" size="3">
-                <option>Link 1</option>
             </select>
         </div>
         <div class="col-sm withlist">
             <select  multiple id="book2_list" class="form-control book_list" size="3">
-                <option>Link 1</option>
             </select>
         </div>
     </div>
-    <div class="row">
+    <div class="row btn-container">
         <div class="col-md-1 offset-md-12">
             <button id="startProcess" class="btn btn-primary">OK</button>
         </div>

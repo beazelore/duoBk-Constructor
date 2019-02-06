@@ -4,17 +4,28 @@ $(document).ready(function(){
     getBad(taskId);
 
         $('.container-fluid').on('click','select.first option', function(e){
-             var valueSelected = this.value;
-            $('#active1').html(valueSelected);
+             var textSelected = this.text;
+             var myRegexp = /[0-9]+\. /;
+            $('#active1').html(textSelected.split(myRegexp).pop());
         });
 
         $('.container-fluid').on('click','select.second option', function(e){
-             var valueSelected = this.value;
-            $('#active2').html(valueSelected);
+             var textSelected = this.text;
+             var myRegexp = /[0-9]+\. /;
+            $('#active2').html(textSelected.split(myRegexp).pop());
         });
-
+        $('#book1_list').on('click', 'option', function(){
+            var textSelected = this.text;
+            var myRegexp = /[0-9]+\. /;
+            $('#correctingActive1').html(textSelected.split(myRegexp).pop());
+        });
+        $('#book2_list').on('click', 'option',function(){
+            var textSelected = this.text;
+            var myRegexp = /[0-9]+\. /;
+            $('#correctingActive2').html(textSelected.split(myRegexp).pop());
+        });
         $('.container-fluid').on('click','.btn-success',function(){
-            var url = "/tasks/process/sent?id="+taskId+"&index="+this.id;
+            var url = "/tasks/process/sent?id="+taskId+"&index="+this.id+ "&chapter=" + this.getAttribute("chapter");
             openInNewTab(url);
             var divId = "row-connection"+this.id;
             var div = document.getElementById(divId);
@@ -45,7 +56,6 @@ $(document).ready(function(){
                 selectCorrecting2.options[selectCorrecting2.options.length] = option;
             }*/
             unprocessedToBad(taskId,this.id);
-            getBad(taskId);
             if (div) {
                 div.parentNode.removeChild(div);
             }
@@ -54,10 +64,12 @@ $(document).ready(function(){
         $('#connect').on('click',function(){
             var ind1 = $('#book1_list').val();
             var ind2 = $('#book2_list').val();
+            var selector = "#book1_list option[value=\"" + ind1[0] + "\"]";
+            var chapter = $(selector)[0].getAttribute("chapter");
             if(ind1.length === 0 || ind2.length === 0)
                 alert("Please select options from both sides");
             else{
-                var url = "/tasks/process/sent?id="+taskId+"&index=";
+                var url = "/tasks/process/sent?id="+taskId+"&chapter="+ chapter + "&index=";
                 var indexes = {start1: ind1, start2: ind2};
                 localStorage.setItem("sentIndexes",JSON.stringify(indexes));
                 var select1 = document.getElementById("book1_list");
@@ -74,9 +86,9 @@ $(document).ready(function(){
             }
         });
 
-/*        $("#correctingNavItem").on('click', function(){
-
-        });*/
+       $("#correctingNavItem").on('click', function(){
+            getBad(taskId);
+        });
 
 });
 function getUnprocessed(taskId){
@@ -126,7 +138,6 @@ function unprocessedToBad(taskId, dpIndex){
               type: "GET",
               url: url,
               success: function(textStatus, jqXHR) {
-                alert("success");
               },
               error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);
@@ -143,8 +154,10 @@ function getBad(taskId){
               success: function(data, textStatus, jqXHR) {
                 var p1 = data.split('!separator!')[0];
                 var p2 = data.split('!separator!')[1];
-                $('#book1_list').html(p1);
-                $('#book2_list').html(p2);
+                document.getElementById("book1_list").innerHTML = p1;
+                document.getElementById("book2_list").innerHTML = p2;
+                //$('#book1_list').html(p1);
+                //$('#book2_list').html(p2);
               },
               error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="utf-8">
@@ -47,16 +47,16 @@
         </ul>
     </div>
 </nav>
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<ul class="nav nav-tabs undernavTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="my_tasks" data-toggle="tab" href="#mytasks" role="tab" aria-controls="mytasks" aria-selected="true">My Tasks</a>
+        <a class="nav-link active" id="my_tasks" data-toggle="tab" href="#mytasks" role="tab"  aria-selected="true">My Tasks</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="all_tasks" data-toggle="tab" href="#alltasks" role="tab" aria-controls="alltasks" aria-selected="false">All tasks</a>
+        <a class="nav-link" id="all_tasks" data-toggle="tab" href="#alltasks" role="tab"  aria-selected="false">All tasks</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="mytasks" role="tabpanel" aria-labelledby="mytasks">
+    <div class="tab-pane fade show active" id="mytasks" role="tabpanel">
         <table class="table" id="mytasksTable">
             <thead class="thead-light">
             <tr>
@@ -70,12 +70,7 @@
             <tbody>
             </tbody>
         </table></div>
-    <div class="tab-pane fade" id="alltasks" role="tabpanel" aria-labelledby="alltasks">
-        <!--<div sec:authorize="hasRole('ROLE_ADMIN')">
-            <div class="container-fluid btn-block">
-                <button class="btn btn-large btn-block btn-info" id="addtaskbtn" type="button">Add Task</button>
-            </div>
-        </div>-->
+    <div class="tab-pane fade" id="alltasks" role="tabpanel">
         <table class="table" id="alltasksTable">
             <thead class="thead-light">
             <tr>

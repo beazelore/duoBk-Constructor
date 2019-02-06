@@ -1,7 +1,9 @@
-select {
+/*select {
 width: 100%;
+height: 100%
 overflow-y: auto;
-}
+}*/
+
 .btn-group-vertical {
 width: 100%;
 }
@@ -10,25 +12,46 @@ width: 100%;
   display: flex;
   align-items: center;
 }
+
 .form-control.active {
 width: 100%;
-overflow-y: scroll;
-height: 100%
+overflow-y: auto;
+height: 20vh;
 resize:none;
 }
-.textarea-container{
+
+.row.textarea-container{
 padding-top: 10px;
-height: 25%;
 }
-html,
-body,
-.container-fluid,
-.witharea,
-.tab-pane,
-.tab-content,
-{
-height: 100%;
-}
+
 .row.connection {
 padding-top:10px;
+}
+
+.maincontainer {
+max-height: 63vh;
+overflow: auto;
+margin-top:15px;
+margin-right:15px;
+}
+
+.navbar{
+max-height: 5vh;
+height: 5vh;
+}
+
+.undernavTab{
+padding-top:15px;
+}
+
+.book_list{
+width: 100%;
+overflow-y: auto;
+height: 60vh;
+min-height:55vh;
+margin-top:15px;
+}
+
+.btn-container{
+margin-top:10px;
 }

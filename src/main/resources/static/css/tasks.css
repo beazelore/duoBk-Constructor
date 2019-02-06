@@ -47,8 +47,13 @@ padding-top:10px;
 display: none;
 }
 
-#myTab{
-margin-top:35px;
+.navbar{
+max-height: 5vh;
+height: 5vh;
+}
+
+.undernavTab{
+padding-top:15px;
 }
 
 .actionCell{

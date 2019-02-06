@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Correcting Sentence Connections</title>
     <link href="/css/process.css" rel="stylesheet" />
-    <link href="/css/tasks.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/process-sent.js"></script>
@@ -22,7 +21,7 @@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="checking" role="tabpanel">
-        <div class="container-fluid" id="checkContainer">
+        <div class="container-fluid" >
             <div class="row textarea-container">
                 <div class="col-sm witharea">
                     <textarea class="form-control active" id="checkActive1"></textarea>
@@ -34,7 +33,10 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid maincontainer" id="checkContainer">
+
+        </div>
+        <div class="container-fluid btn-container">
             <div class="row">
                 <div class="col-md-1 offset-md-12">
                     <button id="finishProcess" class="btn btn-primary">Finish</button>
@@ -43,7 +45,7 @@
         </div>
     </div>
     <div class="tab-pane fade" id="correcting" role="tabpanel">
-        <div class="container-fluid maincontainer">
+        <div class="container-fluid">
             <div class="row textarea-container">
                 <div class="col-sm witharea">
                     <textarea class="form-control active" id="correctingActive1"></textarea>
@@ -62,10 +64,8 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-1 offset-md-12">
-                    <button id="connectSent" class="btn btn-primary">Connect</button>
-                </div>
+            <div class=" col-sm row btn-container"  >
+                <button class="btn btn-primary" id="connectSent">Connect</button>
             </div>
         </div>
     </div>

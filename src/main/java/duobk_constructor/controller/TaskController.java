@@ -6,7 +6,10 @@ import duobk_constructor.logic.AStar;
 import duobk_constructor.logic.Language;
 import duobk_constructor.logic.SentenceAStar;
 import duobk_constructor.logic.book.Book;
+import duobk_constructor.logic.book.Paragraph;
+import duobk_constructor.logic.book.Sentence;
 import duobk_constructor.logic.book.duo.DuoParagraph;
+import duobk_constructor.logic.book.duo.DuoSentence;
 import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.Entry;
 import duobk_constructor.model.Task;
@@ -112,7 +115,9 @@ public class TaskController {
         ArrayList<DuoParagraph> result = aStar.getResult();
         String unprocessed = taskService.formUnprocessedAfterPreProcess(result);
         task.setUnprocessed(unprocessed);
-        task.setProcessed(null);
+        task.setProcessed("<processed></processed>");
+        task.setBad("<bad></bad>");
+        task.setResult("<result></result>");
         taskService.save(task);
         return new ResponseEntity<IndexesForm>(indexesForm, HttpStatus.OK);
     }
@@ -171,6 +176,17 @@ public class TaskController {
         DuoParagraph duoParagraph = taskService.getDuoParagraphFromUnprocessed(unprocessed,dpIndex,lang1,lang2);
         SentenceAStar aStar = new SentenceAStar();
         aStar.doAStar(duoParagraph);
+        if(aStar.getResult().size() == 0){
+            ArrayList<DuoSentence> result = new ArrayList<>();
+            ArrayList<Sentence> sentences1 = new ArrayList<>();
+            ArrayList<Sentence> sentences2 = new ArrayList<>();
+            for(Paragraph paragraph: duoParagraph.getParagraphs1())
+                sentences1.addAll(paragraph.getSentences());
+            for(Paragraph paragraph: duoParagraph.getParagraphs2())
+                sentences2.addAll(paragraph.getSentences());
+            result.add(new DuoSentence(sentences1,sentences2));
+            return  taskService.formSentenceResponse(result);
+        }
         return taskService.formSentenceResponse(aStar.getResult());
     }
 

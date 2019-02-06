@@ -161,8 +161,8 @@ public class TaskService {
             }
             builder.append("</select>").append("</div>").append("<div class=\"col-sm-1 vertical-center\">" +
                     "            <div class=\"btn-group-vertical\">" +
-                    "                <button type=\"button\" class=\"btn btn-success\" id=\"").append(dpIndex).append("\">Good</button>" +
-                    "                <button type=\"button\" class=\"btn btn-warning\" id=\"").append(dpIndex).append("\">Bad</button>" +
+                    "                <button type=\"button\" class=\"btn btn-success\" id=\"").append(dpIndex).append("\" chapter=\"").append(paragraph.getAttribute("chapter")).append("\">Good</button>" +
+                    "                <button type=\"button\" class=\"btn btn-warning\" id=\"").append(dpIndex).append("\" chapter=\"").append(paragraph.getAttribute("chapter")).append("\">Bad</button>" +
                     "            </div>" +
                     "        </div>").append("<div class=\"col-sm\">").append("<select multiple class=\"form-control second\">");
             for(int q=0; q<p2List.getLength();q++){
@@ -314,7 +314,8 @@ public class TaskService {
         Document doc = db.parse(stream);
         Element bad = (Element) doc.getElementsByTagName("bad").item(0);
         for(int i =0 ; i < paragraphs.getLength();i++){
-            Node pNode = doc.importNode(paragraphs.item(i),true);
+            Element pNode = (Element) doc.importNode(paragraphs.item(i),true);
+            pNode.setAttribute("chapter", dpElement.getAttribute("chapter"));
             bad.appendChild(pNode);
         }
         String newBad = getStringFromDocument(doc);
@@ -331,7 +332,7 @@ public class TaskService {
         for(int i =0; i < p1List.getLength(); i++){
             Element p1 = (Element) p1List.item(i);
             builder.append("<option");
-            builder.append(" value=").append(p1.getAttribute("index")).append('>');
+            builder.append(" value=").append(p1.getAttribute("index")).append(" chapter=").append(p1.getAttribute("chapter")).append('>');
             builder.append(p1.getAttribute("index")).append(". ").append(extractTextChildren(p1));
             builder.append("</option>");
         }
@@ -339,7 +340,7 @@ public class TaskService {
         for(int i =0; i < p2List.getLength(); i++){
             Element p2 = (Element) p2List.item(i);
             builder.append("<option");
-            builder.append(" value=").append(p2.getAttribute("index")).append('>');
+            builder.append(" value=").append(p2.getAttribute("index")).append(" chapter=").append(p2.getAttribute("chapter")).append('>');
             builder.append(p2.getAttribute("index")).append(". ").append(extractTextChildren(p2));
             builder.append("</option>");
         }
@@ -419,5 +420,9 @@ public class TaskService {
 
         taskRepository.save(task);
         return;
+    }
+
+    public void processToResult(Task task){
+
     }
 }
