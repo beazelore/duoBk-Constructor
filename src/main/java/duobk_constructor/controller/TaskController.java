@@ -221,10 +221,15 @@ public class TaskController {
         return taskService.formBadResponse(bad);
     }
 
-    @RequestMapping(value = "process/sent/finish", consumes = "text/plain")
+    @RequestMapping(value = "/process/sent/finish", consumes = "text/plain")
     public void finishSentProcess(@RequestParam (value = "id", required = true) String taskId, @RequestBody String dp) throws IOException, SAXException, ParserConfigurationException {
         taskService.finishSentProcess(dp,taskService.getTaskById(Integer.parseInt(taskId)));
         return;
+    }
+
+    @RequestMapping(value = "/process/finish")
+    public void finishProcess(@RequestParam (value = "id", required = true) String taskId) throws IOException, SAXException, ParserConfigurationException {
+        taskService.processToResult(taskService.getTaskById(Integer.parseInt(taskId)));
     }
 
 }

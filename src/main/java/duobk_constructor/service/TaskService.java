@@ -422,7 +422,135 @@ public class TaskService {
         return;
     }
 
-    public void processToResult(Task task){
+    public void processToResult(Task task) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(task.getProcessed().getBytes(StandardCharsets.UTF_8));
+        Document processedDoc = db.parse(stream);
+
+        // 1. order s1 and s2 inside ds by indexes
+        NodeList dsList = processedDoc.getElementsByTagName("ds");
+        for(int i =0; i < dsList.getLength(); i++){
+            NodeList s1List = ((Element)dsList.item(i)).getElementsByTagName("s1");
+            NodeList s2List = ((Element)dsList.item(i)).getElementsByTagName("s2");
+            for (int q=1; q < s1List.getLength(); q++){
+                int z = 1;
+                Element currentS1 = (Element)  s1List.item(q);
+                while (q-z >=0){
+                    Element elToCompare = (Element) s1List.item(q-z);
+                    Integer indexCurrent = Integer.parseInt(currentS1.getAttribute("index"));
+                    Integer indexToCompare = Integer.parseInt(elToCompare.getAttribute("index"));
+                    if(indexCurrent< indexToCompare){
+                        Element newCurrent = (Element) currentS1.cloneNode(true);
+                        elToCompare.getParentNode().insertBefore(newCurrent,elToCompare);
+                        currentS1.getParentNode().removeChild(currentS1);
+                    }
+                    z++;
+                }
+            }
+            for (int q=0; q < s2List.getLength(); q++){
+                int z = 1;
+                Element currentS2 = (Element)  s2List.item(q);
+                while (q-z >=0){
+                    Element elToCompare = (Element) s2List.item(q-z);
+                    Integer indexCurrent = Integer.parseInt(currentS2.getAttribute("index"));
+                    Integer indexToCompare = Integer.parseInt(elToCompare.getAttribute("index"));
+                    if(indexCurrent< indexToCompare){
+                        Element newCurrent = (Element) currentS2.cloneNode(true);
+                        elToCompare.getParentNode().insertBefore(newCurrent,elToCompare);
+                        currentS2.getParentNode().removeChild(currentS2);
+                    }
+                    z++;
+                }
+            }
+            // 2.add index attribute to each <ds>
+            Element firstS1 = (Element) ((Element)dsList.item(i)).getElementsByTagName("s1").item(0);
+            ((Element)dsList.item(i)).setAttribute("index", firstS1.getAttribute("index") );
+            // 4. add pIndex attribute to each ds
+            ((Element)dsList.item(i)).setAttribute("pIndex", firstS1.getAttribute("pIndex") );
+
+        }
+
+        // 3. order ds inside of dp by index
+        NodeList dpList = processedDoc.getElementsByTagName("dp");
+        for(int q=0; q< dpList.getLength(); q++){
+            Element dp = (Element) dpList.item(q);
+            dsList = dp.getElementsByTagName("ds");
+            for(int i =1; i < dsList.getLength(); i++){
+                int z = 1;
+                Element currentDs = (Element) dsList.item(i);
+                while (i-z >= 0){
+                    Element dsToCompare = (Element) dsList.item(i-z);
+                    Integer currentIndex = Integer.parseInt(currentDs.getAttribute("index"));
+                    Integer indexToCompare = Integer.parseInt(dsToCompare.getAttribute("index"));
+                    if(currentIndex < indexToCompare){
+                        Element newCurrent = (Element) currentDs.cloneNode(true);
+                        dsToCompare.getParentNode().insertBefore(newCurrent, dsToCompare);
+                        currentDs.getParentNode().removeChild(currentDs);
+                    }
+                    z++;
+                }
+            }
+        }
+
+
+        // 5. add pIndex attribute to each dp
+        dpList = processedDoc.getElementsByTagName("dp");
+        for(int i =0; i <  dpList.getLength(); i++){
+            Element dp = (Element) dpList.item(i);
+            dp.setAttribute("pIndex", ((Element)dp.getElementsByTagName("ds").item(0)).getAttribute("pIndex"));
+        }
+
+        // 6. order dp by pIndex
+        dpList = processedDoc.getElementsByTagName("dp");
+        for(int i =1; i <  dpList.getLength(); i++){
+            Element currentDp = (Element) dpList.item(i);
+            int z = 1;
+            while(i-z >=0){
+                Element dpToCompare = (Element) dpList.item(i-z);
+                Integer currentIndex = Integer.parseInt(currentDp.getAttribute("pIndex"));
+                Integer indexToCompare = Integer.parseInt(dpToCompare.getAttribute("pIndex"));
+                if(currentIndex < indexToCompare){
+                    Element newCurrent = (Element) currentDp.cloneNode(true);
+                    dpToCompare.getParentNode().insertBefore(newCurrent,dpToCompare);
+                    currentDp.getParentNode().removeChild(currentDp);
+                }
+                z++;
+            }
+        }
+
+        // 7. form result document with chapters;
+
+        stream = new ByteArrayInputStream(task.getResult().getBytes(StandardCharsets.UTF_8));
+        Document resultDoc = db.parse(stream);
+        Element rootResult = (Element) resultDoc.getElementsByTagName("result").item(0);
+        dpList = processedDoc.getElementsByTagName("dp");
+        boolean inserted = false;
+        for(int i=0; i < dpList.getLength(); i++){
+            Element dpEl = (Element) dpList.item(i);
+            String chapterIndex = dpEl.getAttribute("chapter");
+            NodeList resultChapters = resultDoc.getElementsByTagName("chapter");
+            for(int q =0; q < resultChapters.getLength(); i ++){
+                Element chapter = (Element) resultChapters.item(q);
+                if(chapter.getAttribute("index").equals(chapterIndex)){
+                    Node newDp = resultDoc.importNode(dpEl, true);
+                    chapter.appendChild(newDp);
+                    inserted = true;
+                    break;
+                }
+                inserted = false;
+            }
+            if(!inserted){
+                Element chapter = resultDoc.createElement("chapter");
+                chapter.setAttribute("index",chapterIndex);
+                Node newDp = resultDoc.importNode(dpEl,true);
+                chapter.appendChild(newDp);
+                rootResult.appendChild(chapter);
+            }
+        }
+
+        // 8. result document toString and save task
+        task.setResult(getStringFromDocument(resultDoc));
+        taskRepository.save(task);
 
     }
 }

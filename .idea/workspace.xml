@@ -6,21 +6,8 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/process.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/process.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/tasks.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/tasks.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/process-sent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/process-sent.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/process.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/process.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/allbooks.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/allbooks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/alltasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/alltasks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/book-edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/book-edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/create-book.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/create-book.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/create-task.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/create-task.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pre-process.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pre-process.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/process-sent.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/process-sent.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/process.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/process.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/task-edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/task-edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/tasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/tasks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/css/tasks.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/css/tasks.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/tasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/tasks.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -35,8 +22,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/process.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="70" column="17" lean-forward="true" selection-start-line="70" selection-start-column="17" selection-end-line="70" selection-end-column="17" />
+            <state relative-caret-position="177">
+              <caret line="93" column="41" selection-start-line="93" selection-start-column="41" selection-end-line="93" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#7026#0" />
+                <element signature="e#0#7026#0" />
+                <element signature="e#0#7026#0" />
+                <element signature="e#0#7026#0" />
+                <element signature="e#0#7026#0" />
+                <element signature="e#0#7026#0" />
+                <element signature="e#0#7026#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -44,17 +40,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/SentenceAStar.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="782">
-              <caret line="58" selection-start-line="58" selection-end-line="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/process-sent.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="66" column="57" selection-start-line="66" selection-start-column="57" selection-end-line="66" selection-end-column="57" />
+            <state relative-caret-position="-232">
+              <caret line="93" selection-start-line="93" selection-end-line="93" />
             </state>
           </provider>
         </entry>
@@ -62,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1086">
-              <caret line="169" column="67" lean-forward="true" selection-start-line="169" selection-start-column="67" selection-end-line="169" selection-end-column="67" />
+            <state relative-caret-position="221">
+              <caret line="225" selection-start-line="225" selection-end-line="225" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#takeTask#0;class#TaskController#0" />
@@ -78,7 +65,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/templates/pre-process.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="595">
               <caret line="67" column="33" selection-start-line="67" selection-start-column="33" selection-end-line="67" selection-end-column="33" />
               <folding>
                 <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
@@ -90,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/templates/process.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="841">
-              <caret line="94" selection-start-line="94" selection-end-line="96" selection-end-column="18" />
+            <state relative-caret-position="193">
+              <caret line="73" column="69" selection-start-line="73" selection-start-column="69" selection-end-line="73" selection-end-column="69" />
               <folding>
                 <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
               </folding>
@@ -100,10 +87,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/process.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="348" lean-forward="true" selection-start-line="348" selection-end-line="348" />
+            <state relative-caret-position="457">
+              <caret line="551" selection-start-line="551" selection-end-line="551" />
               <folding>
                 <element signature="method#create#0;class#TaskService#0" />
                 <element signature="method#setUserId#0;class#TaskService#0" />
@@ -118,7 +114,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/Sentence.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
+            <state relative-caret-position="289">
               <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
               <folding>
                 <element signature="e#533#534#0" expanded="true" />
@@ -130,7 +126,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/duo/DuoSentence.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-782">
+            <state relative-caret-position="85">
               <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
             </state>
           </provider>
@@ -205,8 +201,6 @@
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/model/Task.java" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/Sentence.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/tasks.html" />
-        <option value="$PROJECT_DIR$/src/main/resources/static/css/process.css" />
-        <option value="$PROJECT_DIR$/src/main/resources/templates/process.html" />
         <option value="$PROJECT_DIR$/src/main/resources/static/css/tasks.css" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/process-sent.html" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/task-edit.html" />
@@ -217,10 +211,12 @@
         <option value="$PROJECT_DIR$/src/main/resources/templates/create-book.html" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/pre-process.html" />
         <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/logic/SentenceBreaker.java" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/static/js/process.js" />
         <option value="$PROJECT_DIR$/src/main/resources/static/js/process-sent.js" />
+        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/process.html" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/css/process.css" />
+        <option value="$PROJECT_DIR$/src/main/resources/static/js/process.js" />
+        <option value="$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java" />
       </list>
     </option>
   </component>
@@ -260,8 +256,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -431,6 +425,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -506,16 +502,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.33825505" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.347651" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.82818794" visible="true" weight="0.45042494" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.82818794" weight="0.45042494" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.42634562" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -572,73 +567,100 @@
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
-          <line>350</line>
-          <properties />
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java</url>
-          <line>225</line>
-          <properties />
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
-          <line>377</line>
-          <properties />
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
-          <line>404</line>
-          <properties />
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
-          <line>420</line>
-          <properties />
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
-          <line>369</line>
-          <properties />
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java</url>
-          <line>171</line>
-          <properties />
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/SentenceAStar.java</url>
-          <line>60</line>
-          <properties />
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/SentenceAStar.java</url>
-          <line>93</line>
-          <properties />
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/SentenceAStar.java</url>
-          <line>54</line>
-          <properties />
-          <option name="timeStamp" value="41" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java</url>
           <line>114</line>
           <properties />
           <option name="timeStamp" value="42" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
+          <line>425</line>
+          <properties />
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
+          <line>496</line>
+          <properties />
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
+          <line>503</line>
+          <properties />
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
+          <line>522</line>
+          <properties />
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java</url>
+          <line>551</line>
+          <properties />
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="currentDs.getParentNode()" language="JAVA" />
+        <watch expression="newCurrent.getParentNode()" language="JAVA" />
+        <watch expression="task.getProcessed()" language="JAVA" />
+        <watch expression="currentDs.getParentNode().getChildNodes().item(3)" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>newCurrent.getParentNode()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>newCurrent.get</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>task.getProcessed()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDs.getParentNode().getChildNodes().item(3)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDs.getParentNode().getChildNodes().item(2)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDs.getParentNode().getChildNodes().item(1)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDs.getParentNode().getChildNodes().item(0)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDs.getParentNode().getChildNodes()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDs.getParentNode().getChildNodes();</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/Language.java">
@@ -887,13 +909,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/process.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="37" selection-start-line="37" selection-end-line="44" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/templates/process-sent.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="37">
@@ -969,16 +984,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/SentenceBreaker.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/process-sent.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
+        <state relative-caret-position="2465">
+          <caret line="145" column="36" selection-start-line="145" selection-start-column="36" selection-end-line="145" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/templates/pre-process.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="595">
           <caret line="67" column="33" selection-start-line="67" selection-start-column="33" selection-end-line="67" selection-end-column="33" />
           <folding>
             <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
@@ -986,24 +1001,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/Sentence.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
+          <folding>
+            <element signature="e#533#534#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/duo/DuoSentence.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-782">
+        <state relative-caret-position="85">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/SentenceBreaker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/process.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="73" column="69" selection-start-line="73" selection-start-column="69" selection-end-line="73" selection-end-column="69" />
+          <folding>
+            <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/css/process.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/process.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="93" column="41" selection-start-line="93" selection-start-column="41" selection-end-line="93" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#7026#0" />
+            <element signature="e#0#7026#0" />
+            <element signature="e#0#7026#0" />
+            <element signature="e#0#7026#0" />
+            <element signature="e#0#7026#0" />
+            <element signature="e#0#7026#0" />
+            <element signature="e#0#7026#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/SentenceAStar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="58" selection-start-line="58" selection-end-line="58" />
+        <state relative-caret-position="-232">
+          <caret line="93" selection-start-line="93" selection-end-line="93" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/controller/TaskController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1086">
-          <caret line="169" column="67" lean-forward="true" selection-start-line="169" selection-start-column="67" selection-end-line="169" selection-end-column="67" />
+        <state relative-caret-position="221">
+          <caret line="225" selection-start-line="225" selection-end-line="225" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#takeTask#0;class#TaskController#0" />
@@ -1014,20 +1079,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/logic/book/Sentence.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
-          <folding>
-            <element signature="e#533#534#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/duobk_constructor/service/TaskService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="348" lean-forward="true" selection-start-line="348" selection-end-line="348" />
+        <state relative-caret-position="457">
+          <caret line="551" selection-start-line="551" selection-end-line="551" />
           <folding>
             <element signature="method#create#0;class#TaskService#0" />
             <element signature="method#setUserId#0;class#TaskService#0" />
@@ -1035,30 +1090,6 @@
             <element signature="method#getParagraphsUnprocessedString#0;class#TaskService#0" />
             <element signature="method#extractTextChildren#0;class#TaskService#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/process.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="841">
-          <caret line="94" selection-start-line="94" selection-end-line="96" selection-end-column="18" />
-          <folding>
-            <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/process.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="70" column="17" lean-forward="true" selection-start-line="70" selection-start-column="17" selection-end-line="70" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/js/process-sent.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="66" column="57" selection-start-line="66" selection-start-column="57" selection-end-line="66" selection-end-column="57" />
         </state>
       </provider>
     </entry>

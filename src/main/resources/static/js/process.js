@@ -8,7 +8,6 @@ $(document).ready(function(){
              var myRegexp = /[0-9]+\. /;
             $('#active1').html(textSelected.split(myRegexp).pop());
         });
-
         $('.container-fluid').on('click','select.second option', function(e){
              var textSelected = this.text;
              var myRegexp = /[0-9]+\. /;
@@ -33,7 +32,6 @@ $(document).ready(function(){
                 div.parentNode.removeChild(div);
             }
         });
-
         $('.container-fluid').on('click','.btn-warning',function(){
             var divId = "row-connection"+this.id;
             var div = document.getElementById(divId);
@@ -60,7 +58,6 @@ $(document).ready(function(){
                 div.parentNode.removeChild(div);
             }
         });
-
         $('#connect').on('click',function(){
             var ind1 = $('#book1_list').val();
             var ind2 = $('#book2_list').val();
@@ -85,9 +82,22 @@ $(document).ready(function(){
                 openInNewTab(url);
             }
         });
-
-       $("#correctingNavItem").on('click', function(){
-            getBad(taskId);
+        $("#correctingNavItem").on('click', function(){
+             getBad(taskId);
+        });
+        $("#finishProcess").on('click', function(){
+            var url = "/tasks/process/finish?id=" + taskId;
+            $.ajax({
+                 type: "GET",
+                 url: url,
+                 success: function(data, textStatus, jqXHR) {
+                        alert("success");
+                 },
+                 error: function(jqXHR, textStatus, errorThrown) {
+                         alert("error");
+                         console.log(jqXHR);
+                 }
+               });
         });
 
 });
