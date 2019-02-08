@@ -91,7 +91,8 @@ $(document).ready(function(){
                  type: "GET",
                  url: url,
                  success: function(data, textStatus, jqXHR) {
-                        alert("success");
+                        var href = "/tasks/submit?id=" + taskId;
+                        window.location.href = href;
                  },
                  error: function(jqXHR, textStatus, errorThrown) {
                          alert("error");

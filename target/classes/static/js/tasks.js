@@ -86,7 +86,7 @@ function populateTaskTable(table, arrayData, onlyDo){
                                 "<i class=\"fa fa-cog\" aria-hidden=\"true\"></i></a>"+
                                 "<a class=\"btn btn-default processbtn\" href=\"/tasks/process?id="+taskId+"\" "+"value=\""+taskId+"\""+"id=\""+"process"+taskId+"\">"+
                                 "<i class=\"fa fa-wrench\" aria-hidden=\"true\"></i></a>"+
-                                "<a class=\"btn btn-default submitTaskbtn\" href=\"#\" "+"value=\""+taskId+"\""+"id=\""+"submitTask"+taskId+"\">"+
+                                "<a class=\"btn btn-default submitTaskbtn\" href=\"/tasks/submit?id="+taskId+"\" value=\""+taskId+"\""+"id=\""+"submitTask"+taskId+"\">"+
                                 "<i class=\"fa fa-check\" aria-hidden=\"true\"></i></a>";
             cell.setAttribute("class", "actionCell");
             cell = newRow.insertCell(1);

@@ -8,17 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class MainController {
-    private String mess = "if you see it, everything is allright";
-@RequestMapping("/tasks")
-    public String tasks(Model model, Authentication authentication) {
-        model.addAttribute("message", mess);
-        model.addAttribute("authentication", authentication);
-        return "tasks.html";
-    }
+
+    @RequestMapping("/tasks")
+    public String tasks(Model model, Authentication authentication) { return "tasks.html"; }
+
     @RequestMapping("/")
     public String defaultRedirect(){
         return "redirect:/tasks";
     }
+
     @RequestMapping("/index")
     public String index(){
         return "index.html";
@@ -70,4 +68,7 @@ public class MainController {
 
     @RequestMapping("/tasks/process/sent")
     public String processSent(){return  "process-sent.html";}
+
+    @RequestMapping("/tasks/submit")
+    public String submitTask(){return  "submit-task.html";}
 }

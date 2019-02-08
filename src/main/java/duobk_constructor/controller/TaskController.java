@@ -232,4 +232,22 @@ public class TaskController {
         taskService.processToResult(taskService.getTaskById(Integer.parseInt(taskId)));
     }
 
+    @GetMapping(value = "/getResult")
+    public String getResult(@RequestParam (value = "id",required = true) String taskId){
+        return taskService.getTaskById(Integer.parseInt(taskId)).getResult();
+    }
+
+    @RequestMapping(value = "/process/submit")
+    public void submitTask(@RequestParam (value = "id", required = true) String taskId){
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        DuoBook book =duoBookService.findById(task.getBookId());
+        if(book.getStatus().equals("FIRST_PROCESS")){
+            book.setBook(task.getResult());
+            book.setStatus("PROCESS");
+            duoBookService.save(book);
+        }
+        else{
+
+        }
+    }
 }
