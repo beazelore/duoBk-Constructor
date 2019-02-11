@@ -48,6 +48,12 @@ public class Paragraph {
             sentences.add(new Sentence(el,this));
         }
     }
+
+    public Paragraph(Chapter chapter) {
+        this.chapter = chapter;
+        sentences = new ArrayList<>();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -56,6 +62,10 @@ public class Paragraph {
             sb.append(sentence.toString());
         }
         return  sb.toString();
+    }
+
+    public void  addSentence( Sentence sentence ){
+        sentences.add(sentence);
     }
 
 }

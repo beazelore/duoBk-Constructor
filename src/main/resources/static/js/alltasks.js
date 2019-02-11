@@ -32,8 +32,15 @@ function populateTaskTable(table, map){
             var taskId = task.id;
             var newRow = tbody.insertRow(table.length);
             var cell = newRow.insertCell(0);
-            cell.innerHTML = "<a class=\"btn btn-default\" href=\"/admin/tasks/edit?id="+taskId+"\">" +
-            "<i class=\"fa fa-wrench\" ></i></a>";
+            if(task.status != "CHECK_NEEDED"){
+                cell.innerHTML = "<a class=\"btn btn-default\" href=\"/admin/tasks/edit?id="+taskId+"\">" +
+                "<i aria-hidden=\"true\" class=\"fa fa-wrench\" ></i></a>";
+            }
+            else{
+                cell.innerHTML = "<a class=\"btn btn-default\" href=\"/admin/tasks/edit?id="+taskId+"\">" +
+                "<i aria-hidden=\"true\" class=\"fa fa-wrench\" ></i></a><a class=\"btn btn-default\" href=\"/admin/tasks/check?id=" + taskId+ "\">"+
+                "<i aria-hidden=\"true\" class=\"fa fa-check\" ></i></a>";
+            }
             cell.setAttribute("class", "actionCell");
             cell = newRow.insertCell(1);
             cell.innerHTML = taskId;

@@ -71,4 +71,10 @@ public class MainController {
 
     @RequestMapping("/tasks/submit")
     public String submitTask(){return  "submit-task.html";}
+
+    @RequestMapping("/admin/tasks/check")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String checkTask(){
+        return "check-task.html";
+    }
 }

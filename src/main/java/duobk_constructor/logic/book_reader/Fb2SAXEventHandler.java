@@ -47,6 +47,7 @@ public class Fb2SAXEventHandler extends DefaultHandler {
                 currentParagraph = new StringBuilder();
                 break;
 
+
         }
     }
 

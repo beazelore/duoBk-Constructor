@@ -121,6 +121,7 @@ function ajaxSubmitForm(bookStatus) {
             //sessionStorage.setItem('data', data);
             //$("#result").html(data);
             console.log("SUCCESSSSS");
+            window.location.href="/admin/tasks";
             //$("#submitButton").prop("disabled", false);
             //$('#fileUploadForm')[0].reset();
             //window.location.href = "/tasks/create/new"

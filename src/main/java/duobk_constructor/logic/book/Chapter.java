@@ -43,4 +43,8 @@ public class Chapter {
 
         return sb.toString();
     }
+
+    public Chapter() {
+        paragraphs = new ArrayList<>();
+    }
 }

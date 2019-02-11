@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Submit Task - DuoBk</title>
+    <title>Check Task - DuoBk</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/csrf.js"></script>
-    <script type="text/javascript" src="/js/submit-task.js"></script>
+    <script type="text/javascript" src="/js/check-task.js"></script>
     <script type="text/javascript" src="/js/userdata.js"></script>
 </head>
 <body>
@@ -16,13 +16,13 @@
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li>
-                    <a class="nav-item nav-link" href="/tasks">Tasks</a>
+                    <a class="nav-item nav-link" href="/task">Tasks</a>
                 </li>
                 <li>
                     <a class="nav-item nav-link" href="#">Rules</a>
                 </li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -50,7 +50,7 @@
             <textarea id="result" class="form-control" name="name"></textarea>
         </div>
         <div class="row col-sm-2">
-            <button class="btn btn-primary" id="submitTask">Submit</button>
+            <button class="btn btn-primary" id="confirmTask">Submit</button>
         </div>
     </div>
 </div>

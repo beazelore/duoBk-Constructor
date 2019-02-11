@@ -1,11 +1,13 @@
 package duobk_constructor.service;
 
+import duobk_constructor.logic.Language;
 import duobk_constructor.logic.book.Book;
 import duobk_constructor.logic.book.Chapter;
 import duobk_constructor.logic.book.Paragraph;
 import duobk_constructor.logic.book.Sentence;
 import duobk_constructor.logic.book.duo.DuoParagraph;
 import duobk_constructor.logic.book.duo.DuoSentence;
+import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.Task;
 import duobk_constructor.repository.TaskRepository;
 import duobk_constructor.repository.UserRepository;
@@ -28,6 +30,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -289,8 +295,7 @@ public class TaskService {
         }
     }
 
-    private String getStringFromDocument(Document doc)
-    {
+    private String getStringFromDocument(Document doc) {
         try
         {
             DOMSource domSource = new DOMSource(doc);
@@ -552,5 +557,60 @@ public class TaskService {
         task.setResult(getStringFromDocument(resultDoc));
         taskRepository.save(task);
 
+    }
+
+    public String integrateTask(Task task, DuoBook duoBook, String lang) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(task.getResult().getBytes(StandardCharsets.UTF_8));
+        Document resultDoc = db.parse(stream);
+
+        stream = new ByteArrayInputStream(duoBook.getBook().getBytes(StandardCharsets.UTF_8));
+        Document bookDoc = db.parse(stream);
+
+        NodeList resultDpList = resultDoc.getElementsByTagName("dp");
+        NodeList bookS1List = bookDoc.getElementsByTagName("s1");
+        for(int i =0; i < resultDpList.getLength(); i++){
+            Element dp = (Element) resultDpList.item(i);
+            NodeList dsList = dp.getChildNodes();
+            for(int q = 0; q < dsList.getLength(); q++){
+                Element dsEl = (Element) dsList.item(i);
+                NodeList s1List = dsEl.getElementsByTagName("s1");
+                NodeList s2List = dsEl.getElementsByTagName("s2");
+                boolean connected = false;
+                for(int z =0; z < s1List.getLength(); z++){
+                    Element s1El  = (Element) s1List.item(z);
+                    for(int w=0; w < bookS1List.getLength();i++){
+                        Element bookS1El = (Element) bookS1List.item(w);
+                        if(s1El.getAttribute("index").equals(bookS1El.getAttribute("index")) &&
+                        s1El.getAttribute("pIndex").equals(bookS1El.getAttribute("pIndex"))){
+                            for(int n=0; n<s2List.getLength();i++){
+                                Element newS2 = (Element) bookDoc.importNode(s2List.item(n),true);
+                                newS2.setAttribute("lang",lang);
+                                bookDoc.renameNode(newS2,null, "s");
+                                bookS1El.getParentNode().appendChild(newS2);
+                            }
+                            connected = true;
+                        }
+                        if(connected)
+                            break;
+                    }
+                }
+            }
+        }
+        return getStringFromDocument(bookDoc);
+    }
+    public String refactorFirstProcessedBook(String result, String language) throws IOException, SAXException, ParserConfigurationException {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
+        Document resultDoc = db.parse(stream);
+
+        NodeList s2List = resultDoc.getElementsByTagName("s2");
+        for(int i =0; i < s2List.getLength();i++){
+            resultDoc.renameNode(s2List.item(i),null,"s");
+            Element s2 = (Element) s2List.item(i);
+            s2.setAttribute("lang",language);
+        }
+
+        return getStringFromDocument(resultDoc);
     }
 }

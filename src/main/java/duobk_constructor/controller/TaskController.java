@@ -28,6 +28,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -81,7 +82,7 @@ public class TaskController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void createTask(@ModelAttribute UploadForm form) throws Exception {
         DuoBook duoBook = duoBookService.findById(form.getBook());
-        String taskName = new StringBuilder().append(form.getLanguage1()).append('/').append(form.getLanguage2()).append(duoBook.getName()).toString();
+        String taskName = new StringBuilder().append(form.getLanguage1()).append('/').append(form.getLanguage2()).append(" ").append(duoBook.getName()).toString();
         Book book1 = fileReaderService.read(form.getFiles()[0], form.getLanguage1());
         Entry entry1= entryService.create(book1.toXML(),form.getAuthor1(),form.getTitle1(),form.getLanguage1(), false);
         Entry entry2;
@@ -122,14 +123,22 @@ public class TaskController {
         return new ResponseEntity<IndexesForm>(indexesForm, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/preProcess/getEntries",consumes = "text/plain")
-    public ResponseEntity<?> getAndProcessEntries(@RequestBody String taskId) throws Exception {
-        Task task = taskService.getTaskById(Integer.parseInt("7"));
+    @RequestMapping(value = "/preProcess/getEntries")
+    public ResponseEntity<?> getAndProcessEntries(@RequestParam(value = "id", required = true) String taskId) throws Exception {
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        DuoBook duoBook = duoBookService.findById(task.getBookId());
         Entry entry1 = entryService.getEntryById(task.getEntry1_id());
-        Entry entry2 = entryService.getEntryById(task.getEntry2_id());
         Book book1 = new Book(entry1.getValue(), new Language(entry1.getLanguage()));
-        Book book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
-        return taskService.formBooksResponse(book1,book2);
+        Entry entry2;
+        Book book2;
+        if(duoBook.getStatus().equals("FIRST_PROCESS")){
+            entry2 = entryService.getEntryById(task.getEntry2_id());
+            book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
+        }
+        else{
+            book2 = new Book(duoBookService.getDocumentFromValue(duoBook),new Language("en"));
+        }
+        return taskService.formBooksResponse(book2,book1); //order of arguments very important here
     }
     /*
     * if unprocessed column of task is empty returns true
@@ -240,7 +249,9 @@ public class TaskController {
     @RequestMapping(value = "/process/submit")
     public void submitTask(@RequestParam (value = "id", required = true) String taskId){
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
-        DuoBook book =duoBookService.findById(task.getBookId());
+        task.setStatus("CHECK_NEEDED");
+        taskService.save(task);
+/*        DuoBook book =duoBookService.findById(task.getBookId());
         if(book.getStatus().equals("FIRST_PROCESS")){
             book.setBook(task.getResult());
             book.setStatus("PROCESS");
@@ -248,6 +259,27 @@ public class TaskController {
         }
         else{
 
-        }
+        }*/
+    }
+    @RequestMapping(value = "/integrateIntoBook")
+    public String integrateTask(@RequestParam (value = "id",required = true) String taskId) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        DuoBook duoBook = duoBookService.findById(task.getBookId());
+        if(duoBook.getStatus().equals("FIRST_PROCESS"))
+            return taskService.refactorFirstProcessedBook(task.getResult(),entryService.getEntryById(task.getEntry2_id()).getLanguage());
+        return taskService.integrateTask(task,duoBook,entryService.getEntryById(task.getEntry1_id()).getLanguage());
+    }
+
+    @RequestMapping(value = "/updateBookValue", consumes = "text/plain")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void updateBookValue(@RequestParam (value = "id",required = true) String taskId, @RequestBody String value){
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        DuoBook duoBook = duoBookService.findById(task.getBookId());
+        duoBook.setBook(value);
+        if(duoBook.getStatus().equals("FIRST_PROCESS"))
+            duoBook.setStatus("PROCESS");
+        task.setStatus("DONE");
+        taskService.save(task);
+        duoBookService.save(duoBook);
     }
 }

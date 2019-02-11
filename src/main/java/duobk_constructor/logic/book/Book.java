@@ -3,6 +3,11 @@ package duobk_constructor.logic.book;
 
 import duobk_constructor.logic.Language;
 import duobk_constructor.logic.book_reader.Fb2BookReader;
+import org.omg.CORBA.INTERNAL;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -105,6 +110,42 @@ public class Book {
         this.paragraphs = book.paragraphs;
         this.title = book.title;
         formParListAndSetIndexes();
+    }
+    // to create Book from result and duoBook(bd)
+    public Book(Document resultDoc, Language languge){
+        this.chapters = new ArrayList<>();
+        NodeList chapters = resultDoc.getElementsByTagName("chapter");
+        for(int i =0; i < chapters.getLength(); i++){
+            Chapter chapter = new Chapter();
+            Element chapterEl = (Element) chapters.item(i);
+            chapter.setIndex(Integer.parseInt(chapterEl.getAttribute("index")));
+            NodeList paragraphs = chapterEl.getChildNodes();
+            for(int q=0; q< paragraphs.getLength(); q ++){
+                Paragraph paragraph = new Paragraph(chapter);
+                Element dpEl = (Element) paragraphs.item(q);
+                paragraph.setIndex(Integer.parseInt(dpEl.getAttribute("pIndex")));
+                NodeList s1List = dpEl.getElementsByTagName("s1");
+                for(int z=0; z< s1List.getLength(); z++){
+                    Element s1El = (Element) s1List.item(z);
+                    Sentence sentence = new Sentence(extractTextChildren(s1El),paragraph);
+                    sentence.setIndex(Integer.parseInt(s1El.getAttribute("index")));
+                    paragraph.addSentence(sentence);
+                }
+                chapter.addParagraph(paragraph);
+            }
+            this.chapters.add(chapter);
+        }
+    }
+    private String extractTextChildren(Element parentNode) {
+        NodeList childNodes = parentNode.getChildNodes();
+        String result = new String();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() == Node.TEXT_NODE) {
+                result += node.getNodeValue();
+            }
+        }
+        return result;
     }
 /*
     @Override

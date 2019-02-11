@@ -78,10 +78,8 @@ function getEntriesDataAjax(taskId){
 console.log("before request: ", taskId);
 var result;
   $.ajax({
-            type: "POST",
-            url: "/tasks/preProcess/getEntries",
-            contentType: "text/plain",
-            data: taskId,
+            type: "GET",
+            url: "/tasks/preProcess/getEntries?id="+taskId,
             success: function(data, textStatus, jqXHR) {
                 console.log("data in ajax", data);
                 var book1 = data.split('!separator!')[0];
