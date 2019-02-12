@@ -1,6 +1,7 @@
 package duobk_constructor.controller;
 
 import duobk_constructor.helpers.IndexesForm;
+import duobk_constructor.helpers.TaskWithMail;
 import duobk_constructor.helpers.UploadForm;
 import duobk_constructor.logic.AStar;
 import duobk_constructor.logic.Language;
@@ -22,12 +23,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import duobk_constructor.repository.TaskRepository;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.security.Principal;
@@ -48,14 +51,17 @@ public class TaskController {
     DuoBookService duoBookService;
 
     @GetMapping(path="/all")
-    public @ResponseBody Map<String,Task> getAllTasks(){
+    public ArrayList getAllTasks(){
         List<Task> list = new ArrayList<>();
-        Map<String,Task> taskWithMail = new HashMap<>();
+        ArrayList<TaskWithMail> tasksWithMails = new ArrayList<>();
         for(Task task : taskService.getAll()){
-            String mail = userService.getById(task.getUserId()).getMail();
-            taskWithMail.put(mail,task);
+            Integer userId = task.getUserId();
+            String mail = "NONE";
+            if(userId != null)
+                mail = userService.getById(userId).getMail();
+            tasksWithMails.add(new TaskWithMail(task,mail));
         }
-        return taskWithMail;
+        return tasksWithMails;
     }
 
     @GetMapping(value = "/allWithNoUser")
@@ -127,18 +133,22 @@ public class TaskController {
     public ResponseEntity<?> getAndProcessEntries(@RequestParam(value = "id", required = true) String taskId) throws Exception {
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         DuoBook duoBook = duoBookService.findById(task.getBookId());
-        Entry entry1 = entryService.getEntryById(task.getEntry1_id());
-        Book book1 = new Book(entry1.getValue(), new Language(entry1.getLanguage()));
+        Entry entry1;
+        Book book1;
         Entry entry2;
         Book book2;
         if(duoBook.getStatus().equals("FIRST_PROCESS")){
+            entry1 = entryService.getEntryById(task.getEntry1_id());
+            book1 = new Book(entry1.getValue(), new Language(entry1.getLanguage()));
             entry2 = entryService.getEntryById(task.getEntry2_id());
             book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
         }
         else{
-            book2 = new Book(duoBookService.getDocumentFromValue(duoBook),new Language("en"));
+            book1 = new Book(duoBookService.getDocumentFromValue(duoBook),new Language("en"));
+            entry2 = entryService.getEntryById(task.getEntry1_id());
+            book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
         }
-        return taskService.formBooksResponse(book2,book1); //order of arguments very important here
+        return taskService.formBooksResponse(book1,book2); //order of arguments very important here
     }
     /*
     * if unprocessed column of task is empty returns true
@@ -215,11 +225,22 @@ public class TaskController {
         DuoParagraph duoParagraph = taskService.getDuoParagraphFromBad(bad,indexes1,indexes2,lang1,lang2);
         SentenceAStar aStar = new SentenceAStar();
         aStar.doAStar(duoParagraph);
+        if(aStar.getResult().size() == 0){
+            ArrayList<DuoSentence> result = new ArrayList<>();
+            ArrayList<Sentence> sentences1 = new ArrayList<>();
+            ArrayList<Sentence> sentences2 = new ArrayList<>();
+            for(Paragraph paragraph: duoParagraph.getParagraphs1())
+                sentences1.addAll(paragraph.getSentences());
+            for(Paragraph paragraph: duoParagraph.getParagraphs2())
+                sentences2.addAll(paragraph.getSentences());
+            result.add(new DuoSentence(sentences1,sentences2));
+            return  taskService.formSentenceResponse(result);
+        }
         return taskService.formSentenceResponse(aStar.getResult());
     }
 
     @RequestMapping(value = "/process/moveToBad")
-    public void moveToBad(@RequestParam(value = "id",required = true) String id, @RequestParam (value = "index",required =  true) String index) throws ParserConfigurationException, SAXException, IOException {
+    public void moveToBad(@RequestParam(value = "id",required = true) String id, @RequestParam (value = "index",required =  true) String index) throws ParserConfigurationException, SAXException, IOException, TransformerException {
         Task task = taskService.getTaskById(Integer.parseInt(id));
         taskService.removeDpFromUnprocessedToBad(task.getUnprocessed(),index,Integer.parseInt(id));
     }
@@ -231,13 +252,13 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/process/sent/finish", consumes = "text/plain")
-    public void finishSentProcess(@RequestParam (value = "id", required = true) String taskId, @RequestBody String dp) throws IOException, SAXException, ParserConfigurationException {
+    public void finishSentProcess(@RequestParam (value = "id", required = true) String taskId, @RequestBody String dp) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         taskService.finishSentProcess(dp,taskService.getTaskById(Integer.parseInt(taskId)));
         return;
     }
 
     @RequestMapping(value = "/process/finish")
-    public void finishProcess(@RequestParam (value = "id", required = true) String taskId) throws IOException, SAXException, ParserConfigurationException {
+    public void finishProcess(@RequestParam (value = "id", required = true) String taskId) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         taskService.processToResult(taskService.getTaskById(Integer.parseInt(taskId)));
     }
 
@@ -262,7 +283,7 @@ public class TaskController {
         }*/
     }
     @RequestMapping(value = "/integrateIntoBook")
-    public String integrateTask(@RequestParam (value = "id",required = true) String taskId) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+    public String integrateTask(@RequestParam (value = "id",required = true) String taskId) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException, TransformerException {
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         DuoBook duoBook = duoBookService.findById(task.getBookId());
         if(duoBook.getStatus().equals("FIRST_PROCESS"))

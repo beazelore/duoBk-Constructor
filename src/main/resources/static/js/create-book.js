@@ -10,7 +10,7 @@ $(document).ready(function() {
                 contentType: "text/plain",
                 success: function(textStatus, jqXHR) {
                     console.log("/createBook SUCCESS");
-                    window.location.href="/tasks";
+                    window.location.href="/admin/books";
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert("ERROR. Check console for details");

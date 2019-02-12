@@ -8,7 +8,7 @@ $(document).ready(function(){
                       type: "POST",
                       url: url,
                       success: function(data, textStatus, jqXHR) {
-                        alert("sucess");
+                        window.location.href= "/tasks";
                       },
                       error: function(jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR);

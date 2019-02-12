@@ -25,9 +25,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -62,6 +60,9 @@ public class TaskService {
         task.setEntry2_id(entryId2);
         task.setBookId(bookId);
         task.setStatus(status);
+        task.setResult("<result></result>");
+        task.setProcessed("<processed></processed>");
+        task.setBad("<bad></bad>");
         return taskRepository.save(task);
     }
     public Task save(Task task){
@@ -100,7 +101,7 @@ public class TaskService {
     * after Dijkstra algorithm, we convert it's result to string that will be saved in
     * "unprocessed" column of Task table in db.
     * */
-    public String formUnprocessedAfterPreProcess(ArrayList<DuoParagraph> duoParagraphs){
+    public String formUnprocessedAfterPreProcess(ArrayList<DuoParagraph> duoParagraphs) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("<root>");
         for(int i=0; i< duoParagraphs.size(); i++){
@@ -113,7 +114,10 @@ public class TaskService {
                     .append("</dp>");
         }
         stringBuilder.append("</root>");
-        return stringBuilder.toString();
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(stringBuilder.toString().getBytes(StandardCharsets.UTF_8));
+        Document doc = db.parse(stream);
+        return prettyFormatXml(doc);
     }
     private String getParagraphsIndexesCSV(ArrayList<Paragraph> paragraphs){
         StringBuilder stringBuilder = new StringBuilder();
@@ -277,7 +281,7 @@ public class TaskService {
         return new ResponseEntity<>(builder.toString(), HttpStatus.OK);
     }
 
-    public void removeDpFromUnprocessedToBad(String unprocessed, String index, Integer taskId) throws IOException, SAXException, ParserConfigurationException {
+    public void removeDpFromUnprocessedToBad(String unprocessed, String index, Integer taskId) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(unprocessed.getBytes(StandardCharsets.UTF_8));
         Document doc = db.parse(stream);
@@ -286,7 +290,7 @@ public class TaskService {
             Element dp = (Element)dpList.item(i);
             if(dp.getAttribute("index").equals(index)){
                 dp.getParentNode().removeChild(dp);
-                String newUnprocessed = getStringFromDocument(doc);
+                String newUnprocessed = prettyFormatXml(doc);
                 Task task = getTaskById(taskId);
                 task.setUnprocessed(newUnprocessed);
                 addDpToBad(dp,task);
@@ -295,7 +299,7 @@ public class TaskService {
         }
     }
 
-    private String getStringFromDocument(Document doc) {
+/*    private String getStringFromDocument(Document doc) {
         try
         {
             DOMSource domSource = new DOMSource(doc);
@@ -311,19 +315,25 @@ public class TaskService {
             ex.printStackTrace();
             return null;
         }
-    }
-    private void addDpToBad(Element dpElement, Task task) throws IOException, SAXException, ParserConfigurationException {
-        NodeList paragraphs = dpElement.getChildNodes();
+    }*/
+    private void addDpToBad(Element dpElement, Task task) throws IOException, SAXException, ParserConfigurationException, TransformerException {
+        NodeList paragraphs1 = dpElement.getElementsByTagName("p1");
+        NodeList paragraphs2 = dpElement.getElementsByTagName("p2");
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(task.getBad().getBytes(StandardCharsets.UTF_8));
         Document doc = db.parse(stream);
         Element bad = (Element) doc.getElementsByTagName("bad").item(0);
-        for(int i =0 ; i < paragraphs.getLength();i++){
-            Element pNode = (Element) doc.importNode(paragraphs.item(i),true);
+        for(int i =0 ; i < paragraphs1.getLength();i++){
+            Element pNode = (Element) doc.importNode(paragraphs1.item(i),true);
             pNode.setAttribute("chapter", dpElement.getAttribute("chapter"));
             bad.appendChild(pNode);
         }
-        String newBad = getStringFromDocument(doc);
+        for(int i =0 ; i < paragraphs2.getLength();i++){
+            Element pNode = (Element) doc.importNode(paragraphs2.item(i),true);
+            pNode.setAttribute("chapter", dpElement.getAttribute("chapter"));
+            bad.appendChild(pNode);
+        }
+        String newBad = prettyFormatXml(doc);
         task.setBad(newBad);
     }
 
@@ -352,7 +362,7 @@ public class TaskService {
         return new ResponseEntity<>(builder.toString(),HttpStatus.OK);
     }
 
-    public void finishSentProcess(String dp, Task task) throws ParserConfigurationException, IOException, SAXException {
+    public void finishSentProcess(String dp, Task task) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(dp.getBytes(StandardCharsets.UTF_8));
         Document dpDoc = db.parse(stream);
@@ -388,7 +398,7 @@ public class TaskService {
             Element p1 = (Element) p1List.item(i);
             String index = p1.getAttribute("index");
             for(int q = 0; q < s1List.getLength();q++){
-                Element s1 = (Element) s1List.item(i);
+                Element s1 = (Element) s1List.item(q);
                 if(s1.getAttribute("pIndex").equals(index)){
                     p1.getParentNode().removeChild(p1);
                     break;
@@ -399,7 +409,7 @@ public class TaskService {
             Element p2 = (Element) p2List.item(i);
             String index = p2.getAttribute("index");
             for(int q = 0; q < s2List.getLength();q++){
-                Element s2 = (Element) s2List.item(i);
+                Element s2 = (Element) s2List.item(q);
                 if(s2.getAttribute("pIndex").equals(index)){
                     p2.getParentNode().removeChild(p2);
                     break;
@@ -415,9 +425,9 @@ public class TaskService {
             root.appendChild(newDp);
         }
         //saving task
-        String unprocessed = getStringFromDocument(unprocessedDoc);
-        String bad = getStringFromDocument(badDoc);
-        String processed = getStringFromDocument(processedDoc);
+        String unprocessed = prettyFormatXml(unprocessedDoc);
+        String bad = prettyFormatXml(badDoc);
+        String processed = prettyFormatXml(processedDoc);
 
         task.setUnprocessed(unprocessed);
         task.setBad(bad);
@@ -427,7 +437,7 @@ public class TaskService {
         return;
     }
 
-    public void processToResult(Task task) throws ParserConfigurationException, IOException, SAXException {
+    public void processToResult(Task task) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(task.getProcessed().getBytes(StandardCharsets.UTF_8));
         Document processedDoc = db.parse(stream);
@@ -489,8 +499,10 @@ public class TaskService {
                     Integer indexToCompare = Integer.parseInt(dsToCompare.getAttribute("index"));
                     if(currentIndex < indexToCompare){
                         Element newCurrent = (Element) currentDs.cloneNode(true);
+                        processedDoc.importNode(newCurrent,true);
                         dsToCompare.getParentNode().insertBefore(newCurrent, dsToCompare);
-                        currentDs.getParentNode().removeChild(currentDs);
+                        dsList.item(i).getParentNode().removeChild(dsList.item(i));
+                        //currentDs.getParentNode().removeChild(currentDs);
                     }
                     z++;
                 }
@@ -517,7 +529,8 @@ public class TaskService {
                 if(currentIndex < indexToCompare){
                     Element newCurrent = (Element) currentDp.cloneNode(true);
                     dpToCompare.getParentNode().insertBefore(newCurrent,dpToCompare);
-                    currentDp.getParentNode().removeChild(currentDp);
+                    dpList.item(i).getParentNode().removeChild(dpList.item(i));
+                    //currentDp.getParentNode().removeChild(currentDp);
                 }
                 z++;
             }
@@ -554,12 +567,12 @@ public class TaskService {
         }
 
         // 8. result document toString and save task
-        task.setResult(getStringFromDocument(resultDoc));
+        task.setResult(prettyFormatXml(resultDoc));
         taskRepository.save(task);
 
     }
 
-    public String integrateTask(Task task, DuoBook duoBook, String lang) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+    public String integrateTask(Task task, DuoBook duoBook, String lang) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(task.getResult().getBytes(StandardCharsets.UTF_8));
         Document resultDoc = db.parse(stream);
@@ -571,7 +584,7 @@ public class TaskService {
         NodeList bookS1List = bookDoc.getElementsByTagName("s1");
         for(int i =0; i < resultDpList.getLength(); i++){
             Element dp = (Element) resultDpList.item(i);
-            NodeList dsList = dp.getChildNodes();
+            NodeList dsList = dp.getElementsByTagName("ds");
             for(int q = 0; q < dsList.getLength(); q++){
                 Element dsEl = (Element) dsList.item(i);
                 NodeList s1List = dsEl.getElementsByTagName("s1");
@@ -597,9 +610,9 @@ public class TaskService {
                 }
             }
         }
-        return getStringFromDocument(bookDoc);
+        return prettyFormatXml(bookDoc);
     }
-    public String refactorFirstProcessedBook(String result, String language) throws IOException, SAXException, ParserConfigurationException {
+    public String refactorFirstProcessedBook(String result, String language) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
         Document resultDoc = db.parse(stream);
@@ -611,6 +624,18 @@ public class TaskService {
             s2.setAttribute("lang",language);
         }
 
-        return getStringFromDocument(resultDoc);
+        return prettyFormatXml(resultDoc);
+    }
+    private String prettyFormatXml(Document document) throws TransformerException {
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "5");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        //initialize StreamResult with File object to save to file
+        StreamResult result = new StreamResult(new StringWriter());
+        DOMSource source = new DOMSource(document);
+        transformer.transform(source, result);
+        String xmlString = result.getWriter().toString();
+        return xmlString;
     }
 }

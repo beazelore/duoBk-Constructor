@@ -23,12 +23,12 @@ function requestTasks(){
     });
 }
 
-function populateTaskTable(table, map){
+function populateTaskTable(table, list){
         var tbody = table.getElementsByTagName('tbody')[0];
         tbody.innerHTML = "";
-        for(var i =0; i < Object.keys(map).length; i++){
-            var task = Object.values(map)[i];
-            var mail = Object.keys(map)[i];
+        for(var i =0; i < list.length; i++){
+            var task = list[i].task;
+            var mail = list[i].mail;
             var taskId = task.id;
             var newRow = tbody.insertRow(table.length);
             var cell = newRow.insertCell(0);

@@ -6,6 +6,75 @@ $(document).ready(function(){
         event.preventDefault();
         submitFormData(taskId);
     });
+    $('#unprocessedText').highlightWithinTextarea({
+       highlight: [
+                                  {
+                                      highlight: /(<dp|<\/dp>)/g,
+                                      className: 'red'
+                                  },
+                                  {
+                                      highlight: /(?<=<p1.+?>)(.+?)(?=<)/g,
+                                      className: 'blue'
+                                  },
+                                  {
+                                      highlight: /(?<=<p2.+?>)(.+?)(?=<)/g,
+                                      className: 'yellow'
+                                  }
+       ]
+    });
+    $('#unprocessed-tab').on('click', function(){
+        console.log("click");
+        $('#unprocessedText').highlightWithinTextarea('update');
+    });
+
+    $('#processedText').highlightWithinTextarea({
+       highlight: [
+                                  {
+                                      highlight: /(<dp|<\/dp>)/g,
+                                      className: 'red'
+                                  },
+                                  {
+                                      highlight: /(<ds>|<\/ds>)/g,
+                                      className: 'green'
+                                  },
+                                  {
+                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+                                      className: 'blue'
+                                  },
+                                  {
+                                      highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
+                                      className: 'yellow'
+                                  }
+       ]
+    });
+    $('#processed-tab').on('click', function(){
+        console.log("click");
+        $('#processedText').highlightWithinTextarea('update');
+    });
+    $('#resultText').highlightWithinTextarea({
+       highlight: [
+                                  {
+                                      highlight: /(<dp|<\/dp>)/g,
+                                      className: 'red'
+                                  },
+                                  {
+                                      highlight: /(<ds>|<\/ds>)/g,
+                                      className: 'green'
+                                  },
+                                  {
+                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+                                      className: 'blue'
+                                  },
+                                  {
+                                      highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
+                                      className: 'yellow'
+                                  }
+       ]
+    });
+    $('#result-tab').on('click', function(){
+        $('#resultText').highlightWithinTextarea('update');
+    });
+
 });
 
 

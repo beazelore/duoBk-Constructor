@@ -43,7 +43,6 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify(indexes),
             success: function(data, textStatus, jqXHR) {
-                alert("success");
                 var href = "/tasks/process?id="+taskId;
                 window.location.href = href;
             },

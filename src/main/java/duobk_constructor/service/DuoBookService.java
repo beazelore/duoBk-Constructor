@@ -23,6 +23,7 @@ public class DuoBookService {
         DuoBook duoBook = new DuoBook();
         duoBook.setName(name);
         duoBook.setStatus(status);
+        duoBook.setBook("<book></book>");
         return repository.save(duoBook);
     }
     public Iterable<DuoBook> getAll(){

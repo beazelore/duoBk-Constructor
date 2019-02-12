@@ -153,9 +153,7 @@ $(document).ready(function(){
             contentType: "text/plain",
             data: cacheString,
             success: function(textStatus, jqXHR) {
-                  alert("success");
                   window.close();
-                  //window.location.href = "/tasks/process?id=" + taskId;
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);

@@ -1,0 +1,23 @@
+.hwt-container {
+	background-color: #f8f9fa;
+	width:100%;
+	border: none;
+	margin-top: 15px;
+}
+.hwt-content{
+    height: 80vh;
+    border: none;
+    width:100%;
+}
+.hwt-content mark.red {
+	background-color: #ffc9c9;
+}
+.hwt-content mark.blue {
+	background-color: #a3daff;
+}
+.hwt-content mark.yellow {
+	background-color: #ffec99;
+}
+.hwt-content mark.green {
+	background-color: #90ff90;
+}

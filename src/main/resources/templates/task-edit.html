@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Edit Task - DuoBk</title>
-    <link href="/css/tasks.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="/css/admin-task.css" rel="stylesheet" />
+    <link href="/css/jquery.highlight-within-textarea.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -94,28 +96,21 @@
     </div>
     <div class="tab-pane fade" id="unprocessedTab" role="tabpanel">
         <div class="container-fluid">
-                <div class="form-row">
-                    <textarea id="unprocessedText"  class="form-control" name="unprocessed"></textarea>
-                </div>
+            <textarea id="unprocessedText"  name="unprocessed"></textarea>
         </div>
     </div>
     <div class="tab-pane fade" id="processedTab" role="tabpanel">
         <div class="container-fluid">
-                <div class="form-row">
-                    <textarea id="processedText"  class="form-control" name="processed"></textarea>
-                </div>
+                    <textarea id="processedText"  name="processed"></textarea>
         </div>
     </div>
     <div class="tab-pane fade" id="resultTab" role="tabpanel">
         <div class="container-fluid">
-                <div class="form-row">
-                    <textarea id="resultText"  class="form-control" name="result"></textarea>
-                </div>
+                    <textarea id="resultText"   name="result"></textarea>
         </div>
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="/js/task-edit.js"></script>
 <script type="text/javascript" src="/js/csrf.js"></script>
 <script type="text/javascript" src="/js/userdata.js"></script>
@@ -124,5 +119,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="/js/jquery.highlight-within-textarea.js"></script>
 </body>
 </html>

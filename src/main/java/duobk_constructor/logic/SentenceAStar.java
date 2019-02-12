@@ -93,6 +93,8 @@ public class SentenceAStar {
         {
             result = new ArrayList<>();
             DuoSentence temp = from.get(endSentence);
+            if(temp == null)    // I figured out that this means that startSentece equals endSentence
+                return;
             result.add(temp);
             result.add(endSentence);
             while (!temp.equals(startSentence))
