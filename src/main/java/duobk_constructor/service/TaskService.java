@@ -19,6 +19,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.xpath.XPathExpression;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -66,7 +67,7 @@ public class TaskService {
         return taskRepository.save(task);
     }
     public Task save(Task task){
-        return taskRepository.save(task);
+            return taskRepository.save(task);
     }
     public Task getTaskById(Integer id){
         return taskRepository.findById(id).get();
@@ -348,7 +349,7 @@ public class TaskService {
             Element p1 = (Element) p1List.item(i);
             builder.append("<option");
             builder.append(" value=").append(p1.getAttribute("index")).append(" chapter=").append(p1.getAttribute("chapter")).append('>');
-            builder.append(p1.getAttribute("index")).append(". ").append(extractTextChildren(p1));
+            builder.append(p1.getAttribute("index")).append(".  ").append(extractTextChildren(p1));
             builder.append("</option>");
         }
         builder.append("!separator!");
@@ -356,17 +357,17 @@ public class TaskService {
             Element p2 = (Element) p2List.item(i);
             builder.append("<option");
             builder.append(" value=").append(p2.getAttribute("index")).append(" chapter=").append(p2.getAttribute("chapter")).append('>');
-            builder.append(p2.getAttribute("index")).append(". ").append(extractTextChildren(p2));
+            builder.append(p2.getAttribute("index")).append(".  ").append(extractTextChildren(p2));
             builder.append("</option>");
         }
         return new ResponseEntity<>(builder.toString(),HttpStatus.OK);
     }
 
-    public void finishSentProcess(String dp, Task task) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public void finishSentProcess(String dpString, Task task) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        InputStream stream = new ByteArrayInputStream(dp.getBytes(StandardCharsets.UTF_8));
+        InputStream stream = new ByteArrayInputStream(dpString.getBytes(StandardCharsets.UTF_8));
         Document dpDoc = db.parse(stream);
-        NodeList dpListProcessed = dpDoc.getElementsByTagName("dp");
+        Element dp = (Element) dpDoc.getElementsByTagName("dp").item(0);
         NodeList s1List = dpDoc.getElementsByTagName("s1");
         NodeList s2List = dpDoc.getElementsByTagName("s2");
 
@@ -416,14 +417,13 @@ public class TaskService {
                 }
             }
         }
+
         //modify processed
         stream = new ByteArrayInputStream(task.getProcessed().getBytes(StandardCharsets.UTF_8));
         Document processedDoc = db.parse(stream);
         Element root = (Element) processedDoc.getElementsByTagName("processed").item(0);
-        for(int i =0; i < dpListProcessed.getLength(); i++){
-            Node newDp = processedDoc.importNode(dpListProcessed.item(i),true);
-            root.appendChild(newDp);
-        }
+        Node newDp = processedDoc.importNode(dp,true);
+        root.appendChild(newDp);
         //saving task
         String unprocessed = prettyFormatXml(unprocessedDoc);
         String bad = prettyFormatXml(badDoc);
@@ -456,8 +456,9 @@ public class TaskService {
                     Integer indexToCompare = Integer.parseInt(elToCompare.getAttribute("index"));
                     if(indexCurrent< indexToCompare){
                         Element newCurrent = (Element) currentS1.cloneNode(true);
-                        elToCompare.getParentNode().insertBefore(newCurrent,elToCompare);
                         currentS1.getParentNode().removeChild(currentS1);
+                        elToCompare.getParentNode().insertBefore(newCurrent,elToCompare);
+                        currentS1 = newCurrent;
                     }
                     z++;
                 }
@@ -471,8 +472,9 @@ public class TaskService {
                     Integer indexToCompare = Integer.parseInt(elToCompare.getAttribute("index"));
                     if(indexCurrent< indexToCompare){
                         Element newCurrent = (Element) currentS2.cloneNode(true);
-                        elToCompare.getParentNode().insertBefore(newCurrent,elToCompare);
                         currentS2.getParentNode().removeChild(currentS2);
+                        elToCompare.getParentNode().insertBefore(newCurrent,elToCompare);
+                        currentS2 = newCurrent;
                     }
                     z++;
                 }
@@ -484,7 +486,6 @@ public class TaskService {
             ((Element)dsList.item(i)).setAttribute("pIndex", firstS1.getAttribute("pIndex") );
 
         }
-
         // 3. order ds inside of dp by index
         NodeList dpList = processedDoc.getElementsByTagName("dp");
         for(int q=0; q< dpList.getLength(); q++){
@@ -500,16 +501,26 @@ public class TaskService {
                     if(currentIndex < indexToCompare){
                         Element newCurrent = (Element) currentDs.cloneNode(true);
                         processedDoc.importNode(newCurrent,true);
+                        currentDs.getParentNode().removeChild(currentDs);
                         dsToCompare.getParentNode().insertBefore(newCurrent, dsToCompare);
-                        dsList.item(i).getParentNode().removeChild(dsList.item(i));
+                        currentDs = newCurrent;
                         //currentDs.getParentNode().removeChild(currentDs);
                     }
                     z++;
                 }
             }
         }
-
-
+        // 3.1 check if dp can be divided into several parts and do it if possible
+        for(int i=0; i < dpList.getLength();i++) {
+            Element thisDp = (Element) dpList.item(i);
+            ArrayList<Element> newDps = divideDp(thisDp);
+            for(int q=0; q < newDps.size(); q++){
+                Node newDp = processedDoc.importNode(newDps.get(q),true);
+                thisDp.getParentNode().insertBefore(newDp, thisDp);
+            }
+            thisDp.getParentNode().removeChild(thisDp);
+            i+= (newDps.size()-1);
+        }
         // 5. add pIndex attribute to each dp
         dpList = processedDoc.getElementsByTagName("dp");
         for(int i =0; i <  dpList.getLength(); i++){
@@ -528,8 +539,9 @@ public class TaskService {
                 Integer indexToCompare = Integer.parseInt(dpToCompare.getAttribute("pIndex"));
                 if(currentIndex < indexToCompare){
                     Element newCurrent = (Element) currentDp.cloneNode(true);
+                    currentDp.getParentNode().removeChild(currentDp);
                     dpToCompare.getParentNode().insertBefore(newCurrent,dpToCompare);
-                    dpList.item(i).getParentNode().removeChild(dpList.item(i));
+                    currentDp = newCurrent;
                     //currentDp.getParentNode().removeChild(currentDp);
                 }
                 z++;
@@ -538,12 +550,12 @@ public class TaskService {
 
         // 7. form result document with chapters;
 
-        stream = new ByteArrayInputStream(task.getResult().getBytes(StandardCharsets.UTF_8));
+        stream = new ByteArrayInputStream("<result></result>".getBytes(StandardCharsets.UTF_8));
         Document resultDoc = db.parse(stream);
         Element rootResult = (Element) resultDoc.getElementsByTagName("result").item(0);
         dpList = processedDoc.getElementsByTagName("dp");
-        boolean inserted = false;
         for(int i=0; i < dpList.getLength(); i++){
+            boolean inserted = false;
             Element dpEl = (Element) dpList.item(i);
             String chapterIndex = dpEl.getAttribute("chapter");
             NodeList resultChapters = resultDoc.getElementsByTagName("chapter");
@@ -555,7 +567,6 @@ public class TaskService {
                     inserted = true;
                     break;
                 }
-                inserted = false;
             }
             if(!inserted){
                 Element chapter = resultDoc.createElement("chapter");
@@ -571,7 +582,41 @@ public class TaskService {
         taskRepository.save(task);
 
     }
-
+    private ArrayList<Element> divideDp(Element dpEl){
+        ArrayList<Element> result = new ArrayList<>();
+        NodeList dsList = dpEl.getElementsByTagName("ds");
+        for(int i =0; i < dsList.getLength(); i++){
+            Element dsEl = (Element) dsList.item(i);
+            boolean inserted = false;
+            for(Element el : result){
+                if(el.getAttribute("pIndex").equals(dsEl.getAttribute("pIndex"))){
+                    Element newDs = (Element) dsEl.cloneNode(true);
+                    Element lastDsInDp = (Element) el.getLastChild();
+                    //newDs.setAttribute("index",String.valueOf(Integer.parseInt(lastDsInDp.getAttribute("index")) +1));
+                    el.appendChild(newDs);
+                    inserted = true;
+                }
+            }
+            if(!inserted){
+                Element newDp = dpEl.getOwnerDocument().createElement("dp");
+                newDp.setAttribute("pIndex", dsEl.getAttribute("pIndex"));
+                newDp.setAttribute("chapter", dpEl.getAttribute("chapter"));
+                Element newDs = (Element) dsEl.cloneNode(true);
+                newDs.setAttribute("index","0");
+                newDp.appendChild(newDs);
+                result.add(newDp);
+            }
+        }
+        // set s1 indexes to start from 0 inside of dp
+        for(Element dp : result){
+            NodeList s1List = dp.getElementsByTagName("s1");
+            for(int i=0; i< s1List.getLength();i++){
+                Element s1El = (Element) s1List.item(i);
+                s1El.setAttribute("index", String.valueOf(i));
+            }
+        }
+        return result;
+    }
     public String integrateTask(Task task, DuoBook duoBook, String lang) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(task.getResult().getBytes(StandardCharsets.UTF_8));
@@ -586,17 +631,17 @@ public class TaskService {
             Element dp = (Element) resultDpList.item(i);
             NodeList dsList = dp.getElementsByTagName("ds");
             for(int q = 0; q < dsList.getLength(); q++){
-                Element dsEl = (Element) dsList.item(i);
+                Element dsEl = (Element) dsList.item(q);
                 NodeList s1List = dsEl.getElementsByTagName("s1");
                 NodeList s2List = dsEl.getElementsByTagName("s2");
                 boolean connected = false;
                 for(int z =0; z < s1List.getLength(); z++){
                     Element s1El  = (Element) s1List.item(z);
-                    for(int w=0; w < bookS1List.getLength();i++){
+                    for(int w=0; w < bookS1List.getLength();w++){
                         Element bookS1El = (Element) bookS1List.item(w);
                         if(s1El.getAttribute("index").equals(bookS1El.getAttribute("index")) &&
                         s1El.getAttribute("pIndex").equals(bookS1El.getAttribute("pIndex"))){
-                            for(int n=0; n<s2List.getLength();i++){
+                            for(int n=0; n<s2List.getLength();n++){
                                 Element newS2 = (Element) bookDoc.importNode(s2List.item(n),true);
                                 newS2.setAttribute("lang",lang);
                                 bookDoc.renameNode(newS2,null, "s");
@@ -618,10 +663,10 @@ public class TaskService {
         Document resultDoc = db.parse(stream);
 
         NodeList s2List = resultDoc.getElementsByTagName("s2");
-        for(int i =0; i < s2List.getLength();i++){
-            resultDoc.renameNode(s2List.item(i),null,"s");
-            Element s2 = (Element) s2List.item(i);
-            s2.setAttribute("lang",language);
+        for(int i =0; i < s2List.getLength();){
+            Node sNode = resultDoc.renameNode(s2List.item(i),null,"s");
+            Element s = (Element) sNode;
+            s.setAttribute("lang",language);
         }
 
         return prettyFormatXml(resultDoc);

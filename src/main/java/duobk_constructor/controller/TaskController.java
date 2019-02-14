@@ -89,18 +89,29 @@ public class TaskController {
     public void createTask(@ModelAttribute UploadForm form) throws Exception {
         DuoBook duoBook = duoBookService.findById(form.getBook());
         String taskName = new StringBuilder().append(form.getLanguage1()).append('/').append(form.getLanguage2()).append(" ").append(duoBook.getName()).toString();
-        Book book1 = fileReaderService.read(form.getFiles()[0], form.getLanguage1());
-        Entry entry1= entryService.create(book1.toXML(),form.getAuthor1(),form.getTitle1(),form.getLanguage1(), false);
+        Book book1;
+        Entry entry1;
         Entry entry2;
         Book book2;
+        Task task = new Task();
         if(form.getBookStatus().equals("NEW")){
+            book1 = fileReaderService.read(form.getFiles()[0], form.getLanguage1());
+            entry1= entryService.create(book1.toXML(),form.getAuthor1(),form.getTitle1(),form.getLanguage1(), false);
             book2 = fileReaderService.read(form.getFiles()[1],form.getLanguage2());
             entry2 = entryService.create(book2.toXML(), form.getAuthor2(),form.getTitle2(),form.getLanguage2(), false);
+            task.setEntry1_id(entry1.getId());
         }
         else{
-            entry2 = entryService.createFromBook(duoBook);
+            //entry1 = entryService.createFromBook(duoBook);
+            book2 = fileReaderService.read(form.getFiles()[0],form.getLanguage1());
+            entry2 = entryService.create(book2.toXML(), form.getAuthor1(),form.getTitle1(),form.getLanguage1(), false);
         }
-        taskService.create(taskName, entry1.getId(),entry2.getId(),form.getBook(),"NEW");
+        task.setName(taskName);
+        task.setEntry2_id(entry2.getId());
+        task.setBookId(form.getBook());
+        task.setStatus("NEW");
+        taskService.save(task);
+        //taskService.create(taskName, entry1.getId(),entry2.getId(),form.getBook(),"NEW");
         if(form.getBookStatus().equals("NEW")){
             // here we should change the status of duoBook to FIRST_PROCESS (no other tasks can be added while book has this status)
             duoBook.setStatus("FIRST_PROCESS");
@@ -113,10 +124,25 @@ public class TaskController {
     @RequestMapping(value = "/preProcess/do")
     public ResponseEntity<?> processAndSave(@RequestBody IndexesForm indexesForm) throws Exception {
         Task task = taskService.getTaskById(indexesForm.getTaskId());
-        Entry entry1 = entryService.getEntryById(task.getEntry1_id());
-        Entry entry2 = entryService.getEntryById(task.getEntry2_id());
-        Book book1 = new Book(entry1.getValue(), new Language(entry1.getLanguage()));
-        Book book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
+        DuoBook duoBook = duoBookService.findById(task.getBookId());
+        Entry entry1;
+        Entry entry2;
+        Book book1;
+        Book book2;
+
+        if(duoBook.getStatus().equals("FIRST_PROCESS")){
+            entry1 = entryService.getEntryById(task.getEntry1_id());
+            book1 = new Book(entry1.getValue(), new Language(entry1.getLanguage()));
+            entry2 = entryService.getEntryById(task.getEntry2_id());
+            book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
+        }
+        else{
+            book1 = new Book(duoBookService.getDocumentFromValue(duoBook),new Language("en"));
+            entry2 = entryService.getEntryById(task.getEntry2_id());
+            book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
+        }
+
+
         AStar aStar = new AStar(book1,book2);
         aStar.Start(indexesForm.getStart1(),indexesForm.getStart2(),indexesForm.getEnd1(), indexesForm.getEnd2());
         ArrayList<DuoParagraph> result = aStar.getResult();
@@ -125,6 +151,7 @@ public class TaskController {
         task.setProcessed("<processed></processed>");
         task.setBad("<bad></bad>");
         task.setResult("<result></result>");
+        task.setStatus("PROCESS");
         taskService.save(task);
         return new ResponseEntity<IndexesForm>(indexesForm, HttpStatus.OK);
     }
@@ -137,7 +164,7 @@ public class TaskController {
         Book book1;
         Entry entry2;
         Book book2;
-        if(duoBook.getStatus().equals("FIRST_PROCESS")){
+        if(task.getEntry1_id() != null){
             entry1 = entryService.getEntryById(task.getEntry1_id());
             book1 = new Book(entry1.getValue(), new Language(entry1.getLanguage()));
             entry2 = entryService.getEntryById(task.getEntry2_id());
@@ -145,7 +172,7 @@ public class TaskController {
         }
         else{
             book1 = new Book(duoBookService.getDocumentFromValue(duoBook),new Language("en"));
-            entry2 = entryService.getEntryById(task.getEntry1_id());
+            entry2 = entryService.getEntryById(task.getEntry2_id());
             book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
         }
         return taskService.formBooksResponse(book1,book2); //order of arguments very important here
@@ -156,7 +183,7 @@ public class TaskController {
     @RequestMapping(value = "/preProcess/checkUnprocessed", consumes = "text/plain")
     public boolean checkUnprocessedEmpty(@RequestBody String taskId){
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
-        if(task.getUnprocessed() == null)
+        if(task.getStatus().equals("NEW"))
             return true;
         else return false;
     }
@@ -190,7 +217,11 @@ public class TaskController {
             , @RequestParam(value = "index",required = true) String dpIndex) throws IOException, SAXException, ParserConfigurationException {
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         String unprocessed = task.getUnprocessed();
-        String lang1 = entryService.getEntryById(task.getEntry1_id()).getLanguage();
+        String lang1 ="";
+        if(task.getEntry1_id() == null)
+            lang1 = "en";
+        else
+            lang1 = entryService.getEntryById(task.getEntry1_id()).getLanguage();
         String lang2 = entryService.getEntryById(task.getEntry2_id()).getLanguage();
         DuoParagraph duoParagraph = taskService.getDuoParagraphFromUnprocessed(unprocessed,dpIndex,lang1,lang2);
         SentenceAStar aStar = new SentenceAStar();
@@ -214,7 +245,9 @@ public class TaskController {
             , @RequestBody IndexesForm indexesForm) throws IOException, SAXException, ParserConfigurationException {
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         String bad= task.getBad();
-        String lang1 = entryService.getEntryById(task.getEntry1_id()).getLanguage();
+        String lang1 = "en";
+        if(task.getEntry1_id() != null)
+            lang1 = entryService.getEntryById(task.getEntry1_id()).getLanguage();
         String lang2 = entryService.getEntryById(task.getEntry2_id()).getLanguage();
         ArrayList<String> indexes1 = new ArrayList<>();
         for(Integer index : indexesForm.getStart1())
@@ -267,10 +300,11 @@ public class TaskController {
         return taskService.getTaskById(Integer.parseInt(taskId)).getResult();
     }
 
-    @RequestMapping(value = "/process/submit")
-    public void submitTask(@RequestParam (value = "id", required = true) String taskId){
+    @RequestMapping(value = "/process/submit", consumes = "text/plain")
+    public void submitTask(@RequestParam (value = "id", required = true) String taskId, @RequestBody String result){
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         task.setStatus("CHECK_NEEDED");
+        task.setResult(result);
         taskService.save(task);
 /*        DuoBook book =duoBookService.findById(task.getBookId());
         if(book.getStatus().equals("FIRST_PROCESS")){
@@ -288,7 +322,7 @@ public class TaskController {
         DuoBook duoBook = duoBookService.findById(task.getBookId());
         if(duoBook.getStatus().equals("FIRST_PROCESS"))
             return taskService.refactorFirstProcessedBook(task.getResult(),entryService.getEntryById(task.getEntry2_id()).getLanguage());
-        return taskService.integrateTask(task,duoBook,entryService.getEntryById(task.getEntry1_id()).getLanguage());
+        return taskService.integrateTask(task,duoBook,entryService.getEntryById(task.getEntry2_id()).getLanguage());
     }
 
     @RequestMapping(value = "/updateBookValue", consumes = "text/plain")

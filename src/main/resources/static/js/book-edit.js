@@ -6,6 +6,30 @@ $(document).ready(function(){
         event.preventDefault();
         submitFormData(bookId);
     });
+
+    $('#book-value').highlightWithinTextarea({
+       highlight: [
+                                  {
+                                      highlight: /(<dp|<\/dp>)/g,
+                                      className: 'red'
+                                  },
+                                  {
+                                      highlight: /(<ds>|<\/ds>)/g,
+                                      className: 'green'
+                                  },
+                                  {
+                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+                                      className: 'blue'
+                                  },
+                                  {
+                                      highlight: /(?<=<s .+?>)(.+?)(?=<)/g,
+                                      className: 'yellow'
+                                  }
+       ]
+    });
+    $('#value-tab').on('click', function(){
+        $('#book-value').highlightWithinTextarea('update');
+    });
 });
 
 function findGetParameter(parameterName) {

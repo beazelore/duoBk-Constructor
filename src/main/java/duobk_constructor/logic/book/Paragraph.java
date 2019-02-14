@@ -15,14 +15,17 @@ public class Paragraph {
     private ParagraphData data;
 
     public ParagraphData getData() {
+        if(data == null){
+            data = new ParagraphData(this);
+        }
         return data;
     }
 
-    public void setIndex(int index) {
+    public void setIndex(Integer index) {
         this.index = index;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
@@ -30,12 +33,12 @@ public class Paragraph {
         return chapter;
     }
 
-    private int index;
+    private Integer index;
     private Chapter chapter;
     public Paragraph(String content, Chapter chapter){
         sentences = new ArrayList<>();
         this.chapter = chapter;
-        ArrayList<String> stringSentences = SentenceBreaker.breakString(content.replace("\n",""), chapter.getBook().getLanguage().toString());
+        ArrayList<String> stringSentences = SentenceBreaker.breakString(content.replace("\n"," "), chapter.getBook().getLanguage().toString());
         for (String el : stringSentences){
             sentences.add(new Sentence(el,this));
         }
@@ -43,7 +46,7 @@ public class Paragraph {
     }
     public Paragraph(String content, String lang){
         sentences = new ArrayList<>();
-        ArrayList<String> stringSentences = SentenceBreaker.breakString(content.replace("\n",""), lang);
+        ArrayList<String> stringSentences = SentenceBreaker.breakString(content.replace("\n"," "), lang);
         for (String el : stringSentences){
             sentences.add(new Sentence(el,this));
         }

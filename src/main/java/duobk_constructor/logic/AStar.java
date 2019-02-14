@@ -11,6 +11,12 @@ import java.util.HashMap;
 public class AStar {
     private Book book1;
     private Book book2;
+    ArrayList<DuoParagraph> result;
+    ArrayList<DuoParagraph> closed;
+    ArrayList<DuoParagraph> open;
+    HashMap<DuoParagraph, DuoParagraph> from;
+    HashMap<DuoParagraph, Integer> mG;
+
     public AStar(Book book1, Book book2){
         this.book1 = book1;
         this.book2 = book2;
@@ -23,11 +29,7 @@ public class AStar {
         return result;
     }
 
-    ArrayList<DuoParagraph> result;
-    ArrayList<DuoParagraph> closed;
-    ArrayList<DuoParagraph> open;
-    HashMap<DuoParagraph, DuoParagraph> from;
-    HashMap<DuoParagraph, Integer> mG;
+
     public void Start(ArrayList<Integer> startIndexes1, ArrayList<Integer> startIndexes2,
                       ArrayList<Integer> endIndexes1, ArrayList<Integer> endIndexes2)
     {
@@ -104,18 +106,24 @@ public class AStar {
         ArrayList<Paragraph> paragraphs1 = new ArrayList<>();
         ArrayList<Paragraph> paragraphs2 = new ArrayList<>();
         for(Integer index : indexes1){
-            paragraphs1.add(book1.getParagraphs().get(index));
+            for(Paragraph p : book1.getParagraphs())
+                if(index.equals(p.getIndex()))
+                    paragraphs1.add(p);
         }
         for(Integer index : indexes2){
-            paragraphs2.add(book2.getParagraphs().get(index));
+            for(Paragraph p : book2.getParagraphs())
+                if(index.equals(p.getIndex()))
+                    paragraphs2.add(p);
         }
         return new DuoParagraph(paragraphs1,paragraphs2);
     }
     private ArrayList<DuoParagraph> createChildNodes(DuoParagraph paragraph){
         ArrayList<DuoParagraph> result = new ArrayList<>();
         // create (+1,+1) child
-        int index1 = paragraph.getParagraphs1().get( paragraph.getParagraphs1().size() -1).getIndex() +1;
-        int index2 = paragraph.getParagraphs2().get( paragraph.getParagraphs2().size() -1).getIndex() +1;
+        int index1 = book1.getParagraphs().indexOf(paragraph.getParagraphs1().get(paragraph.getParagraphs1().size()-1))+1;
+        int index2 = book2.getParagraphs().indexOf(paragraph.getParagraphs2().get(paragraph.getParagraphs2().size()-1))+1;
+        //int index1 = paragraph.getParagraphs1().get( paragraph.getParagraphs1().size() -1).getIndex() +1;
+        //int index2 = paragraph.getParagraphs2().get( paragraph.getParagraphs2().size() -1).getIndex() +1;
         if (index1 < book1.getParagraphs().size() && index2 <book2.getParagraphs().size())
         {
             Paragraph paragraph1 = book1.getParagraphs().get(index1);
@@ -124,7 +132,9 @@ public class AStar {
             result.add(pair);
         }
         // create (+2,+1) child
-        int index3 = paragraph.getParagraphs1().get( paragraph.getParagraphs1().size() -1).getIndex() +2;
+        int index3 = index1+1;
+        //int index3 = book1.getParagraphs().indexOf(paragraph.getParagraphs1().get(paragraph.getParagraphs1().size()-1))+2;
+        //int index3 = paragraph.getParagraphs1().get( paragraph.getParagraphs1().size() -1).getIndex() +2;
         if (index3 < book1.getParagraphs().size() && index2 < book2.getParagraphs().size())
         {
             ArrayList<Paragraph> paragraph1 = new ArrayList<>();
@@ -135,7 +145,9 @@ public class AStar {
             result.add(pair);
         }
         // create (+1,+2) child
-        index3 = paragraph.getParagraphs2().get( paragraph.getParagraphs2().size() -1).getIndex() +2;
+        index3= index2+1;
+        //index3 = book2.getParagraphs().indexOf(paragraph.getParagraphs2().get(paragraph.getParagraphs2().size()-1))+2;
+        //index3 = paragraph.getParagraphs2().get( paragraph.getParagraphs2().size() -1).getIndex() +2;
         if (index1 < book1.getParagraphs().size() && index3 < book2.getParagraphs().size())
         {
             ArrayList<Paragraph> paragraph2 = new ArrayList<>();
@@ -146,8 +158,11 @@ public class AStar {
             result.add(pair);
         }
         // create (+3,+1)
-        index3 = paragraph.getParagraphs1().get( paragraph.getParagraphs1().size() -1).getIndex() +2;
-        int index4 = paragraph.getParagraphs1().get( paragraph.getParagraphs1().size() -1).getIndex() +3;
+        //index3 = paragraph.getParagraphs1().get( paragraph.getParagraphs1().size() -1).getIndex() +2;
+        //int index4 = paragraph.getParagraphs1().get( paragraph.getParagraphs1().size() -1).getIndex() +3;
+        //index3 = book1.getParagraphs().indexOf(paragraph.getParagraphs1().get(paragraph.getParagraphs1().size()-1))+2;
+        index3 = index1+1;
+        int index4 = index3+1;
         if (index4 < book1.getParagraphs().size() && index2 < book2.getParagraphs().size())
         {
             ArrayList<Paragraph> paragraph1 = new ArrayList<>();
@@ -159,8 +174,10 @@ public class AStar {
             result.add(pair);
         }
         // create (+1,+3)
-        index3 = paragraph.getParagraphs2().get( paragraph.getParagraphs2().size() -1).getIndex() +2;
-        index4 = paragraph.getParagraphs2().get( paragraph.getParagraphs2().size() -1).getIndex() +3;
+        //index3 = paragraph.getParagraphs2().get( paragraph.getParagraphs2().size() -1).getIndex() +2;
+        //index4 = paragraph.getParagraphs2().get( paragraph.getParagraphs2().size() -1).getIndex() +3;
+        index3 = index2+1;
+        index4 = index3+1;
         if (index1 < book1.getParagraphs().size() && index4 < book2.getParagraphs().size())
         {
             ArrayList<Paragraph> paragraph2 = new ArrayList<>();

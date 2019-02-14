@@ -71,7 +71,8 @@ public class Book {
             indexChapter++;
             for (Paragraph paragraph : chapter.getParagraphs()){
                 paragraphs.add(paragraph);
-                paragraph.setIndex(indexPar);
+                if(paragraph.getIndex()==null)
+                    paragraph.setIndex(indexPar);
                 indexPar++;
                 int indexSent = 0;
                 for(Sentence sentence : paragraph.getSentences()){
@@ -119,7 +120,7 @@ public class Book {
             Chapter chapter = new Chapter();
             Element chapterEl = (Element) chapters.item(i);
             chapter.setIndex(Integer.parseInt(chapterEl.getAttribute("index")));
-            NodeList paragraphs = chapterEl.getChildNodes();
+            NodeList paragraphs = chapterEl.getElementsByTagName("dp");
             for(int q=0; q< paragraphs.getLength(); q ++){
                 Paragraph paragraph = new Paragraph(chapter);
                 Element dpEl = (Element) paragraphs.item(q);

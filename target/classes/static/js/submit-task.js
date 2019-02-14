@@ -4,9 +4,12 @@ $(document).ready(function(){
 
     $("#submitTask").on('click', function(){
             var url = "/tasks/process/submit?id="+taskId;
+            var value = document.getElementById("result").value;
             $.ajax({
                       type: "POST",
                       url: url,
+                      contentType: "text/plain",
+                      data: value,
                       success: function(data, textStatus, jqXHR) {
                         window.location.href= "/tasks";
                       },
@@ -15,6 +18,30 @@ $(document).ready(function(){
                         alert("error");
                       }
                    });
+    });
+
+    $('#result').highlightWithinTextarea({
+       highlight: [
+                                  {
+                                      highlight: /(<dp|<\/dp>)/g,
+                                      className: 'red'
+                                  },
+                                  {
+                                      highlight: /(<ds>|<\/ds>)/g,
+                                      className: 'green'
+                                  },
+                                  {
+                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+                                      className: 'blue'
+                                  },
+                                  {
+                                      highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
+                                      className: 'yellow'
+                                  }
+       ]
+    });
+    $('#refreshHighlight').on('click', function(){
+        $('#result').highlightWithinTextarea('update');
     });
 });
 

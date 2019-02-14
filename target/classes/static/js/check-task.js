@@ -4,6 +4,31 @@ $(document).ready(function(){
     $('#confirmTask').on('click',function(){
         saveResult(taskId);
     });
+
+
+    $('#result').highlightWithinTextarea({
+       highlight: [
+                                  {
+                                      highlight: /(<dp|<\/dp>)/g,
+                                      className: 'red'
+                                  },
+                                  {
+                                      highlight: /(<ds>|<\/ds>)/g,
+                                      className: 'green'
+                                  },
+                                  {
+                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+                                      className: 'blue'
+                                  },
+                                  {
+                                      highlight: /(?<=<s .+?>)(.+?)(?=<)/g,
+                                      className: 'yellow'
+                                  }
+       ]
+    });
+    $('#refreshHighlight').on('click', function(){
+        $('#result').highlightWithinTextarea('update');
+    });
 });
 
 function requestResult(taskId){

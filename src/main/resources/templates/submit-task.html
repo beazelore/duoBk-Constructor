@@ -3,10 +3,13 @@
 <head>
     <title>Submit Task - DuoBk</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="/css/jquery.highlight-within-textarea.css" type="text/css" rel="stylesheet" />
+    <link href="/css/admin-task.css" type="text/css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/csrf.js"></script>
     <script type="text/javascript" src="/js/submit-task.js"></script>
     <script type="text/javascript" src="/js/userdata.js"></script>
+    <script type="text/javascript" src="/js/jquery.highlight-within-textarea.js"></script>
 </head>
 <body>
 
@@ -46,11 +49,14 @@
         </div>
     </nav>
     <div class="container-fluid">
-        <div class="row col-sm">
-            <textarea id="result" class="form-control" name="name"></textarea>
-        </div>
-        <div class="row col-sm-2">
-            <button class="btn btn-primary" id="submitTask">Submit</button>
+            <textarea id="result" name="name"></textarea>
+        <div class="row">
+            <div class="col-sm-2">
+                <button class="btn btn-primary" id="submitTask">Submit</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-success" id="refreshHighlight">Refresh</button>
+            </div>
         </div>
     </div>
 </div>

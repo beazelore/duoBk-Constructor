@@ -29,13 +29,13 @@ $(document).ready(function(){
         getSentProcessHTML(taskId,dpIndex);
 
     $('.container-fluid').on('click','select.first option', function(e){
-         var textSelected = this.text;
-         var myRegexp = /[0-9]+\. /;
+         var textSelected = this.innerHTML;
+         var myRegexp = /[0-9]+\.  /;
          $('#checkActive1').html(textSelected.split(myRegexp).pop());
     });
     $('.container-fluid').on('click','select.second option', function(e){
-         var textSelected = this.text;
-         var myRegexp = /[0-9]+\. /;
+         var textSelected = this.innerHTML;
+         var myRegexp = /[0-9]+\.  /;
          $('#checkActive2').html(textSelected.split(myRegexp).pop());
     });
 
@@ -95,13 +95,13 @@ $(document).ready(function(){
         var selectCorrecting1 = document.getElementById("book1_list");
         var selectCorrecting2 = document.getElementById("book2_list");
         for(var i =0; i<options1.length;i++){
-                var option = new Option(options1[i].text);
+                var option = new Option(options1[i].innerHTML);
                 option.setAttribute("pIndex", options1[i].getAttribute("pIndex"));
                 option.setAttribute("value", options1[i].getAttribute("value"));
                 selectCorrecting1.options[selectCorrecting1.options.length] = option;
         }
         for(var i =0; i<options2.length;i++){
-                var option = new Option(options2[i].text);
+                var option = new Option(options2[i].innerHTML);
                 option.setAttribute("pIndex", options2[i].getAttribute("pIndex"));
                 option.setAttribute("value", options2[i].getAttribute("value"));
                 selectCorrecting2.options[selectCorrecting2.options.length] = option;
@@ -142,7 +142,25 @@ $(document).ready(function(){
     });
 
     $("#finishProcess").on('click', function(){
+        var selects = $("#checkContainer select");
+        console.log("selects:", selects);
+        if(selects.length > 0){
+            alert("You should finish process first");
+            return;
+        }
         var cacheString  = sessionStorage.getItem("ds");
+        var options1 =  $("#book1_list option");
+        if(options1.length>0)
+            cacheString += "<ds>";
+        for(var i=0; i< options1.length;i++){
+            var option = options1[i];
+            console.log(option);
+            cacheString += "<s1 pIndex=\"" + option.getAttribute("pIndex")+ "\" index=\"" + option.getAttribute("value") +"\">";
+            var myRegexp = /[0-9]+\.  /;
+            cacheString += option.innerHTML.split(myRegexp).pop() + "</s1>";
+        }
+        if(options1.length>0)
+            cacheString += "</ds>";
         if(cacheString.includes("<dp"))
             cacheString += "</dp>";
         console.log(cacheString);

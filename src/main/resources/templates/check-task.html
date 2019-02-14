@@ -2,8 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Check Task - DuoBk</title>
+    <link href="/css/jquery.highlight-within-textarea.css" type="text/css" rel="stylesheet" />
+    <link href="/css/admin-task.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.highlight-within-textarea.js"></script>
     <script type="text/javascript" src="/js/csrf.js"></script>
     <script type="text/javascript" src="/js/check-task.js"></script>
     <script type="text/javascript" src="/js/userdata.js"></script>
@@ -16,7 +19,7 @@
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li>
-                    <a class="nav-item nav-link" href="/task">Tasks</a>
+                    <a class="nav-item nav-link" href="/tasks">Tasks</a>
                 </li>
                 <li>
                     <a class="nav-item nav-link" href="#">Rules</a>
@@ -47,10 +50,11 @@
     </nav>
     <div class="container-fluid">
         <div class="row col-sm">
-            <textarea id="result" class="form-control" name="name"></textarea>
+            <textarea id="result" name="name"></textarea>
         </div>
         <div class="row col-sm-2">
             <button class="btn btn-primary" id="confirmTask">Submit</button>
+            <button class="btn btn-success" id="refreshHighlight">Refresh</button>
         </div>
     </div>
 </div>
