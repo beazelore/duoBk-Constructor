@@ -4,7 +4,7 @@ $(document).ready(function() {
     populateMyTasksAjax();
     $.ajax({
                type: "GET",
-               url: "/tasks/allWithNoUser",
+               url: "/tasks/allNewWithNoUser",
                dataType: "json",
                success: function(data, textStatus, jqXHR) {
                     var table = document.getElementById("alltasksTable");

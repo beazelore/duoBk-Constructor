@@ -77,4 +77,17 @@ public class MainController {
     public String checkTask(){
         return "check-task.html";
     }
+
+    @RequestMapping("/admin/users")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public String adminUsers(){
+        return "allusers.html";
+    }
+    @RequestMapping("/admin/users/edit")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public String editUser(){
+        return "user-edit.html";
+    }
+
+
 }

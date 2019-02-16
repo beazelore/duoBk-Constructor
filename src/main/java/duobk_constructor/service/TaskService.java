@@ -50,8 +50,13 @@ public class TaskService {
     public Iterable<Task> getAll(){
         return taskRepository.findAll();
     }
-    public List<Task> getAllFree(){
-        List<Task> result = taskRepository.findByUserId(null);
+    public List<Task> getAllNewFree(){
+        List<Task> allFree = taskRepository.findByUserId(null);
+        List<Task> result = new ArrayList<>();
+        for(Task task : allFree){
+            if(task.getStatus().equals("NEW"))
+                result.add(task);
+        }
         return result;
     }
     public Task create(String name, Integer entryId1, Integer entryId2, Integer bookId, String status){
@@ -66,6 +71,9 @@ public class TaskService {
         task.setBad("<bad></bad>");
         return taskRepository.save(task);
     }
+    public void delete(Task task){
+        taskRepository.delete(task);
+    }
     public Task save(Task task){
             return taskRepository.save(task);
     }
@@ -77,6 +85,11 @@ public class TaskService {
         task.setUserId(userId);
         return taskRepository.save(task);
     }
+    public List<Task> getAllWithBookId(Integer bookId){
+        return taskRepository.findByBookId(bookId);
+    }
+
+
     public ResponseEntity<?> formBooksResponse(Book book1, Book book2){
         StringBuilder builder = new StringBuilder();
         for (Chapter chapter : book1.getChapters()){

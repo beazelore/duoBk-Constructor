@@ -29,4 +29,7 @@ public class EntryService {
     public Entry getEntryById(Integer id){
         return entryRepository.findById(id).get();
     }
+    public void delete(Entry entry){
+        entryRepository.delete(entry);
+    }
 }

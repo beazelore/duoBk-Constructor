@@ -57,15 +57,26 @@ padding-top:15px;
 }
 
 .actionCell{
+    height:100%;
     width:10%;
-    text-align:left;
+    text-align:center;
+    vertical-align: middle;
 }
 .nameCell{
+    height:100%;
     width:80%;
-    text-align:left;
+    text-align:center;
+    vertical-align: middle;
 }
 .statusCell{
+    height:100%;
     width:10%;
-    text-align:left;
+    text-align:center;
+    vertical-align: middle;
 }
+/*td,
+tr{
+    text-align: center;
+    vertical-align: middle;
+}*/
 

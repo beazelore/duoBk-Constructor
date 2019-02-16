@@ -30,6 +30,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" id="adminBooks" href="/admin/books">Books</a>
                     <a class="dropdown-item" id="adminTasks" href="/admin/tasks">Tasks</a>
+                    <a sec:authorize="hasRole('ROLE_SUPERADMIN')" class="dropdown-item" id="adminUsers" href="/admin/users">Users</a>
                     <a class="dropdown-item" id="createBook" href="/admin/createBook">Create Book</a>
                     <a class="dropdown-item" id="createTask" href="/admin/createTask">Create Task</a>
                 </div>

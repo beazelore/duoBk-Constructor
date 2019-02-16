@@ -21,3 +21,9 @@
 .hwt-content mark.green {
 	background-color: #90ff90;
 }
+.btn-danger {
+margin-left: 10px;
+}
+.btn-container{
+margin-top:10px;
+}

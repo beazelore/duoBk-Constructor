@@ -6,6 +6,9 @@ $(document).ready(function(){
         event.preventDefault();
         submitFormData(taskId);
     });
+    $("#deleteTask").on('click',function(){
+        deleteTask(taskId);
+    });
     $('#unprocessedText').highlightWithinTextarea({
        highlight: [
                                   {
@@ -159,6 +162,21 @@ function populateSelectUser(select, arrayData){
         option.setAttribute("value", arrayData[i].id);
         select.add(option);
     }
+}
+function deleteTask(taskId){
+    $.ajax({
+        type: "DELETE",
+        url: "/tasks/delete",
+        contentType: "text/plain",
+        data: taskId,
+        success: function(textStatus, jqXHR) {
+            console.log("SUCCESSSSS");
+            window.location.href = "/admin/tasks";
+                    },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("ERROR : ", jqXHR.responseText);
+        }
+    });
 }
 function submitFormData(taskId){
 

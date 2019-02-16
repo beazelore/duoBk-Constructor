@@ -5,10 +5,7 @@ import duobk_constructor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -28,4 +25,19 @@ public class UserController {
     public Iterable<User> getAll(){
         return  userService.getAll();
     }
+
+    @GetMapping(value = "/getById")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public User getUserById(@RequestParam(value = "id", required = true)String id){
+        return userService.getById(Integer.parseInt(id));
+    }
+
+    @PostMapping(value = "/update")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public void updateUser(@ModelAttribute User user){
+        User userFromBd = userService.getById(user.getId());
+        userFromBd.setUserType(user.getUserType());
+        userService.save(userFromBd);
+    }
+
 }

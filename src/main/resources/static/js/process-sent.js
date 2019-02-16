@@ -148,6 +148,14 @@ $(document).ready(function(){
             alert("You should finish process first");
             return;
         }
+        var options1 = $('#book1_list option');
+        var options2 = $('#book2_list option');
+        if(options1.length >0 && options2.length >0){
+              var r = confirm("There are unconnected sentences in \"Correcting\" tab. Are you sure you want to finish process?");
+              if (r == false){
+                return;
+              }
+        }
         var cacheString  = sessionStorage.getItem("ds");
         var options1 =  $("#book1_list option");
         if(options1.length>0)

@@ -41,4 +41,7 @@ public class DuoBookService {
         Document doc = db.parse(stream);
         return  doc;
     }
+    public void delete(DuoBook book){
+        repository.delete(book);
+    }
 }

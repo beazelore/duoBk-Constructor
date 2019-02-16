@@ -14,26 +14,19 @@ import duobk_constructor.logic.book.duo.DuoSentence;
 import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.Entry;
 import duobk_constructor.model.Task;
-import duobk_constructor.model.User;
-import duobk_constructor.repository.UserRepository;
 import duobk_constructor.service.*;
-import jdk.nashorn.internal.runtime.JSONFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import duobk_constructor.repository.TaskRepository;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.*;
 
 @RestController
@@ -64,8 +57,8 @@ public class TaskController {
         return tasksWithMails;
     }
 
-    @GetMapping(value = "/allWithNoUser")
-    public Iterable<Task> getAllFreeTasks(){return  taskService.getAllFree();}
+    @GetMapping(value = "/allNewWithNoUser")
+    public Iterable<Task> getAllFreeTasks(){return  taskService.getAllNewFree();}
 
     @RequestMapping(value = "/take", method = RequestMethod.POST, consumes = "text/plain")
     public void takeTask(OAuth2Authentication authentication, @RequestBody String id){
@@ -88,7 +81,14 @@ public class TaskController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void createTask(@ModelAttribute UploadForm form) throws Exception {
         DuoBook duoBook = duoBookService.findById(form.getBook());
-        String taskName = new StringBuilder().append(form.getLanguage1()).append('/').append(form.getLanguage2()).append(" ").append(duoBook.getName()).toString();
+        StringBuilder taskName = new StringBuilder().append(form.getLanguage1()).append('/');
+        if(form.getLanguage2().isEmpty() || form.getLanguage2() == null){
+            taskName.append("en");
+        }
+        else{
+            taskName.append(form.getLanguage2());
+        }
+        taskName.append(" ").append(duoBook.getName());
         Book book1;
         Entry entry1;
         Entry entry2;
@@ -106,7 +106,7 @@ public class TaskController {
             book2 = fileReaderService.read(form.getFiles()[0],form.getLanguage1());
             entry2 = entryService.create(book2.toXML(), form.getAuthor1(),form.getTitle1(),form.getLanguage1(), false);
         }
-        task.setName(taskName);
+        task.setName(taskName.toString());
         task.setEntry2_id(entry2.getId());
         task.setBookId(form.getBook());
         task.setStatus("NEW");
@@ -305,6 +305,7 @@ public class TaskController {
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         task.setStatus("CHECK_NEEDED");
         task.setResult(result);
+        task.setUserId(null);
         taskService.save(task);
 /*        DuoBook book =duoBookService.findById(task.getBookId());
         if(book.getStatus().equals("FIRST_PROCESS")){
@@ -336,5 +337,20 @@ public class TaskController {
         task.setStatus("DONE");
         taskService.save(task);
         duoBookService.save(duoBook);
+    }
+
+    @DeleteMapping(value = "/delete", consumes = "text/plain")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteTask(@RequestBody String taskId){
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        taskService.delete(task);
+        if(task.getEntry1_id() != null){
+            Entry entry1 = entryService.getEntryById(task.getEntry1_id());
+            entryService.delete(entry1);
+        }
+        if(task.getEntry2_id() != null){
+            Entry entry2 = entryService.getEntryById(task.getEntry2_id());
+            entryService.delete(entry2);
+        }
     }
 }

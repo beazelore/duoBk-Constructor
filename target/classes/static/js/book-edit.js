@@ -2,9 +2,12 @@ $(document).ready(function(){
     var bookId = findGetParameter("id");
     getBookInfoAjax(bookId);
 
-    $(":submit").on('click',function(){
+    $("#submitBookInfo").on('click',function(){
         event.preventDefault();
         submitFormData(bookId);
+    });
+    $("#deleteBook").on('click',function(){
+        deleteBook(bookId);
     });
 
     $('#book-value').highlightWithinTextarea({
@@ -82,6 +85,7 @@ function submitFormData(bookId){
         timeout: 1000000,
         success: function(textStatus, jqXHR) {
             console.log("SUCCESSSSS");
+            alert("agrs");
             window.location.href = "/admin/books";
                     },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -89,4 +93,21 @@ function submitFormData(bookId){
         }
     });
 
+
+}
+function deleteBook(bookId){
+    $.ajax({
+        type: "DELETE",
+        url: "/books/delete",
+        contentType: "text/plain",
+        data: bookId,
+        success: function(textStatus, jqXHR) {
+            console.log("SUCCESSSSS");
+            //alert("dsfsd");
+            window.location.href = "/admin/books";
+                    },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("ERROR : ", jqXHR.responseText);
+        }
+    });
 }

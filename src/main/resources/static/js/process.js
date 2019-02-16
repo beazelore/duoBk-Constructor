@@ -3,7 +3,7 @@ $(document).ready(function(){
     getUnprocessed(taskId);
     getBad(taskId);
 
-        $('.container-fluid').on('click','select.first option', function(e){
+      /*$('.container-fluid').on('click','select.first option', function(e){
              var textSelected = this.text;
              var myRegexp = /[0-9]+\. /;
             $('#active1').html(textSelected.split(myRegexp).pop());
@@ -12,8 +12,32 @@ $(document).ready(function(){
              var textSelected = this.text;
              var myRegexp = /[0-9]+\. /;
             $('#active2').html(textSelected.split(myRegexp).pop());
+        });*/
+
+        $('.maincontainer').on('change', 'select.first', function(e){
+            var options = $('select:focus option:selected');
+            var value ="";
+            for(var i=0; i< options.length;i++){
+                var myRegexp = /[0-9]+\.  /;
+                var temp = options[i].innerHTML.split(myRegexp).pop();
+                value += temp;
+            }
+            $('#active1').html(value);
         });
-        $('#book1_list').on('click', 'option', function(){
+
+        $('.maincontainer').on('change', 'select.second', function(e){
+            var options = $('select:focus option:selected');
+            var value ="";
+            for(var i=0; i< options.length;i++){
+                var myRegexp = /[0-9]+\.  /;
+                var temp = options[i].innerHTML.split(myRegexp).pop();
+                value += temp;
+            }
+            $('#active1').html(value);
+        });
+
+
+/*        $('#book1_list').on('click', 'option', function(){
             var textSelected = this.text;
             var myRegexp = /[0-9]+\. /;
             $('#correctingActive1').html(textSelected.split(myRegexp).pop());
@@ -22,7 +46,30 @@ $(document).ready(function(){
             var textSelected = this.text;
             var myRegexp = /[0-9]+\. /;
             $('#correctingActive2').html(textSelected.split(myRegexp).pop());
+        });*/
+        $('#book1_list').on('change', function(e){
+            var options = $('#book1_list option:selected');
+            var value ="";
+            for(var i =0; i < options.length; i++){
+                var myRegexp = /[0-9]+\.  /;
+                var temp = options[i].innerHTML.split(myRegexp).pop();
+                value += temp;
+            }
+            $('#correctingActive1').html(value);
         });
+        $('#book2_list').on('change', function(e){
+            var options = $('#book2_list option:selected');
+            var value ="";
+            for(var i =0; i < options.length; i++){
+                var myRegexp = /[0-9]+\.  /;
+                var temp = options[i].innerHTML.split(myRegexp).pop();
+                value += temp;
+            }
+            $('#correctingActive2').html(value);
+        });
+
+
+
         $('.container-fluid').on('click','.btn-success',function(){
             var url = "/tasks/process/sent?id="+taskId+"&index="+this.id+ "&chapter=" + this.getAttribute("chapter");
             openInNewTab(url);
@@ -86,6 +133,14 @@ $(document).ready(function(){
              getBad(taskId);
         });
         $("#finishProcess").on('click', function(){
+            var options1 = $('#book1_list option');
+            var options2 = $('#book2_list option');
+            if(options1.length >0 && options2.length >0){
+                var r = confirm("There are unconnected paragraphs in \"Correcting\" tab. Are you sure you want to finish process?");
+                if (r == false) {
+                    return;
+                }
+            }
             var url = "/tasks/process/finish?id=" + taskId;
             $.ajax({
                  type: "GET",

@@ -12,4 +12,5 @@ import java.util.List;
 
 public interface TaskRepository extends CrudRepository<Task, Integer> {
     public List<Task> findByUserId(Integer userId);
+    public List<Task> findByBookId(Integer bookId);
 }
