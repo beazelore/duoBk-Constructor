@@ -26,7 +26,7 @@ $(document).ready(function(){
                                   }
        ]
     });
-    $('#refreshHighlight').on('click', function(){
+    $('#checkNavItem').on('click', function(){
         $('#result').highlightWithinTextarea('update');
     });
 });
@@ -48,6 +48,8 @@ function requestResult(taskId){
 function saveResult(taskId){
   url = "/tasks/updateBookValue?id="+taskId;
   var value = document.getElementById("result").value;
+  var message = document.getElementById("message").value;
+  value += "!message!" + message;
   $.ajax({
          type: "POST",
          url: url,

@@ -17,6 +17,7 @@ public class UserService {
     public Integer getUserIdByMail(String mail){
         return userRepository.findByMail(mail).getId();
     }
+    public User getByMail(String mail){return  userRepository.findByMail(mail);}
     public User getById(Integer id){return userRepository.findById(id).get();}
     public Iterable<User> getAll(){return  userRepository.findAll();}
     public User save(User user){

@@ -97,13 +97,17 @@
                 <small id="title2Help" class="form-text text-muted">(In appropriate language)</small>
             </div>
         </div>
+        <div class="form-row">
+            <div class="col-sm-8 form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" type="text" aria-describedby="messageHelp" class="form-control" name="message"></textarea>
+                <small id="messageHelp" class="form-text text-muted">(optional)</small>
+            </div>
+        </div>
         <div class="form-row gone" id="form-row3">
             <button type="submit" class="btn btn-primary" id="submitfiles">Submit</button>
         </div>
     </form>
-</div>
-<div>
-    <span id="result"></span>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="/js/create-task.js"></script>

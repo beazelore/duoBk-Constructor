@@ -24,6 +24,8 @@
 .btn-danger {
 margin-left: 10px;
 }
-.btn-container{
+.btn-container,
+.undernavTab,
+#message{
 margin-top:10px;
 }

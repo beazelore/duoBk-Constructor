@@ -13,6 +13,8 @@ public class UploadForm {
     private String title1;
     private String title2;
     private String bookStatus;
+    private Integer book;
+    private String message;
 
     public String getBookStatus() {
         return bookStatus;
@@ -86,6 +88,12 @@ public class UploadForm {
         this.book = book;
     }
 
-    private Integer book;
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

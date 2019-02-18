@@ -11,14 +11,14 @@ import duobk_constructor.logic.book.Paragraph;
 import duobk_constructor.logic.book.Sentence;
 import duobk_constructor.logic.book.duo.DuoParagraph;
 import duobk_constructor.logic.book.duo.DuoSentence;
-import duobk_constructor.model.DuoBook;
-import duobk_constructor.model.Entry;
-import duobk_constructor.model.Task;
+import duobk_constructor.model.*;
 import duobk_constructor.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.xml.sax.SAXException;
@@ -27,6 +27,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -42,6 +44,8 @@ public class TaskController {
     private EntryService entryService;
     @Autowired
     DuoBookService duoBookService;
+    @Autowired
+    HistoryItemService historyService;
 
     @GetMapping(path="/all")
     public ArrayList getAllTasks(){
@@ -79,7 +83,9 @@ public class TaskController {
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void createTask(@ModelAttribute UploadForm form) throws Exception {
+    public void createTask(@ModelAttribute UploadForm form, Principal principal) throws Exception {
+        Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+        User user = userService.getByMail(details.get("email"));
         DuoBook duoBook = duoBookService.findById(form.getBook());
         StringBuilder taskName = new StringBuilder().append(form.getLanguage1()).append('/');
         if(form.getLanguage2().isEmpty() || form.getLanguage2() == null){
@@ -117,13 +123,24 @@ public class TaskController {
             duoBook.setStatus("FIRST_PROCESS");
             duoBookService.save(duoBook);
         }
-
+        // create history Item
+        HistoryItem historyItem = new HistoryItem();
+        historyItem.setStatusBefore("-");
+        historyItem.setStatusAfter("NEW");
+        historyItem.setMoment(new Date());
+        historyItem.setTaskId(task.getId());
+        historyItem.setExplanation("Task has just been created by "+ user.getMail() + ".");
+        historyItem.setMessage(form.getMessage());
+        historyItem.setUserId(user.getId());
+        historyService.save(historyItem);
         return;
     }
 
     @RequestMapping(value = "/preProcess/do")
-    public ResponseEntity<?> processAndSave(@RequestBody IndexesForm indexesForm) throws Exception {
+    public ResponseEntity<?> processAndSave(@RequestBody IndexesForm indexesForm, Principal principal) throws Exception {
         Task task = taskService.getTaskById(indexesForm.getTaskId());
+        Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+        User user = userService.getByMail(details.get("email"));
         DuoBook duoBook = duoBookService.findById(task.getBookId());
         Entry entry1;
         Entry entry2;
@@ -153,6 +170,15 @@ public class TaskController {
         task.setResult("<result></result>");
         task.setStatus("PROCESS");
         taskService.save(task);
+        //creating history item
+        HistoryItem historyItem = new HistoryItem();
+        historyItem.setStatusBefore("NEW");
+        historyItem.setStatusAfter("PROCESS");
+        historyItem.setExplanation("PRE-PROCESS was done by "+ user.getMail() + ".");
+        historyItem.setMoment(new Date());
+        historyItem.setUserId(user.getId());
+        historyItem.setTaskId(task.getId());
+        historyService.save(historyItem);
         return new ResponseEntity<IndexesForm>(indexesForm, HttpStatus.OK);
     }
 
@@ -204,12 +230,23 @@ public class TaskController {
 
     @RequestMapping(value = "/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void update(@ModelAttribute Task task){
+    public void update(@ModelAttribute Task task, Principal principal){
+        Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+        User user = userService.getByMail(details.get("email"));
         Task taskFromDb = taskService.getTaskById(task.getId());
         task.setEntry1_id(taskFromDb.getEntry1_id());
         task.setEntry2_id(taskFromDb.getEntry2_id());
         task.setBad(taskFromDb.getBad());
         taskService.save(task);
+        // creating history event
+        HistoryItem historyItem = new HistoryItem();
+        historyItem.setStatusBefore("UNKNOWN");
+        historyItem.setStatusAfter(task.getStatus());
+        historyItem.setUserId(user.getId());
+        historyItem.setTaskId(task.getId());
+        historyItem.setMoment(new Date());
+        historyItem.setExplanation("Task was edited by user "+ user.getMail() + ".");
+        historyService.save(historyItem);
     }
 
     @RequestMapping(value = "/process/sent/do")
@@ -301,12 +338,25 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/process/submit", consumes = "text/plain")
-    public void submitTask(@RequestParam (value = "id", required = true) String taskId, @RequestBody String result){
+    public void submitTask(@RequestParam (value = "id", required = true) String taskId, @RequestBody String param, Principal principal){
+        String[] params = param.split("!message!"); // that's how i form that param in js. !message! as a separator
+        Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+        User user = userService.getByMail(details.get("email"));
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         task.setStatus("CHECK_NEEDED");
-        task.setResult(result);
+        task.setResult(params[0]);
         task.setUserId(null);
         taskService.save(task);
+        //creating HistoryItem
+        HistoryItem historyItem = new HistoryItem();
+        historyItem.setTaskId(task.getId());
+        historyItem.setUserId(user.getId());
+        historyItem.setStatusBefore("PROCESS");
+        historyItem.setStatusAfter("CHECK_NEEDED");
+        historyItem.setMoment(new Date());
+        historyItem.setExplanation("Task was submited by user "+ user.getMail());
+        historyItem.setMessage(params[1]);
+        historyService.save(historyItem);
 /*        DuoBook book =duoBookService.findById(task.getBookId());
         if(book.getStatus().equals("FIRST_PROCESS")){
             book.setBook(task.getResult());
@@ -328,21 +378,37 @@ public class TaskController {
 
     @RequestMapping(value = "/updateBookValue", consumes = "text/plain")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateBookValue(@RequestParam (value = "id",required = true) String taskId, @RequestBody String value){
+    public void updateBookValue(@RequestParam (value = "id",required = true) String taskId, @RequestBody String resultWithMessage, Principal principal){
+        String[] resultAndMessage = resultWithMessage.split("!message!");
+        Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+        User user = userService.getByMail(details.get("email"));
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         DuoBook duoBook = duoBookService.findById(task.getBookId());
-        duoBook.setBook(value);
+        duoBook.setBook(resultAndMessage[0]);
         if(duoBook.getStatus().equals("FIRST_PROCESS"))
             duoBook.setStatus("PROCESS");
         task.setStatus("DONE");
         taskService.save(task);
         duoBookService.save(duoBook);
+        //creating history item
+        HistoryItem historyItem = new HistoryItem();
+        historyItem.setTaskId(task.getId());
+        historyItem.setUserId(user.getId());
+        historyItem.setMessage(resultAndMessage[1]);
+        historyItem.setExplanation("Task was checked and accepted by " + user.getMail() + ".");
+        historyItem.setMoment(new Date());
+        historyItem.setStatusBefore("CHECK_NEEDED");
+        historyItem.setStatusAfter("DONE");
+        historyService.save(historyItem);
     }
 
     @DeleteMapping(value = "/delete", consumes = "text/plain")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteTask(@RequestBody String taskId){
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
+        for(HistoryItem item : taskHistory)
+            historyService.delete(item);
         taskService.delete(task);
         if(task.getEntry1_id() != null){
             Entry entry1 = entryService.getEntryById(task.getEntry1_id());

@@ -1,9 +1,11 @@
 package duobk_constructor.controller;
 
 import duobk_constructor.model.DuoBook;
+import duobk_constructor.model.HistoryItem;
 import duobk_constructor.model.Task;
 import duobk_constructor.service.DuoBookService;
 import duobk_constructor.service.EntryService;
+import duobk_constructor.service.HistoryItemService;
 import duobk_constructor.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,8 @@ public class BookContrloller {
     TaskService taskService;
     @Autowired
     EntryService entryService;
+    @Autowired
+    HistoryItemService historyService;
     @RequestMapping(value = "/create",method = RequestMethod.POST, consumes = "text/plain")
     public void createBook(@RequestBody String name){
         bookService.create(name,"NEW");
@@ -51,6 +55,9 @@ public class BookContrloller {
         DuoBook book = bookService.findById(Integer.parseInt(bookId));
         List<Task> bookTasks= taskService.getAllWithBookId(book.getId());
         for(Task task : bookTasks){
+            List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
+            for(HistoryItem item : taskHistory)
+                historyService.delete(item);
             taskService.delete(task);
             if(task.getEntry1_id() != null)
                 entryService.delete(entryService.getEntryById(task.getEntry1_id()));

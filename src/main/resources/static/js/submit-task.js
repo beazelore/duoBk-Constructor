@@ -5,6 +5,8 @@ $(document).ready(function(){
     $("#submitTask").on('click', function(){
             var url = "/tasks/process/submit?id="+taskId;
             var value = document.getElementById("result").value;
+            var message = document.getElementById("message").value;
+            value += "!message!" + message;
             $.ajax({
                       type: "POST",
                       url: url,
@@ -40,7 +42,7 @@ $(document).ready(function(){
                                   }
        ]
     });
-    $('#refreshHighlight').on('click', function(){
+    $('#checkNavItem').on('click', function(){
         $('#result').highlightWithinTextarea('update');
     });
 });
