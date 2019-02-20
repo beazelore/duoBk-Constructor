@@ -2,18 +2,14 @@ package duobk_constructor.helpers;
 
 import duobk_constructor.model.Task;
 
-public class TaskWithMail {
+import java.util.Date;
 
+public class TaskWithInfo {
     private Task task;
-
+    private Date date;
     private String mail;
 
-    public TaskWithMail(Task task, String mail) {
-        this.task = task;
-        this.mail = mail;
-    }
-
-    public TaskWithMail() {
+    public TaskWithInfo() {
     }
 
     public Task getTask() {
@@ -22,6 +18,14 @@ public class TaskWithMail {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getMail() {

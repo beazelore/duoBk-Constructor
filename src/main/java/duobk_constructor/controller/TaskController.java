@@ -1,7 +1,7 @@
 package duobk_constructor.controller;
 
 import duobk_constructor.helpers.IndexesForm;
-import duobk_constructor.helpers.TaskWithMail;
+import duobk_constructor.helpers.TaskWithInfo;
 import duobk_constructor.helpers.UploadForm;
 import duobk_constructor.logic.AStar;
 import duobk_constructor.logic.Language;
@@ -12,13 +12,13 @@ import duobk_constructor.logic.book.Sentence;
 import duobk_constructor.logic.book.duo.DuoParagraph;
 import duobk_constructor.logic.book.duo.DuoSentence;
 import duobk_constructor.model.*;
+import duobk_constructor.security.MyGrantedAuthority;
 import duobk_constructor.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.xml.sax.SAXException;
@@ -28,7 +28,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -50,19 +49,54 @@ public class TaskController {
     @GetMapping(path="/all")
     public ArrayList getAllTasks(){
         List<Task> list = new ArrayList<>();
-        ArrayList<TaskWithMail> tasksWithMails = new ArrayList<>();
+        ArrayList<TaskWithInfo> result = new ArrayList<>();
         for(Task task : taskService.getAll()){
             Integer userId = task.getUserId();
             String mail = "NONE";
             if(userId != null)
                 mail = userService.getById(userId).getMail();
-            tasksWithMails.add(new TaskWithMail(task,mail));
+            TaskWithInfo taskWithInfo = new TaskWithInfo();
+            taskWithInfo.setTask(task);
+            taskWithInfo.setMail(mail);
+            List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
+            if(taskHistory.size()>0)
+                taskWithInfo.setDate(taskHistory.get(taskHistory.size()-1).getMoment());
+            result.add(taskWithInfo);
         }
-        return tasksWithMails;
+        return result;
     }
 
     @GetMapping(value = "/allNewWithNoUser")
-    public Iterable<Task> getAllFreeTasks(){return  taskService.getAllNewFree();}
+    public Iterable<Task> getAllNewFreeTasks(){return  taskService.getAllNewFree();}
+
+    @GetMapping(value = "/getTaskPool")
+    public List<TaskWithInfo> getPool(Principal principal){
+        Authentication auth = ((OAuth2Authentication) principal).getUserAuthentication();
+        Object[] authorities = auth.getAuthorities().toArray();
+        boolean isAdmin = false;
+        for(int i =0; i < authorities.length; i++){
+            MyGrantedAuthority authority = (MyGrantedAuthority) authorities[i];
+            if(authority.getAuthority().equals("ROLE_ADMIN"))
+                isAdmin = true;
+        }
+        List<Task> tasks;
+        if(!isAdmin){
+            tasks = taskService.getAllNewFree();
+        }
+        else{
+            tasks = taskService.getAdminPool();
+        }
+        ArrayList<TaskWithInfo> result = new ArrayList<>();
+        for(Task task : tasks){
+            TaskWithInfo taskWithDate = new TaskWithInfo();
+            taskWithDate.setTask(task);
+            List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
+            if(taskHistory.size()>0)
+                taskWithDate.setDate(taskHistory.get(taskHistory.size()-1).getMoment());
+            result.add(taskWithDate);
+        }
+        return result;
+    }
 
     @RequestMapping(value = "/take", method = RequestMethod.POST, consumes = "text/plain")
     public void takeTask(OAuth2Authentication authentication, @RequestBody String id){
@@ -74,11 +108,20 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public List<Task> getUserTasks(OAuth2Authentication authentication) {
+    public List<TaskWithInfo> getUserTasks(OAuth2Authentication authentication) {
         LinkedHashMap<String, Object> properties = (LinkedHashMap<String, Object>) authentication.getUserAuthentication().getDetails();
         String email = (String)properties.get("email");
         List<Task> tasks = taskService.getUserTasks(userService.getUserIdByMail(email));
-        return tasks;
+        ArrayList<TaskWithInfo> result = new ArrayList<>();
+        for(Task task : tasks){
+            TaskWithInfo taskWithDate = new TaskWithInfo();
+            taskWithDate.setTask(task);
+            List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
+            if(taskHistory.size()>0)
+                taskWithDate.setDate(taskHistory.get(taskHistory.size()-1).getMoment());
+            result.add(taskWithDate);
+        }
+        return result;
     }
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
@@ -336,6 +379,12 @@ public class TaskController {
     public String getResult(@RequestParam (value = "id",required = true) String taskId){
         return taskService.getTaskById(Integer.parseInt(taskId)).getResult();
     }
+    @PostMapping(value = "/updateResult", consumes = "text/plain")
+    public void updateResult(@RequestParam (value = "id",required = true) String taskId, @RequestBody String newResult){
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        task.setResult(newResult);
+        taskService.save(task);
+    }
 
     @RequestMapping(value = "/process/submit", consumes = "text/plain")
     public void submitTask(@RequestParam (value = "id", required = true) String taskId, @RequestBody String param, Principal principal){
@@ -388,6 +437,7 @@ public class TaskController {
         if(duoBook.getStatus().equals("FIRST_PROCESS"))
             duoBook.setStatus("PROCESS");
         task.setStatus("DONE");
+        task.setUserId(null);
         taskService.save(task);
         duoBookService.save(duoBook);
         //creating history item

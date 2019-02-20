@@ -26,6 +26,29 @@ margin-left: 10px;
 }
 .btn-container,
 .undernavTab,
+.history-item,
 #message{
 margin-top:10px;
+}
+
+#historyContainer{
+margin-top: 20px;
+height: 70vh;
+overflow-y: scroll;
+}
+h4{
+text-align: center;
+}
+h5{
+background-color: #f0f0f0;
+padding-left: 10px;
+}
+p{
+padding-left: 20px;
+}
+#message{
+height: 70vh;
+}
+#saveChanges{
+margin-left: 15px;
 }

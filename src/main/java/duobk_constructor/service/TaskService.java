@@ -59,6 +59,15 @@ public class TaskService {
         }
         return result;
     }
+    public List<Task> getAdminPool(){
+        List<Task> allFree = taskRepository.findByUserId(null);
+        List<Task> result = new ArrayList<>();
+        for(Task task : allFree){
+            if(task.getStatus().equals("NEW") || task.getStatus().equals("CHECK_NEEDED"))
+                result.add(task);
+        }
+        return result;
+    }
     public Task create(String name, Integer entryId1, Integer entryId2, Integer bookId, String status){
         Task task = new Task();
         task.setName(name);

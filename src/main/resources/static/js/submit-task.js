@@ -22,6 +22,10 @@ $(document).ready(function(){
                    });
     });
 
+    $('#saveChanges').on('click', function(){
+        updateResult(taskId);
+    });
+
     $('#result').highlightWithinTextarea({
        highlight: [
                                   {
@@ -65,6 +69,25 @@ function requestResult(taskId){
               url: url,
               success: function(data, textStatus, jqXHR) {
                 document.getElementById("result").value = data;
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                alert("error");
+              }
+           });
+}
+
+function updateResult(taskId){
+    var url = "/tasks/updateResult?id="+taskId;
+    var value = document.getElementById("result").value;
+    $.ajax({
+              type: "POST",
+              url: url,
+              contentType: "text/plain",
+              data: value,
+              success: function(data, textStatus, jqXHR) {
+              alert("success");
+                //window.location.href="/tasks/submit?id="+taskId;
               },
               error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);
