@@ -16,8 +16,10 @@ $(document).ready(function(){
 
         $('.maincontainer').on('change', 'select.first', function(e){
             var options = $('select:focus option:selected');
+            clearSelected(true);
             var value ="";
             for(var i=0; i< options.length;i++){
+                options[i].selected = true;
                 var myRegexp = /[0-9]+\.  /;
                 var temp = options[i].innerHTML.split(myRegexp).pop();
                 value += temp;
@@ -27,13 +29,15 @@ $(document).ready(function(){
 
         $('.maincontainer').on('change', 'select.second', function(e){
             var options = $('select:focus option:selected');
+            clearSelected(false);
             var value ="";
             for(var i=0; i< options.length;i++){
+                options[i].selected = true;
                 var myRegexp = /[0-9]+\.  /;
                 var temp = options[i].innerHTML.split(myRegexp).pop();
                 value += temp;
             }
-            $('#active1').html(value);
+            $('#active2').html(value);
         });
 
 
@@ -231,3 +235,20 @@ function getBad(taskId){
               }
            });
 }
+
+function clearSelected(first){
+    if(first){
+        var elements = $("select.first option");
+        for(var i = 0; i < elements.length; i++){
+          elements[i].selected = false;
+    }
+   }
+    else{
+        var elements = $("select.second option");
+        console.log(elements);
+        for(var i = 0; i < elements.length; i++){
+            console.log("unselecting", elements[i])
+          elements[i].selected = false;
+    }
+   }
+ }

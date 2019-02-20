@@ -6,7 +6,7 @@ $(document).ready(function(){
             var url = "/tasks/process/submit?id="+taskId;
             var value = document.getElementById("result").value;
             var message = document.getElementById("message").value;
-            value += "!message!" + message;
+            value += "!message! " + message;
             $.ajax({
                       type: "POST",
                       url: url,

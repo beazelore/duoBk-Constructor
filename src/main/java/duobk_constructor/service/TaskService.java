@@ -424,6 +424,7 @@ public class TaskService {
                 Element s1 = (Element) s1List.item(q);
                 if(s1.getAttribute("pIndex").equals(index)){
                     p1.getParentNode().removeChild(p1);
+                    i--;
                     break;
                 }
             }
@@ -435,6 +436,7 @@ public class TaskService {
                 Element s2 = (Element) s2List.item(q);
                 if(s2.getAttribute("pIndex").equals(index)){
                     p2.getParentNode().removeChild(p2);
+                    i--;
                     break;
                 }
             }

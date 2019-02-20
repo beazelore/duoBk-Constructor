@@ -49,7 +49,7 @@ function updateBookValue(taskId){
   url = "/tasks/updateBookValue?id="+taskId;
   var value = document.getElementById("result").value;
   var message = document.getElementById("message").value;
-  value += "!message!" + message;
+  value += "!message! " + message;
   $.ajax({
          type: "POST",
          url: url,

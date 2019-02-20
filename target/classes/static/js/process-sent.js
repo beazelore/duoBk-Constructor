@@ -215,3 +215,20 @@ function getSentProcessHTML(taskId, dpIndex){
               }
            });
 }
+
+function clearSelected(first){
+    if(first){
+        var elements = $("select.first option");
+        for(var i = 0; i < elements.length; i++){
+          elements[i].selected = false;
+    }
+   }
+    else{
+        var elements = $("select.second option");
+        console.log(elements);
+        for(var i = 0; i < elements.length; i++){
+            console.log("unselecting", elements[i])
+          elements[i].selected = false;
+    }
+   }
+ }
