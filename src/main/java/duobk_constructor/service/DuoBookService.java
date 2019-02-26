@@ -4,6 +4,7 @@ import duobk_constructor.model.DuoBook;
 import duobk_constructor.repository.DuoBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -19,11 +20,12 @@ import java.nio.charset.StandardCharsets;
 public class DuoBookService {
     @Autowired
     DuoBookRepository repository;
-    public DuoBook create(String name, String status){
+    public DuoBook create(String name, String status, MultipartFile imageFile) throws IOException {
         DuoBook duoBook = new DuoBook();
         duoBook.setName(name);
         duoBook.setStatus(status);
         duoBook.setBook("<book></book>");
+        duoBook.setImage(imageFile.getBytes());
         return repository.save(duoBook);
     }
     public Iterable<DuoBook> getAll(){

@@ -45,12 +45,19 @@
             </ul>
         </div>
     </nav>
-    <form method="POST"  id="bookCreateForm" autocomplete="off">
+    <form method="POST"  enctype="multipart/form-data" id="bookCreateForm" autocomplete="off">
         <div class="form-row">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input id="name" type="text" aria-describedby="nameHelp" class="form-control" name="name"/>
+                <input id="name" type="text" aria-describedby="nameHelp" class="form-control" name="title1"/>
                 <small id="nameHelp" class="form-text text-muted">Supported formats: epub, fb2, duoBk.</small>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="name">Image:</label>
+                <input id="image" type="file" aria-describedby="fileHelp" class="form-control-file" name="files"/>
+                <small id="fileHelp" class="form-text text-muted">JPG/JPEG (MAX 500KB)</small>
             </div>
         </div>
         <div class="form-row">

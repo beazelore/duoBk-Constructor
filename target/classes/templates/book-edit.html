@@ -46,7 +46,7 @@
 </nav>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="name-status-tab" data-toggle="tab" href="#name-status" role="tab" aria-controls="name-status" aria-selected="true">Name/Status</a>
+        <a class="nav-link active" id="name-status-tab" data-toggle="tab" href="#name-status" role="tab" aria-controls="name-status" aria-selected="true">Info</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="value-tab" data-toggle="tab" href="#value" role="tab" aria-controls="value" aria-selected="false">Content</a>
@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="form-row" id="form_row2">
-                    <div class="col-sm-6 from-group">
+                    <div class="col-sm-6 form-group">
                             <label for="statuspicker" id="labelselect">Status:</label>
                             <select title="Pick status..." class="selectpicker" id="statuspicker" name="status" data-width="100%">
                                 <option value="NEW">NEW</option>
@@ -73,6 +73,13 @@
                                 <option value="READY">READY</option>
                                 <option value="LIVE">LIVE</option>
                             </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-sm-2 form-group">
+                        <img height="100" id="bookImage"/>
+                        <input id="image" type="file" aria-describedby="fileHelp" class="form-control-file" name="uploadedImage"/>
+                        <small id="fileHelp" class="form-text text-muted">JPG/JPEG (MAX 500KB)</small>
                     </div>
                 </div>
             </form>

@@ -1,5 +1,7 @@
 $(document).ready(function(){
     var bookId = findGetParameter("id");
+    var img = document.getElementById("bookImage");
+    img.setAttribute("src","/books/getImage?id=" + bookId);
     getBookInfoAjax(bookId);
 
     $("#submitBookInfo").on('click',function(){
@@ -64,7 +66,20 @@ function getBookInfoAjax(bookId){
 }
 
 function submitFormData(bookId){
-
+    var fileInput = $("#image")[0];
+    if(fileInput.value != ""){
+         var imageFile = fileInput.files[0];
+         var ext = imageFile.name.split('.').pop().toLowerCase();
+         if(ext != "jpg" && ext != "jpeg"){
+            alert("wrong image format");
+            return;
+         }
+         if(imageFile.size > 500000){
+             alert("file is too large. Should be less than 1 MB");
+             return;
+         }
+    }
+    console.log(imageFile);
     var form = $('#infoForm')[0];
     var data = new FormData(form);
     data.append("id",bookId);
@@ -85,7 +100,6 @@ function submitFormData(bookId){
         timeout: 1000000,
         success: function(textStatus, jqXHR) {
             console.log("SUCCESSSSS");
-            alert("agrs");
             window.location.href = "/admin/books";
                     },
         error: function(jqXHR, textStatus, errorThrown) {

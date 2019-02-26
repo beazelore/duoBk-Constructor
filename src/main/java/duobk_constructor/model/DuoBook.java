@@ -1,6 +1,6 @@
 package duobk_constructor.model;
 
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
@@ -16,6 +16,9 @@ public class DuoBook {
     private String book;
     @Column(name = "status")
     private String status;
+    @Column(name = "image")
+    private byte[] image;
+
 
     public Integer getId() {
         return id;
@@ -47,6 +50,14 @@ public class DuoBook {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public DuoBook() {

@@ -1,5 +1,8 @@
 package duobk_constructor.controller;
 
+import duobk_constructor.helpers.IndexesForm;
+import duobk_constructor.helpers.UploadForm;
+import duobk_constructor.helpers.UploadedDuoBook;
 import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.HistoryItem;
 import duobk_constructor.model.Task;
@@ -7,10 +10,15 @@ import duobk_constructor.service.DuoBookService;
 import duobk_constructor.service.EntryService;
 import duobk_constructor.service.HistoryItemService;
 import duobk_constructor.service.TaskService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -24,9 +32,9 @@ public class BookContrloller {
     EntryService entryService;
     @Autowired
     HistoryItemService historyService;
-    @RequestMapping(value = "/create",method = RequestMethod.POST, consumes = "text/plain")
-    public void createBook(@RequestBody String name){
-        bookService.create(name,"NEW");
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public void createBook(@ModelAttribute UploadForm form) throws IOException {
+        bookService.create(form.getTitle1(),"NEW", form.getFiles()[0]);
         return;
     }
 
@@ -44,8 +52,15 @@ public class BookContrloller {
 
     @PostMapping(value = "/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateBook(@ModelAttribute DuoBook duoBook){
-        bookService.save(duoBook);
+    public void updateBook(@ModelAttribute UploadedDuoBook duoBook) throws IOException {
+        DuoBook bookFromDb = bookService.findById(duoBook.getId());
+        bookFromDb.setName(duoBook.getName());
+        bookFromDb.setBook(duoBook.getBook());
+        bookFromDb.setStatus(duoBook.getStatus());
+        if(duoBook.getUploadedImage().getSize() != 0){
+            bookFromDb.setImage(duoBook.getUploadedImage().getBytes());
+        }
+        bookService.save(bookFromDb);
         return;
     }
 
@@ -66,5 +81,14 @@ public class BookContrloller {
         }
         bookService.delete(book);
 
+    }
+
+    @GetMapping(value = "/getImage")
+    public void getImage(@RequestParam(value = "id", required = true) String bookId, HttpServletResponse response) throws IOException {
+        byte[] image = bookService.findById(Integer.parseInt(bookId)).getImage();
+        if(image != null && image.length > 0){
+            InputStream is = new ByteArrayInputStream(image);
+            IOUtils.copy(is, response.getOutputStream());
+        }
     }
 }
