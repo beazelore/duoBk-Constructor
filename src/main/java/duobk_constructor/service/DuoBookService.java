@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 public class DuoBookService {
     @Autowired
     DuoBookRepository repository;
+
     public DuoBook create(String name, String status, MultipartFile imageFile) throws IOException {
         DuoBook duoBook = new DuoBook();
         duoBook.setName(name);
@@ -31,11 +32,14 @@ public class DuoBookService {
     public Iterable<DuoBook> getAll(){
         return repository.findAll();
     }
-    public DuoBook findById(Integer id){
+    public DuoBook getById(Integer id){
         return repository.findById(id).get();
     }
     public void save(DuoBook duoBook){
         repository.save(duoBook);
+    }
+    public void delete(DuoBook book){
+        repository.delete(book);
     }
     public Document getDocumentFromValue(DuoBook duoBook) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -43,7 +47,5 @@ public class DuoBookService {
         Document doc = db.parse(stream);
         return  doc;
     }
-    public void delete(DuoBook book){
-        repository.delete(book);
-    }
+
 }

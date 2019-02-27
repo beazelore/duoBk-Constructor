@@ -25,11 +25,11 @@ function getUserInfoAjax(userId){
             type: "GET",
             url: url,
             success: function(data, textStatus, jqXHR) {
-                console.log(data);
                 document.getElementById("roleLabel").innerHTML = "Role for "+ data.mail;
                 document.getElementById("role").value =data.userType;
             },
             error: function(jqXHR, textStatus, errorThrown) {
+                alert("error, check console for details");
                 console.log("ERROR : ", jqXHR.responseText);
             }
         });
@@ -48,10 +48,10 @@ function submitFormData(userId){
         cache: false,
         timeout: 1000000,
         success: function(textStatus, jqXHR) {
-            console.log("SUCCESSSSS");
             window.location.href = "/admin/users";
-                    },
+        },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
     });

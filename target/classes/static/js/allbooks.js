@@ -23,10 +23,9 @@ function requestBooks(){
         success: function(data, textStatus, jqXHR) {
             var table = document.getElementById("allBooksTable");
             populateTaskTable(table,data);
-            console.log(data);
-            console.log(table);
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
     });

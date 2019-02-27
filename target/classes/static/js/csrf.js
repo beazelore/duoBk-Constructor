@@ -2,7 +2,7 @@ $.ajaxSetup({
     beforeSend: function(xhr, settings) {
         if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE') {
             function getCookie(name) {
-            console.log("in cookies");
+            //console.log("in cookies");
                 var cookieValue = null;
                 if (document.cookie && document.cookie != '') {
                     var cookies = document.cookie.split(';');
@@ -15,8 +15,8 @@ $.ajaxSetup({
                         }
                     }
                 }
-                console.log("returning cookie");
-                console.log(cookieValue);
+                //console.log("returning cookie");
+                //console.log(cookieValue);
                 return cookieValue;
             }
             if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {

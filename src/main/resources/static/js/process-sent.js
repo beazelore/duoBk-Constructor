@@ -8,7 +8,6 @@ $(document).ready(function(){
     if(dpIndex === ""){
         var indexes = JSON.parse(localStorage.getItem("sentIndexes"));
         var postUrl = "/tasks/process/sent/correcting/do?id=" + taskId;
-        console.log("indexes", indexes);
         $.ajax({
             type: "POST",
             url: postUrl,
@@ -17,11 +16,10 @@ $(document).ready(function(){
             success: function(data, textStatus, jqXHR) {
                   var container = document.getElementById("checkContainer");
                   container.innerHTML = container.innerHTML + data;
-                  console.log(data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                alert("error");
+                alert("error, check console for details");
+                console.log("ERROR : ", jqXHR.responseText);
             }
         });
     }
@@ -67,7 +65,6 @@ $(document).ready(function(){
             cacheString = "<dp chapter=\"" + chapterIndex + "\">";
         }
         cacheString += "<ds>"
-        console.log(this.id);
         var options1 = document.getElementById(this.id).parentElement.parentElement.parentElement.firstChild.childNodes[0].childNodes;
         var options2 = document.getElementById(this.id).parentElement.parentElement.parentElement.childNodes[2].childNodes[0].childNodes;
         for(var i=0; i < options1.length;i++){
@@ -84,7 +81,6 @@ $(document).ready(function(){
         var row = document.getElementById(this.id).parentElement.parentElement.parentElement;
         if (row)
             row.parentNode.removeChild(row);
-        console.log(cacheString);
         sessionStorage.setItem("ds", cacheString);
     });
 
@@ -112,7 +108,6 @@ $(document).ready(function(){
     });
 
     $("#connectSent").on('click', function(){
-            //alert('click');
             var ind1 = $('#book1_list').val();
             var ind2 = $('#book2_list').val();
             var cacheString  = sessionStorage.getItem("ds");
@@ -138,12 +133,10 @@ $(document).ready(function(){
             }
             cacheString += "</ds>";
             sessionStorage.setItem("ds", cacheString);
-            console.log(cacheString);
     });
 
     $("#finishProcess").on('click', function(){
         var selects = $("#checkContainer select");
-        console.log("selects:", selects);
         if(selects.length > 0){
             alert("You should finish process first");
             return;
@@ -162,7 +155,6 @@ $(document).ready(function(){
             cacheString += "<ds>";
         for(var i=0; i< options1.length;i++){
             var option = options1[i];
-            console.log(option);
             cacheString += "<s1 pIndex=\"" + option.getAttribute("pIndex")+ "\" index=\"" + option.getAttribute("value") +"\">";
             var myRegexp = /[0-9]+\.  /;
             cacheString += option.innerHTML.split(myRegexp).pop() + "</s1>";
@@ -171,7 +163,6 @@ $(document).ready(function(){
             cacheString += "</ds>";
         if(cacheString.includes("<dp"))
             cacheString += "</dp>";
-        console.log(cacheString);
         var url = "/tasks/process/sent/finish?id=" + taskId;
         $.ajax({
             type: "POST",
@@ -182,8 +173,8 @@ $(document).ready(function(){
                   window.close();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                alert("error");
+                alert("error, check console for details");
+                console.log("ERROR : ", jqXHR.responseText);
             }
         });
     });
@@ -207,11 +198,10 @@ function getSentProcessHTML(taskId, dpIndex){
               success: function(data, textStatus, jqXHR) {
                   var container = document.getElementById("checkContainer");
                   container.innerHTML = container.innerHTML + data;
-                  console.log(data);
               },
               error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                alert("error");
+                  alert("error, check console for details");
+                  console.log("ERROR : ", jqXHR.responseText);
               }
            });
 }
@@ -219,16 +209,13 @@ function getSentProcessHTML(taskId, dpIndex){
 function clearSelected(first){
     if(first){
         var elements = $("select.first option");
-        for(var i = 0; i < elements.length; i++){
+        for(var i = 0; i < elements.length; i++)
           elements[i].selected = false;
     }
-   }
     else{
         var elements = $("select.second option");
         console.log(elements);
-        for(var i = 0; i < elements.length; i++){
-            console.log("unselecting", elements[i])
+        for(var i = 0; i < elements.length; i++)
           elements[i].selected = false;
     }
-   }
- }
+}

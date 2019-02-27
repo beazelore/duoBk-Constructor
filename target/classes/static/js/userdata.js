@@ -3,14 +3,13 @@ $(document).ready(function() {
 
     $.ajax({
                type: "GET",
-               url: "/users/current",
+               url: "/users/currentName",
                success: function(data, textStatus, jqXHR) {
-                        console.log(data);
-                        $('#navbarDropdownMenuUser').html(data.userAuthentication.details.name);
+                    $('#navbarDropdownMenuUser').html(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                        alert("error");
-                        console.log(jqXHR);
+                    alert("error, check console for details");
+                    console.log("ERROR : ", jqXHR.responseText);
                 }
     });
 

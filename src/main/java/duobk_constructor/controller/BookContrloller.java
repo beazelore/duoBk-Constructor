@@ -1,6 +1,5 @@
 package duobk_constructor.controller;
 
-import duobk_constructor.helpers.IndexesForm;
 import duobk_constructor.helpers.UploadForm;
 import duobk_constructor.helpers.UploadedDuoBook;
 import duobk_constructor.model.DuoBook;
@@ -32,10 +31,10 @@ public class BookContrloller {
     EntryService entryService;
     @Autowired
     HistoryItemService historyService;
+
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public void createBook(@ModelAttribute UploadForm form) throws IOException {
         bookService.create(form.getTitle1(),"NEW", form.getFiles()[0]);
-        return;
     }
 
     @GetMapping(path="/getAll")
@@ -47,13 +46,16 @@ public class BookContrloller {
     @GetMapping(value = "/getById")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody DuoBook getById(@RequestParam(value = "id",required = true) String id ){
-        return bookService.findById(Integer.parseInt(id));
+        return bookService.getById(Integer.parseInt(id));
     }
-
+    /**
+     * Updates book's database row when it was updated.
+     * In book-edit.html, when save button clicked this is called.
+     * */
     @PostMapping(value = "/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateBook(@ModelAttribute UploadedDuoBook duoBook) throws IOException {
-        DuoBook bookFromDb = bookService.findById(duoBook.getId());
+        DuoBook bookFromDb = bookService.getById(duoBook.getId());
         bookFromDb.setName(duoBook.getName());
         bookFromDb.setBook(duoBook.getBook());
         bookFromDb.setStatus(duoBook.getStatus());
@@ -63,11 +65,13 @@ public class BookContrloller {
         bookService.save(bookFromDb);
         return;
     }
-
+    /**
+     * Deletes all tasks related with book, all history items related with that tasks and duobook itself
+     * */
     @DeleteMapping(value = "/delete", consumes = "text/plain")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
-    public void updateBook(@RequestBody String bookId){
-        DuoBook book = bookService.findById(Integer.parseInt(bookId));
+    public void deleteBook(@RequestBody String bookId){
+        DuoBook book = bookService.getById(Integer.parseInt(bookId));
         List<Task> bookTasks= taskService.getAllWithBookId(book.getId());
         for(Task task : bookTasks){
             List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
@@ -82,10 +86,12 @@ public class BookContrloller {
         bookService.delete(book);
 
     }
-
+    /**
+     * Copies book's image bytes to HttpServletResponse OutputStream
+     * */
     @GetMapping(value = "/getImage")
     public void getImage(@RequestParam(value = "id", required = true) String bookId, HttpServletResponse response) throws IOException {
-        byte[] image = bookService.findById(Integer.parseInt(bookId)).getImage();
+        byte[] image = bookService.getById(Integer.parseInt(bookId)).getImage();
         if(image != null && image.length > 0){
             InputStream is = new ByteArrayInputStream(image);
             IOUtils.copy(is, response.getOutputStream());

@@ -10,20 +10,12 @@ import org.springframework.stereotype.Service;
 public class EntryService {
     @Autowired
     EntryRepository entryRepository;
-    public Entry create(String value, String author, String title, String lang, boolean fromDuoBook){
+    public Entry create(String value, String author, String title, String lang){
         Entry entry = new Entry();
         entry.setAuthor(author);
         entry.setLanguage(lang);
         entry.setTitle(title);
         entry.setValue(value);
-        entry.setFromDuoBook(fromDuoBook);
-        return entryRepository.save(entry);
-    }
-    public Entry createFromBook(DuoBook duoBook){
-        Entry entry = new Entry();
-        entry.setTitle(duoBook.getName());
-        entry.setLanguage("en");
-        entry.setValue(duoBook.getBook());
         return entryRepository.save(entry);
     }
     public Entry getEntryById(Integer id){

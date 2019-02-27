@@ -10,68 +10,69 @@ $(document).ready(function(){
         deleteTask(taskId);
     });
     $('#unprocessedText').highlightWithinTextarea({
-       highlight: [
-                                  {
-                                      highlight: /(<dp|<\/dp>)/g,
-                                      className: 'red'
-                                  },
-                                  {
-                                      highlight: /(?<=<p1.+?>)(.+?)(?=<)/g,
-                                      className: 'blue'
-                                  },
-                                  {
-                                      highlight: /(?<=<p2.+?>)(.+?)(?=<)/g,
-                                      className: 'yellow'
-                                  }
+       highlight:
+       [
+           {
+               highlight: /(<dp|<\/dp>)/g,
+               className: 'red'
+           },
+           {
+               highlight: /(?<=<p1.+?>)(.+?)(?=<)/g,
+               className: 'blue'
+           },
+           {
+               highlight: /(?<=<p2.+?>)(.+?)(?=<)/g,
+               className: 'yellow'
+           }
        ]
     });
     $('#unprocessed-tab').on('click', function(){
-        console.log("click");
         $('#unprocessedText').highlightWithinTextarea('update');
     });
 
     $('#processedText').highlightWithinTextarea({
-       highlight: [
-                                  {
-                                      highlight: /(<dp|<\/dp>)/g,
-                                      className: 'red'
-                                  },
-                                  {
-                                      highlight: /(<ds>|<\/ds>)/g,
-                                      className: 'green'
-                                  },
-                                  {
-                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
-                                      className: 'blue'
-                                  },
-                                  {
-                                      highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
-                                      className: 'yellow'
-                                  }
+       highlight:
+       [
+           {
+               highlight: /(<dp|<\/dp>)/g,
+               className: 'red'
+           },
+           {
+               highlight: /(<ds>|<\/ds>)/g,
+               className: 'green'
+           },
+           {
+               highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+               className: 'blue'
+           },
+           {
+               highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
+               className: 'yellow'
+           }
        ]
     });
     $('#processed-tab').on('click', function(){
-        console.log("click");
         $('#processedText').highlightWithinTextarea('update');
     });
     $('#resultText').highlightWithinTextarea({
-       highlight: [
-                                  {
-                                      highlight: /(<dp|<\/dp>)/g,
-                                      className: 'red'
-                                  },
-                                  {
-                                      highlight: /(<ds>|<\/ds>)/g,
-                                      className: 'green'
-                                  },
-                                  {
-                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
-                                      className: 'blue'
-                                  },
-                                  {
-                                      highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
-                                      className: 'yellow'
-                                  }
+       highlight:
+       [
+           {
+               highlight: /(<dp|<\/dp>)/g,
+               className: 'red'
+           },
+           {
+               highlight: /(<ds>|<\/ds>)/g,
+               className: 'green'
+           },
+           {
+               highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+               className: 'blue'
+           },
+           {
+               highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
+               className: 'yellow'
+           }
        ]
     });
     $('#result-tab').on('click', function(){
@@ -97,7 +98,6 @@ function getTaskInfoAjax(taskId){
            type: "GET",
            url: url,
            success: function(data, textStatus, jqXHR) {
-               console.log(data);
                document.getElementById("name").setAttribute("value",data.name);
                document.getElementById("unprocessedText").innerHTML=data.unprocessed;
                document.getElementById("processedText").innerHTML=data.processed;
@@ -107,42 +107,39 @@ function getTaskInfoAjax(taskId){
                $('#statuspicker').selectpicker('val', data.status);
            },
            error: function(jqXHR, textStatus, errorThrown) {
-               console.log("ERROR : ", jqXHR.responseText);
+                alert("error, check console for details");
+                console.log("ERROR : ", jqXHR.responseText);
            }
-       });
+    });
 }
 function requestBooks(selectedId){
  $.ajax({
         type: "GET",
         url: "/books/getAll",
         success: function(data, textStatus, jqXHR) {
-            console.log(data);
             var select = document.getElementById("bookpicker");
             populateSelect(select, data);
             $('#bookpicker').selectpicker('refresh');
-            //$('#bookpicker').val(selectedId);
-            console.log("bookId", selectedId);
             $('#bookpicker').selectpicker('val', selectedId);
-            //$('#bookpicker').selectpicker('refresh')
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
-    });
+ });
 }
 function requestUsers(selectedId){
  $.ajax({
         type: "GET",
         url: "/users/getAll",
         success: function(data, textStatus, jqXHR) {
-            console.log(data);
             var select = document.getElementById("userpicker");
             populateSelectUser(select, data);
             $('#userpicker').selectpicker('refresh');
-            console.log("userId", selectedId);
             $('#userpicker').selectpicker('val', selectedId);
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
     });
@@ -170,10 +167,10 @@ function deleteTask(taskId){
         contentType: "text/plain",
         data: taskId,
         success: function(textStatus, jqXHR) {
-            console.log("SUCCESSSSS");
             window.location.href = "/admin/tasks";
-                    },
+        },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
     });
@@ -183,16 +180,12 @@ function submitFormData(taskId){
     var form = $('#infoForm')[0];
     var data = new FormData(form);
     data.append("id",taskId);
-    //var value = $('#book-value').text();
     var unprocessed = document.getElementById("unprocessedText").value;
     var processed = document.getElementById("processedText").value;
     var result = document.getElementById("resultText").value;
     data.append("unprocessed", unprocessed);
     data.append("processed", processed);
     data.append("result", result);
-
-    console.log("task: ", data);
-
 
     $.ajax({
         type: "POST",
@@ -203,12 +196,11 @@ function submitFormData(taskId){
         cache: false,
         timeout: 1000000,
         success: function(textStatus, jqXHR) {
-            console.log("SUCCESSSSS");
             window.location.href = "/admin/tasks";
-                    },
+        },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
     });
-
 }

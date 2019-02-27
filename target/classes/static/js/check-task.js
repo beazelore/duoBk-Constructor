@@ -2,28 +2,30 @@ $(document).ready(function(){
     var taskId = findGetParameter("id")
     requestResult(taskId);
     getTaskHistory(taskId);
+
     $('#confirmTask').on('click',function(){
         updateBookValue(taskId);
     });
 
     $('#result').highlightWithinTextarea({
-       highlight: [
-                                  {
-                                      highlight: /(<dp|<\/dp>)/g,
-                                      className: 'red'
-                                  },
-                                  {
-                                      highlight: /(<ds>|<\/ds>)/g,
-                                      className: 'green'
-                                  },
-                                  {
-                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
-                                      className: 'blue'
-                                  },
-                                  {
-                                      highlight: /(?<=<s .+?>)(.+?)(?=<)/g,
-                                      className: 'yellow'
-                                  }
+       highlight:
+       [
+          {
+              highlight: /(<dp|<\/dp>)/g,
+              className: 'red'
+          },
+          {
+              highlight: /(<ds>|<\/ds>)/g,
+              className: 'green'
+          },
+          {
+              highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+              className: 'blue'
+          },
+          {
+              highlight: /(?<=<s .+?>)(.+?)(?=<)/g,
+              className: 'yellow'
+          }
        ]
     });
     $('#checkNavItem').on('click', function(){
@@ -33,20 +35,20 @@ $(document).ready(function(){
 
 function requestResult(taskId){
   url = "/tasks/integrateIntoBook?id="+taskId;
- $.ajax({
-        type: "GET",
-        url: url,
-        success: function(data, textStatus, jqXHR) {
-            document.getElementById("result").value = data;
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log("ERROR : ", jqXHR.responseText);
-        }
-    });
+  $.ajax({
+         type: "GET",
+         url: url,
+         success: function(data, textStatus, jqXHR) {
+             document.getElementById("result").value = data;
+         },
+         error: function(jqXHR, textStatus, errorThrown) {
+             console.log("ERROR : ", jqXHR.responseText);
+         }
+     });
 }
 
 function updateBookValue(taskId){
-  url = "/tasks/updateBookValue?id="+taskId;
+  url = "/tasks/confirmBook?id="+taskId;
   var value = document.getElementById("result").value;
   var message = document.getElementById("message").value;
   value += "!message! " + message;
@@ -112,23 +114,4 @@ function populateHistory(taskHistory){
         itemContainer.appendChild(userEl);
         container.appendChild(itemContainer);
     }
-}
-
-function updateResult(taskId){
-    var url = "/tasks/updateResult?id="+taskId;
-    var value = document.getElementById("result").value;
-    $.ajax({
-              type: "POST",
-              url: url,
-              contentType: "text/plain",
-              data: value,
-              success: function(data, textStatus, jqXHR) {
-                alert("success");
-                //window.location.href="/admin/tasks/check?id="+taskId;
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                alert("error");
-              }
-           });
 }

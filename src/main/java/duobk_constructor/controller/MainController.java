@@ -5,21 +5,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+/**
+ * Class that maps all the html files to appropriate address
+ * */
 @Controller
 public class MainController {
 
     @RequestMapping("/tasks")
-    public String tasks(Model model, Authentication authentication) { return "tasks.html"; }
+    public String tasks(Model model, Authentication authentication) {
+        return "tasks.html";
+    }
 
     @RequestMapping("/")
     public String defaultRedirect(){
         return "redirect:/tasks";
-    }
-
-    @RequestMapping("/index")
-    public String index(){
-        return "index.html";
     }
 
     @RequestMapping("/admin/createTask")
@@ -40,7 +39,9 @@ public class MainController {
     }
 
     @RequestMapping("/tasks/process")
-    public String procss(){return  "process.html";}
+    public String procss(){
+        return  "process.html";
+    }
 
     @RequestMapping("/admin/books")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -67,10 +68,14 @@ public class MainController {
     }
 
     @RequestMapping("/tasks/process/sent")
-    public String processSent(){return  "process-sent.html";}
+    public String processSent(){
+        return  "process-sent.html";
+    }
 
     @RequestMapping("/tasks/submit")
-    public String submitTask(){return  "submit-task.html";}
+    public String submitTask(){
+        return  "submit-task.html";
+    }
 
     @RequestMapping("/admin/tasks/check")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -88,6 +93,4 @@ public class MainController {
     public String editUser(){
         return "user-edit.html";
     }
-
-
 }

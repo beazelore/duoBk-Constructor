@@ -117,23 +117,11 @@ function ajaxSubmitForm(bookStatus) {
         cache: false,
         timeout: 1000000,
         success: function(textStatus, jqXHR) {
-            //console.log(data);
-            //sessionStorage.setItem('data', data);
-            //$("#result").html(data);
-            console.log("SUCCESSSSS");
             window.location.href="/admin/tasks";
-            //$("#submitButton").prop("disabled", false);
-            //$('#fileUploadForm')[0].reset();
-            //window.location.href = "/tasks/create/new"
-            //console.log("after redirect");
-            //console.log(data);
-                    },
+        },
         error: function(jqXHR, textStatus, errorThrown) {
-
-            //$("#result").html(jqXHR.responseText);
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
-            //$("#submitButton").prop("disabled", false);
-
         }
     });
 
@@ -143,12 +131,12 @@ function requestBooks(){
         type: "GET",
         url: "/books/getAll",
         success: function(data, textStatus, jqXHR) {
-            console.log(data);
             var select = document.getElementById("bookpicker");
             populateSelect(select, data);
-             $('.selectpicker').selectpicker('refresh');
+            $('.selectpicker').selectpicker('refresh');
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
     });

@@ -5,7 +5,7 @@ $(document).ready(function(){
         var table = document.getElementById("allUsersTable");
         sortTable(table, 1);
     });
-    $('#allUsersTable th.mainCell').on('click', function(){
+    $('#allUsersTable th.mailCell').on('click', function(){
         var table = document.getElementById("allUsersTable");
         sortTable(table, 2);
     });
@@ -21,10 +21,9 @@ function requestUsers(){
         success: function(data, textStatus, jqXHR) {
             var table = document.getElementById("allUsersTable");
             populateUserTable(table,data);
-            console.log(data);
-            console.log(table);
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
     });

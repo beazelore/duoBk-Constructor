@@ -4,20 +4,23 @@ import duobk_constructor.model.User;
 import duobk_constructor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
     @Autowired
     UserService userService;
-
-    @RequestMapping(value = "/current",method = RequestMethod.GET)
-    public Principal user(Principal principal) {
-        return principal;
+    /**
+     * Returns name of currently authenticated user
+     * */
+    @RequestMapping(value = "/currentName",method = RequestMethod.GET)
+    public String user(OAuth2Authentication authentication) {
+        LinkedHashMap<String, Object> properties = (LinkedHashMap<String, Object>) authentication.getUserAuthentication().getDetails();
+        return (String)properties.get("name");
     }
 
     @GetMapping(value = "/getAll")

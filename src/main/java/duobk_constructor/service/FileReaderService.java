@@ -17,25 +17,4 @@ public class FileReaderService {
         BookReaderBridge reader = new BookReaderBridge();
         return reader.read(file, new Language(language));
     }
-    public ResponseEntity<?> formBooksResponse(Book book1, Book book2){
-        StringBuilder builder = new StringBuilder();
-        for (Chapter chapter : book1.getChapters()){
-            for (Paragraph p : chapter.getParagraphs()){
-                builder.append("<option");
-                builder.append(" value=").append(p.getIndex()).append('>');
-                builder.append(p.getIndex()).append(". ").append(p.toString());
-                builder.append("</option>");
-            }
-        }
-        builder.append("!separator!");
-        for (Chapter chapter : book2.getChapters()){
-            for (Paragraph p : chapter.getParagraphs()){
-                builder.append("<option");
-                builder.append(" value=").append(p.getIndex()).append('>');
-                builder.append(p.getIndex()).append(". ").append(p.toString());
-                builder.append("</option>");
-            }
-        }
-        return new ResponseEntity<String>(builder.toString(), HttpStatus.OK);
-    }
 }

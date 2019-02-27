@@ -29,16 +29,9 @@ function requestTasks(){
         success: function(data, textStatus, jqXHR) {
             var table = document.getElementById("allTasksTable");
             populateTaskTable(table,data);
-            //var map = new Map(data);
-            console.log("data:");
-            console.log(data);
-            /*for (var i =0; i< Object.keys(data).length; i++) {
-              console.log(Object.keys(data)[i]);
-              console.log(Object.values(data)[i]);
-            }*/
-            //console.log(table);
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
             console.log("ERROR : ", jqXHR.responseText);
         }
     });

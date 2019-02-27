@@ -16,8 +16,8 @@ $(document).ready(function(){
                         window.location.href= "/tasks";
                       },
                       error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(jqXHR);
-                        alert("error");
+                        alert("error, check console for details");
+                        console.log("ERROR : ", jqXHR.responseText);
                       }
                    });
     });
@@ -27,23 +27,24 @@ $(document).ready(function(){
     });
 
     $('#result').highlightWithinTextarea({
-       highlight: [
-                                  {
-                                      highlight: /(<dp|<\/dp>)/g,
-                                      className: 'red'
-                                  },
-                                  {
-                                      highlight: /(<ds>|<\/ds>)/g,
-                                      className: 'green'
-                                  },
-                                  {
-                                      highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
-                                      className: 'blue'
-                                  },
-                                  {
-                                      highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
-                                      className: 'yellow'
-                                  }
+       highlight:
+       [
+          {
+              highlight: /(<dp|<\/dp>)/g,
+              className: 'red'
+          },
+          {
+              highlight: /(<ds>|<\/ds>)/g,
+              className: 'green'
+          },
+          {
+              highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
+              className: 'blue'
+          },
+          {
+              highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
+              className: 'yellow'
+          }
        ]
     });
     $('#checkNavItem').on('click', function(){
@@ -71,8 +72,8 @@ function requestResult(taskId){
                 document.getElementById("result").value = data;
               },
               error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                alert("error");
+                alert("error, check console for details");
+                console.log("ERROR : ", jqXHR.responseText);
               }
            });
 }
@@ -81,17 +82,16 @@ function updateResult(taskId){
     var url = "/tasks/updateResult?id="+taskId;
     var value = document.getElementById("result").value;
     $.ajax({
-              type: "POST",
-              url: url,
-              contentType: "text/plain",
-              data: value,
-              success: function(data, textStatus, jqXHR) {
-              alert("success");
-                //window.location.href="/tasks/submit?id="+taskId;
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                alert("error");
-              }
-           });
+        type: "POST",
+        url: url,
+        contentType: "text/plain",
+        data: value,
+        success: function(data, textStatus, jqXHR) {
+          window.location.href="/tasks/submit?id="+taskId;
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert("error, check console for details");
+          console.log("ERROR : ", jqXHR.responseText);
+        }
+    });
 }

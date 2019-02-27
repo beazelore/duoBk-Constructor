@@ -97,8 +97,10 @@ public class TaskService {
     public List<Task> getAllWithBookId(Integer bookId){
         return taskRepository.findByBookId(bookId);
     }
-
-
+    /**
+     * Returns HTML to be inserted inside of pre-precess.html selects.
+     * So it forms options for two selects separated with "!separator"
+     * */
     public ResponseEntity<?> formBooksResponse(Book book1, Book book2){
         StringBuilder builder = new StringBuilder();
         for (Chapter chapter : book1.getChapters()){
@@ -142,6 +144,7 @@ public class TaskService {
         Document doc = db.parse(stream);
         return prettyFormatXml(doc);
     }
+    // just helper to form string of paragraph indexes separated with comas;
     private String getParagraphsIndexesCSV(ArrayList<Paragraph> paragraphs){
         StringBuilder stringBuilder = new StringBuilder();
         for(int i =0; i < paragraphs.size(); i ++){
@@ -173,8 +176,6 @@ public class TaskService {
     public ResponseEntity<String> unprocessedToHtml(String unprocessed) throws IOException, SAXException, ParserConfigurationException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(unprocessed.getBytes(StandardCharsets.UTF_8));
-        //InputSource is = new InputSource();
-        //is.setCharacterStream(new StringReader(unprocessed));
         Document doc = db.parse(stream);
         NodeList dpList = doc.getElementsByTagName("dp");
 
@@ -206,17 +207,6 @@ public class TaskService {
             builder.append("</select>").append("</div>").append("</div>");
         }
         return new ResponseEntity<String>(builder.toString(), HttpStatus.OK);
-    }
-    private String extractTextChildren(Element parentNode) {
-        NodeList childNodes = parentNode.getChildNodes();
-        String result = new String();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node node = childNodes.item(i);
-            if (node.getNodeType() == Node.TEXT_NODE) {
-                result += node.getNodeValue();
-            }
-        }
-        return result;
     }
 
     public DuoParagraph getDuoParagraphFromUnprocessed(String unprocessed, String dpIndex, String lang1, String lang2) throws ParserConfigurationException, IOException, SAXException {
@@ -322,23 +312,6 @@ public class TaskService {
         }
     }
 
-/*    private String getStringFromDocument(Document doc) {
-        try
-        {
-            DOMSource domSource = new DOMSource(doc);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.transform(domSource, result);
-            return writer.toString();
-        }
-        catch(TransformerException ex)
-        {
-            ex.printStackTrace();
-            return null;
-        }
-    }*/
     private void addDpToBad(Element dpElement, Task task) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         NodeList paragraphs1 = dpElement.getElementsByTagName("p1");
         NodeList paragraphs2 = dpElement.getElementsByTagName("p2");
@@ -606,6 +579,7 @@ public class TaskService {
         taskRepository.save(task);
 
     }
+
     private ArrayList<Element> divideDp(Element dpEl){
         ArrayList<Element> result = new ArrayList<>();
         NodeList dsList = dpEl.getElementsByTagName("ds");
@@ -641,6 +615,7 @@ public class TaskService {
         }
         return result;
     }
+
     public String integrateTask(Task task, DuoBook duoBook, String lang) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(task.getResult().getBytes(StandardCharsets.UTF_8));
@@ -681,6 +656,7 @@ public class TaskService {
         }
         return prettyFormatXml(bookDoc);
     }
+
     public String refactorFirstProcessedBook(String result, String language) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
@@ -695,6 +671,7 @@ public class TaskService {
 
         return prettyFormatXml(resultDoc);
     }
+
     private String prettyFormatXml(Document document) throws TransformerException {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -706,5 +683,16 @@ public class TaskService {
         transformer.transform(source, result);
         String xmlString = result.getWriter().toString();
         return xmlString;
+    }
+    private String extractTextChildren(Element parentNode) {
+        NodeList childNodes = parentNode.getChildNodes();
+        String result = new String();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() == Node.TEXT_NODE) {
+                result += node.getNodeValue();
+            }
+        }
+        return result;
     }
 }

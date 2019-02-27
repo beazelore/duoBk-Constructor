@@ -9,41 +9,37 @@ $(document).ready(function() {
                success: function(data, textStatus, jqXHR) {
                     var table = document.getElementById("alltasksTable");
                     populateTaskTable(table,data, true);
-                    console.log(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                        alert("error");
-                        console.log(jqXHR);
+                    alert("error, check console for details");
+                    console.log("ERROR : ", jqXHR.responseText);
                 }
     });
     $('#logout').on('click',function(){
-    console.log("click");
         $.ajax({
                type: "POST",
                url: "/logout",
                success: function(){
-                window.location.href = "/";
+                    window.location.href = "/";
                }
         });
 
     });
     $('.table').on('click', '.dotaskbtn', function (){
-      var id = this.value;
-      $.ajax({
-                     type: "POST",
-                     data: id,
-                     contentType: "text/plain",
-                     url: "/tasks/take",
-                     success: function(){
-                        console.log("good");
-                        var btnId = "pull"+id;
-                        var btn = document.getElementById(btnId);
-                        var i = btn.parentNode.parentNode.rowIndex;
-                        console.log(i);
-                        document.getElementById("alltasksTable").deleteRow(i);
-                        populateMyTasksAjax();
-                     }
-              });
+        var id = this.value;
+        $.ajax({
+             type: "POST",
+             data: id,
+             contentType: "text/plain",
+             url: "/tasks/take",
+             success: function(){
+                var btnId = "pull"+id;
+                var btn = document.getElementById(btnId);
+                var i = btn.parentNode.parentNode.rowIndex;
+                document.getElementById("alltasksTable").deleteRow(i);
+                populateMyTasksAjax();
+             }
+        });
     });
 
     $('#mytasksTable th.statusCell').on('click', function(){
@@ -80,11 +76,10 @@ function populateMyTasksAjax(){
                   success: function(data, textStatus, jqXHR) {
                        var table = document.getElementById("mytasksTable");
                        populateTaskTable(table,data, false);
-                       console.log(data);
                    },
                    error: function(jqXHR, textStatus, errorThrown) {
-                           alert("error");
-                           console.log(jqXHR);
+                       alert("error, check console for details");
+                       console.log("ERROR : ", jqXHR.responseText);
                    }
        });
 }

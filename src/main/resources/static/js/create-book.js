@@ -11,7 +11,7 @@ $(document).ready(function() {
                 return;
              }
              if(imageFile.size > 500000){
-                 alert("file is too large. Should be less than 1 MB");
+                 alert("file is too large. Should be less than 500 KB");
                  return;
              }
         }
@@ -31,10 +31,10 @@ $(document).ready(function() {
             cache: false,
             timeout: 1000000,
             success: function(textStatus, jqXHR) {
-                console.log("SUCCESSSSS");
                 window.location.href="/admin/books";
             },
             error: function(jqXHR, textStatus, errorThrown) {
+                alert("error, check console for details");
                 console.log("ERROR : ", jqXHR.responseText);
             }
         });
