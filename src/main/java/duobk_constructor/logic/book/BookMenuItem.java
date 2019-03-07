@@ -3,6 +3,7 @@ package duobk_constructor.logic.book;
 import java.util.ArrayList;
 
 public class BookMenuItem {
+    private Integer id;
     private String title;
     private String author;
     private byte[] thumb;
@@ -41,5 +42,13 @@ public class BookMenuItem {
 
     public void setLanguages(ArrayList<String> languages) {
         this.languages = languages;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

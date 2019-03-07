@@ -13,6 +13,7 @@ import duobk_constructor.service.HistoryItemService;
 import duobk_constructor.service.TaskService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,29 +97,18 @@ public class BookContrloller {
                 entryService.delete(entryService.getEntryById(task.getEntry2_id()));
         }
         bookService.delete(book);
-
-    }
-    /**
-     * Copies book's image bytes to HttpServletResponse OutputStream
-     * */
-    @GetMapping(value = "/getImage")
-    public void getImage(@RequestParam(value = "id", required = true) String bookId, HttpServletResponse response) throws IOException {
-        byte[] image = bookService.getById(Integer.parseInt(bookId)).getImage();
-        if(image != null && image.length > 0){
-            InputStream is = new ByteArrayInputStream(image);
-            IOUtils.copy(is, response.getOutputStream());
-        }
     }
     /**
      * Returns list of items to display in menu. (Title, Author, Image, Languages)
      * */
     @GetMapping(value = "/getBookMenuItems")
-    public ArrayList<BookMenuItem> getMenuItems(){
+    public ArrayList<BookMenuItem> getMenuItems(@RequestParam (value = "withImage",required = false)String imageRequired){
         Iterable<DuoBook> duoBooks = bookService.getAll();
         ArrayList<BookMenuItem> menuItems = new ArrayList<>();
         for(DuoBook book : duoBooks){
             BookMenuItem item = new BookMenuItem();
             item.setTitle(book.getName());
+            item.setId(book.getId());
             List<Task> tasks = taskService.getAllWithBookId(book.getId());
             ArrayList<String> languages = new ArrayList<>();
             for(Task task : tasks){
@@ -134,10 +124,16 @@ public class BookContrloller {
                 }
             }
             item.setLanguages(languages);
-            item.setThumb(book.getImage());
+            if(imageRequired!= null && (imageRequired.equals("true") || imageRequired.equals("1")))
+                item.setThumb(book.getImage());
             menuItems.add(item);
         }
         return menuItems;
+    }
+    @GetMapping(value = "/getImage", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getImageBytes(@RequestParam(value = "id", required = true) String bookId){
+        byte[] image = bookService.getById(Integer.parseInt(bookId)).getImage();
+        return image;
     }
     /**
      * Returns content of a book with given ID. (Book column of DuoBook in db)
