@@ -19,10 +19,13 @@ C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\lo
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\helpers\UploadedDuoBook.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book_reader\EpubSAXParser.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book_reader\Fb2SAXEventHandler.java
+C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\service\AuthorService.java
+C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\repository\AuthorRepository.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\Application.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\AStar.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book_reader\EpubSAXEventHandler.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\controller\MainController.java
+C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\controller\AuthorController.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book_reader\Fb2BookReader.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book\Book.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\service\HistoryItemService.java
@@ -32,6 +35,7 @@ C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\lo
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\SentenceBreaker.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\controller\BookContrloller.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book\Sentence.java
+C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\model\Author.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book\duo\DuoChapter.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book_reader\DuobkBookReader.java
 C:\Users\petro\IdeaProjects\doubk_constructor\src\main\java\duobk_constructor\logic\book\duo\Mark.java
