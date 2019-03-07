@@ -101,7 +101,8 @@ function populateHistory(taskHistory){
         h5.innerHTML = h5text;
         itemContainer.appendChild(h5);
         var dateEl = document.createElement("p");
-        dateEl.innerHTML = historyItem.moment;
+        var date = new Date(historyItem.moment);
+        dateEl.innerHTML = date.toLocaleString;
         itemContainer.appendChild(dateEl);
         var descEl = document.createElement("p");
         descEl.innerHTML = historyItem.explanation;

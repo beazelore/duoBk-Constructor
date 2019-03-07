@@ -2,7 +2,9 @@ package duobk_constructor.controller;
 
 import duobk_constructor.helpers.UploadForm;
 import duobk_constructor.helpers.UploadedDuoBook;
+import duobk_constructor.logic.book.BookMenuItem;
 import duobk_constructor.model.DuoBook;
+import duobk_constructor.model.Entry;
 import duobk_constructor.model.HistoryItem;
 import duobk_constructor.model.Task;
 import duobk_constructor.service.DuoBookService;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,7 +37,7 @@ public class BookContrloller {
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public void createBook(@ModelAttribute UploadForm form) throws IOException {
-        bookService.create(form.getTitle1(),"NEW", form.getFiles()[0]);
+        bookService.create(form.getTitle1(),"NEW",Integer.parseInt(form.getAuthor1()), form.getFiles()[0]);
     }
 
     @GetMapping(path="/getAll")
@@ -59,6 +62,7 @@ public class BookContrloller {
         bookFromDb.setName(duoBook.getName());
         bookFromDb.setBook(duoBook.getBook());
         bookFromDb.setStatus(duoBook.getStatus());
+        bookFromDb.setAuthorId(duoBook.getAuthorId());
         if(duoBook.getUploadedImage().getSize() != 0){
             bookFromDb.setImage(duoBook.getUploadedImage().getBytes());
         }
@@ -96,5 +100,42 @@ public class BookContrloller {
             InputStream is = new ByteArrayInputStream(image);
             IOUtils.copy(is, response.getOutputStream());
         }
+    }
+    /**
+     * Returns list of items to display in menu. (Title, Author, Image, Languages)
+     * */
+    @GetMapping(value = "/getBookMenuItems")
+    public ArrayList<BookMenuItem> getMenuItems(){
+        Iterable<DuoBook> duoBooks = bookService.getAll();
+        ArrayList<BookMenuItem> menuItems = new ArrayList<>();
+        for(DuoBook book : duoBooks){
+            BookMenuItem item = new BookMenuItem();
+            item.setTitle(book.getName());
+            List<Task> tasks = taskService.getAllWithBookId(book.getId());
+            ArrayList<String> languages = new ArrayList<>();
+            for(Task task : tasks){
+                if(task.getStatus().equals("LIVE")){
+                    if(task.getEntry1_id() != null){
+                        Entry entry = entryService.getEntryById(task.getEntry1_id());
+                        if(entry.getLanguage().equals("en"))
+                            item.setAuthor(entry.getAuthor());
+                        languages.add(entry.getLanguage());
+                    }
+                    if(task.getEntry2_id() != null)
+                        languages.add(entryService.getEntryById(task.getEntry2_id()).getLanguage());
+                }
+            }
+            item.setLanguages(languages);
+            item.setThumb(book.getImage());
+            menuItems.add(item);
+        }
+        return menuItems;
+    }
+    /**
+     * Returns content of a book with given ID. (Book column of DuoBook in db)
+     * */
+    @GetMapping(value = "/getContent")
+    public String getContent (@RequestParam (value = "id", required = true) String bookId){
+        return bookService.getById(Integer.parseInt(bookId)).getBook();
     }
 }

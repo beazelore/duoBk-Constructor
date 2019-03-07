@@ -18,6 +18,8 @@ public class DuoBook {
     private String status;
     @Column(name = "image")
     private byte[] image;
+    @Column(name = "author_id")
+    private int authorId;
 
 
     public Integer getId() {
@@ -58,6 +60,14 @@ public class DuoBook {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public DuoBook() {

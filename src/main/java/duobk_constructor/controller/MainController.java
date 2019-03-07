@@ -21,7 +21,10 @@ public class MainController {
         return "redirect:/tasks";
     }
 
-    @RequestMapping("/admin/createTask")
+    @RequestMapping("/index")
+    public String indexPage(){return  "index.html";}
+
+    @RequestMapping("/admin/tasks/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createTask(){
         return "create-task.html";
@@ -32,7 +35,7 @@ public class MainController {
         return "pre-process.html";
     }
 
-    @RequestMapping("/admin/createBook")
+    @RequestMapping("/admin/books/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createBook(){
         return "create-book.html";
@@ -88,9 +91,24 @@ public class MainController {
     public String adminUsers(){
         return "allusers.html";
     }
+
     @RequestMapping("/admin/users/edit")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public String editUser(){
         return "user-edit.html";
     }
+
+    @RequestMapping("/admin/authors/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String createAuthor(){
+        return "create-author.html";
+    }
+
+    @RequestMapping("/admin/authors")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String adminAuthors(){return "allauthors.html";}
+
+    @RequestMapping("/admin/authors/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String editAuthor(){return  "author-edit.html";}
 }

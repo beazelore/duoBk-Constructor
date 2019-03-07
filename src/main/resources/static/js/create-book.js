@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    requestAuthors();
     $("#submitBook").click(function(event){
         event.preventDefault();
         var fileInput = $("#image")[0];
@@ -40,3 +40,28 @@ $(document).ready(function() {
         });
     });
 });
+
+function requestAuthors(){
+ $.ajax({
+        type: "GET",
+        url: "/authors/getAll",
+        success: function(data, textStatus, jqXHR) {
+            var select = document.getElementById("authorpicker");
+            populateSelect(select, data);
+            $('.selectpicker').selectpicker('refresh');
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("error, check console for details");
+            console.log("ERROR : ", jqXHR.responseText);
+        }
+    });
+}
+
+function populateSelect(select, arrayData){
+    for(var i =0; i < arrayData.length; i++){
+        var option = document.createElement("option");
+        option.text = arrayData[i].name;
+        option.setAttribute("value", arrayData[i].id);
+        select.add(option);
+    }
+}

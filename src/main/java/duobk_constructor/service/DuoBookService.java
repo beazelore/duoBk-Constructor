@@ -15,18 +15,20 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Service
 public class DuoBookService {
     @Autowired
     DuoBookRepository repository;
 
-    public DuoBook create(String name, String status, MultipartFile imageFile) throws IOException {
+    public DuoBook create(String name, String status,Integer authorId, MultipartFile imageFile) throws IOException {
         DuoBook duoBook = new DuoBook();
         duoBook.setName(name);
         duoBook.setStatus(status);
         duoBook.setBook("<book></book>");
         duoBook.setImage(imageFile.getBytes());
+        duoBook.setAuthorId(authorId);
         return repository.save(duoBook);
     }
     public Iterable<DuoBook> getAll(){
@@ -40,6 +42,9 @@ public class DuoBookService {
     }
     public void delete(DuoBook book){
         repository.delete(book);
+    }
+    public List<DuoBook > getByAuthorId(Integer authorId){
+        return repository.findByAuthorId(authorId);
     }
     public Document getDocumentFromValue(DuoBook duoBook) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();

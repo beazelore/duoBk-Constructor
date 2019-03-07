@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit Author - DuoBk</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="/css/admin-task.css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li>
+                <a class="nav-item nav-link" href="/tasks">Tasks</a>
+            </li>
+            <li>
+                <a class="nav-item nav-link" href="#">Rules</a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item"  href="/admin/books">Books</a>
+                    <a class="dropdown-item"  href="/admin/authors">Authors</a>
+                    <a class="dropdown-item"  href="/admin/tasks">Tasks</a>
+                    <a sec:authorize="hasRole('ROLE_SUPERADMIN')" class="dropdown-item" id="adminUsers" href="/admin/users">Users</a>
+                    <a class="dropdown-item"  href="/admin/books/create">Create Book</a>
+                    <a class="dropdown-item"  href="/admin/tasks/create">Create Task</a>
+                    <a class="dropdown-item" href="/admin/authors/create">Create Author</a>
+                </div>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown link
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" id="logout">Exit</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="name-dates-tab" data-toggle="tab" href="#name-dates" role="tab" aria-controls="name-dates" aria-selected="true">Info</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="biography-tab" data-toggle="tab" href="#biography" role="tab" aria-controls="biography" aria-selected="false">Biography</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="name-dates" role="tabpanel" aria-labelledby="name-dates-tab">
+        <div class="container-fluid" id="formcontainer">
+            <form method="POST" id="infoForm">
+                <div class="form-row">
+                    <div class="col-sm-4 form-group">
+                        <label for="name">Name:</label>
+                        <input id="name" type="text" aria-describedby="nameHelp" class="form-control" name="author1"/>
+                    </div>
+                    <div class=" col-sm-2 form-group">
+                        <label for="name">Birth date:</label>
+                        <input id="birth" type="text" aria-describedby="birthHelp" class="form-control" name="language1"/>
+                        <small id="birthHelp" class="form-text text-muted">DD.MM.YYYY</small>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        <label for="name">Death date:</label>
+                        <input id="death" type="text" aria-describedby="deathHelp" class="form-control" name="language2"/>
+                        <small id="deathHelp" class="form-text text-muted">DD.MM.YYYY</small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-sm-2 form-group">
+                        <img height="100" id="authorImage"/>
+                        <input id="image" type="file" aria-describedby="fileHelp" class="form-control-file" name="files"/>
+                        <small id="fileHelp" class="form-text text-muted">JPG/JPEG (MAX 1MB)</small>
+                    </div>
+                </div>
+            </form>
+            <div class="container-fluid">
+                <div class="col-sm row btn-container" >
+                    <button type="submit" class="btn btn-primary" id="submitAuthorInfo">Save</button>
+                    <button sec:authorize="hasRole('ROLE_SUPERADMIN')" class="btn btn-danger" id="deleteAuthor">Delete</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="tab-pane fade" id="biography" role="tabpanel" aria-labelledby="biography-tab">
+        <div class="container-fluid">
+            <div class="row col-sm-12">
+                <textarea id="biographyArea" name="title1" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/author-edit.js"></script>
+<script type="text/javascript" src="/js/csrf.js"></script>
+<script type="text/javascript" src="/js/userdata.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+</body>
+</html>

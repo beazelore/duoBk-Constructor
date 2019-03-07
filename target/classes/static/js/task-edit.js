@@ -104,6 +104,7 @@ function getTaskInfoAjax(taskId){
                document.getElementById("resultText").innerHTML=data.result;
                requestUsers(data.userId)
                requestBooks(data.bookId);
+               $('#statuspicker').selectpicker('refresh');
                $('#statuspicker').selectpicker('val', data.status);
            },
            error: function(jqXHR, textStatus, errorThrown) {

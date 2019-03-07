@@ -58,6 +58,7 @@ function getBookInfoAjax(bookId){
                console.log(data);
                document.getElementById("name").setAttribute("value",data.name);
                document.getElementById("book-value").innerHTML=data.book;
+               requestAuthors(data.authorId);
                $('#statuspicker').selectpicker('val', data.status);
            },
            error: function(jqXHR, textStatus, errorThrown) {
@@ -122,4 +123,30 @@ function deleteBook(bookId){
             console.log("ERROR : ", jqXHR.responseText);
         }
     });
+}
+
+function requestAuthors(selectedId){
+    $.ajax({
+           type: "GET",
+           url: "/authors/getAll",
+           success: function(data, textStatus, jqXHR) {
+               var select = document.getElementById("authorpicker");
+               populateSelect(select, data);
+               $('#authorpicker').selectpicker('refresh');
+               $('#authorpicker').selectpicker('val', selectedId);
+           },
+           error: function(jqXHR, textStatus, errorThrown) {
+               alert("error, check console for details");
+               console.log("ERROR : ", jqXHR.responseText);
+           }
+    });
+}
+
+function populateSelect(select, arrayData){
+    for(var i =0; i < arrayData.length; i++){
+        var option = document.createElement("option");
+        option.text = arrayData[i].name;
+        option.setAttribute("value", arrayData[i].id);
+        select.add(option);
+    }
 }

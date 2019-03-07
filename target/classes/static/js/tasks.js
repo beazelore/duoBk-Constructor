@@ -117,7 +117,8 @@ function populateTaskTable(table, arrayData, onlyDo){
             cell.innerHTML = arrayData[i].task.name;
             cell.setAttribute("class", "nameCell");
             cell = newRow.insertCell(3);
-            cell.innerHTML = arrayData[i].date;
+            var date = new Date(arrayData[i].date);
+            cell.innerHTML = data.toLocaleString;
             cell.setAttribute("class", "timeCell");
 
         }

@@ -18,8 +18,6 @@ public class Entry {
     private String language;
     @Column(name = "value")
     private String value;
-    @Column(name = "from_duobook")
-    private boolean fromDuoBook;
 
     public Entry() {
     }
@@ -62,13 +60,5 @@ public class Entry {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public boolean getFromDuoBook() {
-        return fromDuoBook;
-    }
-
-    public void setFromDuoBook(boolean fromDuoBook) {
-        this.fromDuoBook = fromDuoBook;
     }
 }

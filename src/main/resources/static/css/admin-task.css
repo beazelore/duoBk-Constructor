@@ -52,6 +52,12 @@ height: 70vh;
 #saveChanges{
 margin-left: 15px;
 }
-#bookImage{
+#bookImage,
+#authorImage{
 margin-bottom: 10px;
+}
+#biographyArea{
+margin-top: 15px;
+width:100%;
+height:50vh;
 }

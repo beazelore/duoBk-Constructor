@@ -4,6 +4,8 @@
     <title>Create Book - DuoBk</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="/js/csrf.js"></script>
     <script type="text/javascript" src="/js/create-book.js"></script>
     <script type="text/javascript" src="/js/userdata.js"></script>
@@ -16,7 +18,7 @@
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li>
-                    <a class="nav-item nav-link" href="#">Tasks</a>
+                    <a class="nav-item nav-link" href="/tasks">Tasks</a>
                 </li>
                 <li>
                     <a class="nav-item nav-link" href="#">Rules</a>
@@ -26,10 +28,13 @@
                         Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" id="adminBooks" href="/admin/books">Books</a>
-                        <a class="dropdown-item" id="adminTasks" href="/admin/tasks">Tasks</a>
-                        <a class="dropdown-item" id="createBook" href="/admin/createBook">Create Book</a>
-                        <a class="dropdown-item" id="createTask" href="/admin/createTask">Create Task</a>
+                        <a class="dropdown-item"  href="/admin/books">Books</a>
+                        <a class="dropdown-item"  href="/admin/authors">Authors</a>
+                        <a class="dropdown-item"  href="/admin/tasks">Tasks</a>
+                        <a sec:authorize="hasRole('ROLE_SUPERADMIN')" class="dropdown-item" id="adminUsers" href="/admin/users">Users</a>
+                        <a class="dropdown-item"  href="/admin/books/create">Create Book</a>
+                        <a class="dropdown-item"  href="/admin/tasks/create">Create Task</a>
+                        <a class="dropdown-item" href="/admin/authors/create">Create Author</a>
                     </div>
                 </li>
             </ul>
@@ -39,7 +44,7 @@
                         Dropdown link
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" id="logout" href="#">Exit</a>
+                        <a class="dropdown-item" id="logout">Exit</a>
                     </div>
                 </li>
             </ul>
@@ -51,6 +56,13 @@
                 <label for="name">Name:</label>
                 <input id="name" type="text" aria-describedby="nameHelp" class="form-control" name="title1"/>
                 <small id="nameHelp" class="form-text text-muted">Supported formats: epub, fb2, duoBk.</small>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-6 form-group">
+                <label for="authorpicker" id="labelselect">Author:</label>
+                <select title="Choose author..." class="selectpicker" data-live-search="true" id="authorpicker"  name="author1" data-width="100%">
+                </select>
             </div>
         </div>
         <div class="form-row">

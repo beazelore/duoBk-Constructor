@@ -43,7 +43,7 @@ function populateTaskTable(table, list){
         for(var i =0; i < list.length; i++){
             var task = list[i].task;
             var mail = list[i].mail;
-            var date = list[i].date;
+            var date = new Date(list[i].date);
             var taskId = task.id;
             var newRow = tbody.insertRow(table.length);
             var cell = newRow.insertCell(0);
@@ -70,7 +70,7 @@ function populateTaskTable(table, list){
             cell.innerHTML = task.name;
             cell.setAttribute("class", "nameCell");
             cell = newRow.insertCell(5);
-            cell.innerHTML = date;
+            cell.innerHTML = date.toLocaleString();
             cell.setAttribute("class", "timeCell");
         }
 }
@@ -153,6 +153,28 @@ function sortTable(table, n) {
       if (switchcount == 0 && dir == "asc") {
         dir = "desc";
         switching = true;
+      }
+    }
+  }
+}
+
+function searchTable() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("allTasksTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[4];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
       }
     }
   }
