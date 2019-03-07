@@ -154,6 +154,11 @@ function populateSelect(select, arrayData){
     }
 }
 function populateSelectUser(select, arrayData){
+    //add NULL vith value -1
+    var option = document.createElement("option");
+    option.text = "null";
+    option.setAttribute("value", -1);
+    select.add(option);
     for(var i =0; i < arrayData.length; i++){
         var option = document.createElement("option");
         option.text = arrayData[i].mail;

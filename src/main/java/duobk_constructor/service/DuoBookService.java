@@ -34,6 +34,9 @@ public class DuoBookService {
     public Iterable<DuoBook> getAll(){
         return repository.findAll();
     }
+    public List<Object> getAllForMenu(){
+        return repository.getAllBooksForMenu();
+    }
     public DuoBook getById(Integer id){
         return repository.findById(id).get();
     }

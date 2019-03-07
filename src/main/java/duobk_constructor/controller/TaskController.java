@@ -111,41 +111,22 @@ public class TaskController {
         historyItem.setUserId(user.getId());
         historyService.save(historyItem);
     }
-
     /**
-     * Attaches to each task it's current user and date of last modification
+     * Returns list of Objects, where Object is array that consist of values in next order:
+     * Id, Name, Status, user mail, last modified
      * */
-    @GetMapping(path="/all") // used in alltasks.js (for admins to modify tasks)
-    public ArrayList<TaskWithInfo> getAllTasks(){
-        ArrayList<TaskWithInfo> result = new ArrayList<>();
-
-        for(Task task : taskService.getAll()){
-            // get mail of current owner
-            Integer userId = task.getUserId();
-            String mail = "NONE";
-            if(userId != null)
-                mail = userService.getById(userId).getMail();
-            // resulting object
-            TaskWithInfo taskWithInfo = new TaskWithInfo();
-            taskWithInfo.setTask(task);
-            taskWithInfo.setMail(mail);
-            // get last modified date
-            List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
-            if(taskHistory.size()>0)
-                taskWithInfo.setDate(taskHistory.get(taskHistory.size()-1).getMoment());
-            // add to resulting list
-            result.add(taskWithInfo);
-        }
-        return result;
-    }
+    @GetMapping(path = "/getAllForMenu")
+    public List<Object> getAllForMenu(){return taskService.getAllForMenu();}
     /**
      * Forms pool for users according to their authority.
      * Simple users get all NEW tasks with no current user.
      * Admins get all NEW/DONE tasks with no current user.
      * Also last modified date is attached to each resulting task.
+     * @return  list of Objects, where Object is array that consist of values in next order:
+     * taks id, task name, task status, task last modified
      * */
     @GetMapping(value = "/getTaskPool")
-    public List<TaskWithInfo> getPool(Principal principal){
+    public List<Object> getPool(Principal principal){
         // detect if user is an admin
         Authentication auth = ((OAuth2Authentication) principal).getUserAuthentication();
         Object[] authorities = auth.getAuthorities().toArray();
@@ -159,22 +140,11 @@ public class TaskController {
         // Pool for admins is all NEW/DONE tasks with no current user
         List<Task> tasks;
         if(!isAdmin){
-            tasks = taskService.getAllNewFree();
+            return taskService.getUserPool();
         }
         else{
-            tasks = taskService.getAdminPool();
+            return taskService.getAdminPool();
         }
-        // forming resulting list (attaching last modified date to task)
-        ArrayList<TaskWithInfo> result = new ArrayList<>();
-        for(Task task : tasks){
-            TaskWithInfo taskWithDate = new TaskWithInfo();
-            taskWithDate.setTask(task);
-            List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
-            if(taskHistory.size()>0)
-                taskWithDate.setDate(taskHistory.get(taskHistory.size()-1).getMoment());
-            result.add(taskWithDate);
-        }
-        return result;
     }
     /**
      * Sets user_id value for task row in db.
@@ -187,26 +157,15 @@ public class TaskController {
         taskService.setUserId(Integer.parseInt(id), userId);
     }
     /**
-     * Get List of tasks with last modified date attached to each.
+     * Returns list of user's tasks like Objects, where Object is array that consist of values in next order:
+     * task id, task name, task status, task last modified
      * */
     @GetMapping(value = "/user")
-    public List<TaskWithInfo> getUserTasks(OAuth2Authentication authentication) {
+    public List<Object> getUserTasks(OAuth2Authentication authentication) {
         // get user mail
         LinkedHashMap<String, Object> properties = (LinkedHashMap<String, Object>) authentication.getUserAuthentication().getDetails();
         String email = (String)properties.get("email");
-        // get all user's tasks
-        List<Task> tasks = taskService.getUserTasks(userService.getUserIdByMail(email));
-        // attach last modified date to each task
-        ArrayList<TaskWithInfo> result = new ArrayList<>();
-        for(Task task : tasks){
-            TaskWithInfo taskWithDate = new TaskWithInfo();
-            taskWithDate.setTask(task);
-            List<HistoryItem> taskHistory = historyService.getTaskHistory(task.getId());
-            if(taskHistory.size()>0)
-                taskWithDate.setDate(taskHistory.get(taskHistory.size()-1).getMoment());
-            result.add(taskWithDate);
-        }
-        return result;
+        return taskService.getUserTasks(email);
     }
     /**
      * Does auto-connecting process, forms unprocessed from auto-connecting result,
@@ -323,6 +282,8 @@ public class TaskController {
         task.setEntry1_id(taskFromDb.getEntry1_id());
         task.setEntry2_id(taskFromDb.getEntry2_id());
         task.setBad(taskFromDb.getBad());
+        if(task.getUserId() == -1)
+            task.setUserId(null);
         taskService.save(task);
         // creating history event
         HistoryItem historyItem = new HistoryItem();

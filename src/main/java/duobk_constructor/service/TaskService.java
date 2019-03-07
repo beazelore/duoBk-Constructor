@@ -38,29 +38,19 @@ public class TaskService {
     @Autowired
     TaskRepository taskRepository;
 
-    public List<Task> getUserTasks(Integer userId){
-        return taskRepository.findByUserId(userId);
+    public List<Object> getUserTasks(Integer userId){
+        return taskRepository.getUserTasks(userId);
+    }
+    public List<Object> getUserTasks(String mail){
+        return taskRepository.getUserTasks(mail);
     }
     public Iterable<Task> getAll(){
         return taskRepository.findAll();
     }
-    public List<Task> getAllNewFree(){
-        List<Task> allFree = taskRepository.findByUserId(null);
-        List<Task> result = new ArrayList<>();
-        for(Task task : allFree){
-            if(task.getStatus().equals("NEW"))
-                result.add(task);
-        }
-        return result;
-    }
-    public List<Task> getAdminPool(){
-        List<Task> allFree = taskRepository.findByUserId(null);
-        List<Task> result = new ArrayList<>();
-        for(Task task : allFree){
-            if(task.getStatus().equals("NEW") || task.getStatus().equals("CHECK_NEEDED"))
-                result.add(task);
-        }
-        return result;
+    public List<Object> getAllForMenu(){return taskRepository.getAllForMenu();}
+    public List<Object> getUserPool(){return taskRepository.getUserPool();}
+    public List<Object> getAdminPool(){
+        return taskRepository.getAdminPool();
     }
     public Task create(String name, Integer entryId1, Integer entryId2, Integer bookId, String status){
         Task task = new Task();

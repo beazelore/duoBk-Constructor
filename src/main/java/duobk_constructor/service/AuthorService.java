@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AuthorService {
@@ -49,4 +50,5 @@ public class AuthorService {
         repository.delete(author);
     }
     public Iterable<Author> getAll(){return repository.findAll();}
+    public List<Object> getAllForMenu(){return repository.getAllForMenu();}
 }

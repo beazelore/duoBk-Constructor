@@ -45,6 +45,14 @@ public class BookContrloller {
     public @ResponseBody Iterable<DuoBook> getAllBooks(){
         return bookService.getAll();
     }
+    /**
+     * Returns list of Objects, where Object consist of Id, Name, Status
+     * */
+    @GetMapping(path = "/getAllForMenu")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<Object> getAllForMenu(){
+        return bookService.getAllForMenu();
+    }
 
     @GetMapping(value = "/getById")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

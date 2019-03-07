@@ -15,7 +15,7 @@ $(document).ready(function(){
 function requestAuthors(){
  $.ajax({
         type: "GET",
-        url: "/authors/getAll",
+        url: "/authors/getAllForMenu",
         success: function(data, textStatus, jqXHR) {
             var table = document.getElementById("allAuthorsTable");
             populateAuthorTable(table,data);
@@ -30,7 +30,7 @@ function populateAuthorTable(table, arrayData){
         var tbody = table.getElementsByTagName('tbody')[0];
         tbody.innerHTML = "";
         for(var i =0; i < arrayData.length; i++){
-            var authorId = arrayData[i].id;
+            var authorId = arrayData[i][0];
             var newRow = tbody.insertRow(table.length);
             var cell = newRow.insertCell(0);
             cell.innerHTML = "<a class=\"btn btn-default\" href=\"/admin/authors/edit?id="+authorId+"\">" +
@@ -40,7 +40,7 @@ function populateAuthorTable(table, arrayData){
             cell.innerHTML = authorId;
             cell.setAttribute("class", "idCell");
             cell = newRow.insertCell(2);
-            cell.innerHTML = arrayData[i].name;
+            cell.innerHTML = arrayData[i][1];
             cell.setAttribute("class", "nameCell");
         }
 }

@@ -45,6 +45,9 @@ public class AuthorController {
         return authorService.getAll();
     }
 
+    @GetMapping(value = "/getAllForMenu")
+    public List<Object> getAllForMenu(){return authorService.getAllForMenu();}
+
     /**
      * Copies book's image bytes to HttpServletResponse OutputStream
      * */

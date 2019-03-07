@@ -30,7 +30,6 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: "/tasks/preProcess/do",
-            dataType: "json",
             contentType: "application/json",
             data: JSON.stringify(indexes),
             success: function(textStatus, jqXHR) {
@@ -40,6 +39,8 @@ $(document).ready(function() {
             error: function(jqXHR, textStatus, errorThrown) {
                 alert("error, check console for details");
                 console.log("ERROR : ", jqXHR.responseText);
+                console.log(textStatus);
+                console.log(jqXHR);
             }
         });
     }

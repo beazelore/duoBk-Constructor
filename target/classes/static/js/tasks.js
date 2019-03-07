@@ -87,7 +87,8 @@ function populateTaskTable(table, arrayData, onlyDo){
         var tbody = table.getElementsByTagName('tbody')[0];
         tbody.innerHTML = "";
         for(var i =0; i < arrayData.length; i++){
-            var taskId = arrayData[i].task.id;
+            var taskId = arrayData[i][0];
+            var status = arrayData[i][2];
             var newRow = tbody.insertRow(table.length);
             var cell = newRow.insertCell(0);
             if(onlyDo == true)
@@ -95,7 +96,7 @@ function populateTaskTable(table, arrayData, onlyDo){
               " id=\"" + "pull"+taskId+"\" "+"value=\""+taskId+"\">"+
               "<i class=\"fa fa-briefcase\" ></i>  Do</button>"
             else{
-                if(arrayData[i].task.status == "CHECK_NEEDED"){
+                if(status == "CHECK_NEEDED"){
                      cell.innerHTML = "<a class=\"btn btn-default checkTaskbtn\" href=\"/admin/tasks/check?id="+taskId+"\" value=\""+taskId+"\""+"id=\""+"checkTask"+taskId+"\">"+
                                        "<i class=\"fa fa-check\" aria-hidden=\"true\"></i></a>";
                 }
@@ -111,16 +112,15 @@ function populateTaskTable(table, arrayData, onlyDo){
 
             cell.setAttribute("class", "actionCell");
             cell = newRow.insertCell(1);
-            cell.innerHTML = arrayData[i].task.status;
+            cell.innerHTML = status;
             cell.setAttribute("class", "statusCell");
             cell = newRow.insertCell(2);
-            cell.innerHTML = arrayData[i].task.name;
+            cell.innerHTML = arrayData[i][1];
             cell.setAttribute("class", "nameCell");
             cell = newRow.insertCell(3);
-            var date = new Date(arrayData[i].date);
-            cell.innerHTML = data.toLocaleString;
+            var date = new Date(arrayData[i][3]);
+            cell.innerHTML = date.toLocaleString();
             cell.setAttribute("class", "timeCell");
-
         }
 }
 

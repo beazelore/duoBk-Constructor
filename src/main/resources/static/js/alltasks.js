@@ -25,7 +25,7 @@ $(document).ready(function(){
 function requestTasks(){
  $.ajax({
         type: "GET",
-        url: "/tasks/all",
+        url: "/tasks/getAllForMenu",
         success: function(data, textStatus, jqXHR) {
             var table = document.getElementById("allTasksTable");
             populateTaskTable(table,data);
@@ -37,17 +37,16 @@ function requestTasks(){
     });
 }
 
-function populateTaskTable(table, list){
+function populateTaskTable(table, array){
         var tbody = table.getElementsByTagName('tbody')[0];
         tbody.innerHTML = "";
-        for(var i =0; i < list.length; i++){
-            var task = list[i].task;
-            var mail = list[i].mail;
-            var date = new Date(list[i].date);
-            var taskId = task.id;
+        for(var i =0; i < array.length; i++){
+            var taskId = array[i][0];
+            var name = array[i][1];
+            var status = array[i][2];
             var newRow = tbody.insertRow(table.length);
             var cell = newRow.insertCell(0);
-            if(task.status != "CHECK_NEEDED"){
+            if(status != "CHECK_NEEDED"){
                 cell.innerHTML = "<a class=\"btn btn-default\" href=\"/admin/tasks/edit?id="+taskId+"\">" +
                 "<i aria-hidden=\"true\" class=\"fa fa-wrench\" ></i></a>";
             }
@@ -61,15 +60,16 @@ function populateTaskTable(table, list){
             cell.innerHTML = taskId;
             cell.setAttribute("class", "idCell");
             cell = newRow.insertCell(2);
-            cell.innerHTML = task.status;
+            cell.innerHTML = status;
             cell.setAttribute("class", "statusCell");
             cell = newRow.insertCell(3);
-            cell.innerHTML = mail;
+            cell.innerHTML = array[i][3];
             cell.setAttribute("class", "statusCell");
             cell = newRow.insertCell(4);
-            cell.innerHTML = task.name;
+            cell.innerHTML = name;
             cell.setAttribute("class", "nameCell");
             cell = newRow.insertCell(5);
+            var date = new Date(array[i][4]);
             cell.innerHTML = date.toLocaleString();
             cell.setAttribute("class", "timeCell");
         }

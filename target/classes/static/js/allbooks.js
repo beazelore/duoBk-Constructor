@@ -19,10 +19,10 @@ $(document).ready(function(){
 function requestBooks(){
  $.ajax({
         type: "GET",
-        url: "/books/getAll",
+        url: "/books/getAllForMenu",
         success: function(data, textStatus, jqXHR) {
             var table = document.getElementById("allBooksTable");
-            populateTaskTable(table,data);
+            populateBookTable(table,data);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert("error, check console for details");
@@ -30,11 +30,11 @@ function requestBooks(){
         }
     });
 }
-function populateTaskTable(table, arrayData){
+function populateBookTable(table, arrayData){
         var tbody = table.getElementsByTagName('tbody')[0];
         tbody.innerHTML = "";
         for(var i =0; i < arrayData.length; i++){
-            var bookId = arrayData[i].id;
+            var bookId = arrayData[i][0];
             var newRow = tbody.insertRow(table.length);
             var cell = newRow.insertCell(0);
             cell.innerHTML = "<a class=\"btn btn-default\" href=\"/admin/books/edit?id="+bookId+"\">" +
@@ -44,10 +44,10 @@ function populateTaskTable(table, arrayData){
             cell.innerHTML = bookId;
             cell.setAttribute("class", "idCell");
             cell = newRow.insertCell(2);
-            cell.innerHTML = arrayData[i].status;
+            cell.innerHTML = arrayData[i][2];
             cell.setAttribute("class", "statusCell");
             cell = newRow.insertCell(3);
-            cell.innerHTML = arrayData[i].name;
+            cell.innerHTML = arrayData[i][1];
             cell.setAttribute("class", "nameCell");
         }
 }
