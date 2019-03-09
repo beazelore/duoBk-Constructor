@@ -3,6 +3,16 @@ $(document).ready(function(){
     getUnprocessed(taskId);
     getBad(taskId);
 
+    $('.maincontainer').on('dblclick', 'select.first option',function() {
+      var textArea = document.getElementById("active1");
+      textArea.select();
+      document.execCommand("copy");
+    });
+    $('.maincontainer').on('dblclick', 'select.second option',function() {
+      var textArea = document.getElementById("active2");
+      textArea.select();
+      document.execCommand("copy");
+    });
     $('.maincontainer').on('change', 'select.first', function(e){
         var options = $('select:focus option:selected');
         clearSelected(true);
@@ -49,6 +59,16 @@ $(document).ready(function(){
         $('#correctingActive2').html(value);
     });
 
+    $('#book1_list').on('dblclick', 'option',function() {
+      var textArea = document.getElementById("correctingActive1");
+      textArea.select();
+      document.execCommand("copy");
+    });
+    $('#book2_list').on('dblclick', 'option',function() {
+      var textArea = document.getElementById("correctingActive2");
+      textArea.select();
+      document.execCommand("copy");
+    });
     $('.container-fluid').on('click','.btn-success',function(){
         var url = "/tasks/process/sent?id="+taskId+"&index="+this.id+ "&chapter=" + this.getAttribute("chapter");
         openInNewTab(url);

@@ -80,15 +80,15 @@ public class TaskController {
         Task task = new Task();
         if(form.getBookStatus().equals("NEW")){
             book1 = fileReaderService.read(form.getFiles()[0], form.getLanguage1());
-            entry1= entryService.create(book1.toXML(),form.getAuthor1(),form.getTitle1(),form.getLanguage1());
+            entry1= entryService.create(book1,form.getAuthor1(),form.getTitle1(),form.getLanguage1());
             book2 = fileReaderService.read(form.getFiles()[1],form.getLanguage2());
-            entry2 = entryService.create(book2.toXML(), form.getAuthor2(),form.getTitle2(),form.getLanguage2());
+            entry2 = entryService.create(book2, form.getAuthor2(),form.getTitle2(),form.getLanguage2());
             task.setEntry1_id(entry1.getId());
         }
         else{
             // if only one new entry, create only entry2
             book2 = fileReaderService.read(form.getFiles()[0],form.getLanguage1());
-            entry2 = entryService.create(book2.toXML(), form.getAuthor1(),form.getTitle1(),form.getLanguage1());
+            entry2 = entryService.create(book2, form.getAuthor1(),form.getTitle1(),form.getLanguage1());
         }
         task.setName(taskName.toString());
         task.setEntry2_id(entry2.getId());

@@ -77,8 +77,8 @@ function submitFormData(bookId){
             alert("wrong image format");
             return;
          }
-         if(imageFile.size > 500000){
-             alert("file is too large. Should be less than 500 KB");
+         if(imageFile.size > 100000){
+             alert("file is too large. Should be less than 100 KB");
              return;
          }
     }

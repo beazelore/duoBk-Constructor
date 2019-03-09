@@ -2,7 +2,7 @@ $(document).ready(function(){
     var taskId = findGetParameter("id");
     getTaskInfoAjax(taskId);
 
-    $(":submit").on('click',function(){
+    $("#submitTaskInfo").on('click',function(){
         event.preventDefault();
         submitFormData(taskId);
     });
@@ -102,7 +102,9 @@ function getTaskInfoAjax(taskId){
                document.getElementById("unprocessedText").innerHTML=data.unprocessed;
                document.getElementById("processedText").innerHTML=data.processed;
                document.getElementById("resultText").innerHTML=data.result;
-               requestUsers(data.userId)
+               if(data.userId == null)
+                requestUsers(-1);
+               else  requestUsers(data.userId);
                requestBooks(data.bookId);
                $('#statuspicker').selectpicker('refresh');
                $('#statuspicker').selectpicker('val', data.status);
@@ -116,7 +118,7 @@ function getTaskInfoAjax(taskId){
 function requestBooks(selectedId){
  $.ajax({
         type: "GET",
-        url: "/books/getAll",
+        url: "/books/getBookMenuItems?withImage=0",
         success: function(data, textStatus, jqXHR) {
             var select = document.getElementById("bookpicker");
             populateSelect(select, data);
@@ -148,7 +150,7 @@ function requestUsers(selectedId){
 function populateSelect(select, arrayData){
     for(var i =0; i < arrayData.length; i++){
         var option = document.createElement("option");
-        option.text = arrayData[i].name;
+        option.text = arrayData[i].title;
         option.setAttribute("value", arrayData[i].id);
         select.add(option);
     }

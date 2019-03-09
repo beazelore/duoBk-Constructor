@@ -9,6 +9,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -84,23 +87,29 @@ public class Book {
     }
 
     private Language language;
-    public String toXML(){
-        StringBuilder builder = new StringBuilder();
-        builder.append("<book>");
-        for (Chapter chapter : chapters){
-            builder.append("<chapter>");
-            for (Paragraph paragraph : chapter.getParagraphs()){
-                builder.append("<p>");
-                for (Sentence sentence : paragraph.getSentences()){
-                    builder.append("<s>").append(sentence.toString()).append("</s>");
-                }
-                builder.append("</p>");
-            }
-            builder.append("</chapter>");
-        }
+    public Document toDocument() throws ParserConfigurationException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = dbf.newDocumentBuilder();
+        Document doc = builder.newDocument();
 
-        builder.append("</book>");
-        return builder.toString();
+        // create the root element node
+        Element bookEl = doc.createElement("book");
+        for (Chapter chapter : chapters){
+            Element chapterEl = doc.createElement("chapter");
+            for (Paragraph paragraph : chapter.getParagraphs()){
+                Element pEl = doc.createElement("p");
+                for (Sentence sentence : paragraph.getSentences()){
+                    Element sEl = doc.createElement("s");
+                    Node textNode = doc.createTextNode(sentence.toString());
+                    sEl.appendChild(textNode);
+                    pEl.appendChild(sEl);
+                }
+                chapterEl.appendChild(pEl);
+            }
+            bookEl.appendChild(chapterEl);
+        }
+        doc.appendChild(bookEl);
+        return doc;
     }
     public Book(String XML, Language language) throws Exception {
         Fb2BookReader reader = new Fb2BookReader();

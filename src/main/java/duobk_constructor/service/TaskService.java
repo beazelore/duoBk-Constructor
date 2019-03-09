@@ -656,7 +656,7 @@ public class TaskService {
         return prettyFormatXml(resultDoc);
     }
 
-    private String prettyFormatXml(Document document) throws TransformerException {
+    public static String prettyFormatXml(Document document) throws TransformerException {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "5");

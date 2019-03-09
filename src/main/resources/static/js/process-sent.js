@@ -37,6 +37,16 @@ $(document).ready(function(){
          $('#checkActive2').html(textSelected.split(myRegexp).pop());
     });
 
+    $('.container-fluid').on('dblclick', 'select.first option',function() {
+      var textArea = document.getElementById("checkActive1");
+      textArea.select();
+      document.execCommand("copy");
+    });
+    $('.container-fluid').on('dblclick', 'select.second option',function() {
+      var textArea = document.getElementById("checkActive2");
+      textArea.select();
+      document.execCommand("copy");
+    });
     $('#book1_list').on('change', function(e){
         var options = $('#book1_list option:selected');
         var value ="";
@@ -59,6 +69,16 @@ $(document).ready(function(){
         $('#correctingActive2').html(value);
     });
 
+    $('#book1_list').on('dblclick', 'option',function() {
+      var textArea = document.getElementById("correctingActive1");
+      textArea.select();
+      document.execCommand("copy");
+    });
+    $('#book2_list').on('dblclick', 'option',function() {
+      var textArea = document.getElementById("correctingActive2");
+      textArea.select();
+      document.execCommand("copy");
+    });
     $('.container-fluid').on('click','.btn-success',function(){
         var cacheString  = sessionStorage.getItem("ds");
         if(cacheString === null){
