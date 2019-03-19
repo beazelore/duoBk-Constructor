@@ -16,8 +16,6 @@ public class Task {
     private Integer id;
     @Column(name = "unprocessed")
     private String unprocessed;
-    @Column(name = "processed")
-    private String processed;
     @Column(name = "status")
     private String status;
     @Column(name = "result")
@@ -34,6 +32,10 @@ public class Task {
     private String name;
     @Column(name = "bad")
     private String bad;
+    @Column(name = "unprocessed_1")
+    private String unprocessed1;
+    @Column(name = "unprocessed_2")
+    private String unprocessed2;
 
 
     public Integer getId() {
@@ -50,14 +52,6 @@ public class Task {
 
     public void setUnprocessed(String unprocessed) {
         this.unprocessed = unprocessed;
-    }
-
-    public String getProcessed() {
-        return processed;
-    }
-
-    public void setProcessed(String processed) {
-        this.processed = processed;
     }
 
     public String getStatus() {
@@ -122,5 +116,21 @@ public class Task {
 
     public void setBad(String bad) {
         this.bad = bad;
+    }
+
+    public String getUnprocessed1() {
+        return unprocessed1;
+    }
+
+    public void setUnprocessed1(String unprocessed1) {
+        this.unprocessed1 = unprocessed1;
+    }
+
+    public String getUnprocessed2() {
+        return unprocessed2;
+    }
+
+    public void setUnprocessed2(String unprocessed2) {
+        this.unprocessed2 = unprocessed2;
     }
 }

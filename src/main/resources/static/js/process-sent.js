@@ -1,6 +1,7 @@
 $(document).ready(function(){
     var taskId = findGetParameter("id");
     var dpIndex = findGetParameter("index");
+    var fromProcess = findGetParameter("formProcess");
     var chapterIndex = findGetParameter("chapter");
     sessionStorage.removeItem("ds");
     //if we come here from correcting tab of process, no dpIndex will be specified
@@ -8,6 +9,9 @@ $(document).ready(function(){
     if(dpIndex === ""){
         var indexes = JSON.parse(localStorage.getItem("sentIndexes"));
         var postUrl = "/tasks/process/sent/correcting/do?id=" + taskId;
+         if(fromProcess == "true")
+            postUrl += "&fromBad=true";
+         else  postUrl += "&fromBad=false";
         $.ajax({
             type: "POST",
             url: postUrl,

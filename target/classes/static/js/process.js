@@ -70,7 +70,7 @@ $(document).ready(function(){
       document.execCommand("copy");
     });
     $('.container-fluid').on('click','.btn-success',function(){
-        var url = "/tasks/process/sent?id="+taskId+"&index="+this.id+ "&chapter=" + this.getAttribute("chapter");
+        var url = "/tasks/process/sent?id="+taskId+"&index="+this.id+ "&chapter=" + this.getAttribute("chapter") + "&fromProcess=true";
         openInNewTab(url);
         var divId = "row-connection"+this.id;
         var div = document.getElementById(divId);
@@ -94,7 +94,7 @@ $(document).ready(function(){
         if(ind1.length === 0 || ind2.length === 0)
             alert("Please select options from both sides");
         else{
-            var url = "/tasks/process/sent?id="+taskId+"&chapter="+ chapter + "&index=";
+            var url = "/tasks/process/sent?id="+taskId+"&chapter="+ chapter + "&index="+"&fromProcess=true";
             var indexes = {start1: ind1, start2: ind2};
             localStorage.setItem("sentIndexes",JSON.stringify(indexes));
             var select1 = document.getElementById("book1_list");
@@ -112,29 +112,6 @@ $(document).ready(function(){
     });
     $("#correctingNavItem").on('click', function(){
          getBad(taskId);
-    });
-    $("#finishProcess").on('click', function(){
-        var options1 = $('#book1_list option');
-        var options2 = $('#book2_list option');
-        if(options1.length >0 && options2.length >0){
-            var r = confirm("There are unconnected paragraphs in \"Correcting\" tab. Are you sure you want to finish process?");
-            if (r == false) {
-                return;
-            }
-        }
-        var url = "/tasks/process/finish?id=" + taskId;
-        $.ajax({
-             type: "GET",
-             url: url,
-             success: function(data, textStatus, jqXHR) {
-                var href = "/tasks/submit?id=" + taskId;
-                window.location.href = href;
-             },
-             error: function(jqXHR, textStatus, errorThrown) {
-                alert("error, check console for details");
-                console.log("ERROR : ", jqXHR.responseText);
-             }
-           });
     });
 });
 function getUnprocessed(taskId){

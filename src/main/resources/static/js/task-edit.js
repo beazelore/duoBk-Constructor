@@ -26,8 +26,32 @@ $(document).ready(function(){
            }
        ]
     });
+    $('#unprocessed1Text').highlightWithinTextarea({
+       highlight:
+       [
+           {
+               highlight: /(?<=<p.+?>)(.+?)(?=<)/g,
+               className: 'blue'
+           }
+       ]
+    });
+    $('#unprocessed2Text').highlightWithinTextarea({
+       highlight:
+       [
+           {
+               highlight: /(?<=<p.+?>)(.+?)(?=<)/g,
+               className: 'blue'
+           }
+       ]
+    });
     $('#unprocessed-tab').on('click', function(){
         $('#unprocessedText').highlightWithinTextarea('update');
+    });
+    $('#unproc1-tab').on('click', function(){
+        $('#unprocessed1Text').highlightWithinTextarea('update');
+    });
+    $('#unproc2-tab').on('click', function(){
+        $('#unprocessed2Text').highlightWithinTextarea('update');
     });
 
     $('#processedText').highlightWithinTextarea({
@@ -102,6 +126,8 @@ function getTaskInfoAjax(taskId){
                document.getElementById("unprocessedText").innerHTML=data.unprocessed;
                document.getElementById("processedText").innerHTML=data.processed;
                document.getElementById("resultText").innerHTML=data.result;
+               document.getElementById("unprocessed1Text").innerHTML=data.unprocessed1;
+               document.getElementById("unprocessed2Text").innerHTML=data.unprocessed2;
                if(data.userId == null)
                 requestUsers(-1);
                else  requestUsers(data.userId);
@@ -191,9 +217,13 @@ function submitFormData(taskId){
     var unprocessed = document.getElementById("unprocessedText").value;
     var processed = document.getElementById("processedText").value;
     var result = document.getElementById("resultText").value;
+    var unprocessed1 = document.getElementById("unprocessed1Text".value);
+    var unprocessed2 = document.getElementById("unprocessed2Text".value);
     data.append("unprocessed", unprocessed);
     data.append("processed", processed);
     data.append("result", result);
+    data.append("unprocessed1", unprocessed1);
+    data.append("unprocessed2", unprocessed2);
 
     $.ajax({
         type: "POST",

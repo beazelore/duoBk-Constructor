@@ -21,12 +21,11 @@ import java.io.StringWriter;
 public class EntryService {
     @Autowired
     EntryRepository entryRepository;
-    public Entry create(String value, String author, String title, String lang){
+    public Entry create(String author, String title, String lang){
         Entry entry = new Entry();
         entry.setAuthor(author);
         entry.setLanguage(lang);
         entry.setTitle(title);
-        entry.setValue(value);
         return entryRepository.save(entry);
     }
     public Entry create(Book book, String author, String title, String lang) throws ParserConfigurationException, TransformerException {

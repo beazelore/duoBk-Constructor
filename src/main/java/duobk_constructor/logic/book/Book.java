@@ -22,12 +22,7 @@ public class Book {
     private String title;
 
     public ArrayList<Paragraph> getParagraphs() {
-        if (paragraphs != null)
-            return paragraphs;
-        else{
-            formParListAndSetIndexes();
-            return paragraphs;
-        }
+        return paragraphs;
     }
 
     private ArrayList<Paragraph> paragraphs;
@@ -124,6 +119,7 @@ public class Book {
     // to create Book from result and duoBook(bd)
     public Book(Document resultDoc, Language languge){
         this.chapters = new ArrayList<>();
+        this.paragraphs = new ArrayList<>();
         NodeList chapters = resultDoc.getElementsByTagName("chapter");
         for(int i =0; i < chapters.getLength(); i++){
             Chapter chapter = new Chapter();
@@ -142,9 +138,11 @@ public class Book {
                     paragraph.addSentence(sentence);
                 }
                 chapter.addParagraph(paragraph);
+                this.paragraphs.add(paragraph);
             }
             this.chapters.add(chapter);
         }
+
     }
     private String extractTextChildren(Element parentNode) {
         NodeList childNodes = parentNode.getChildNodes();

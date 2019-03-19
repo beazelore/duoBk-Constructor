@@ -102,7 +102,6 @@ public class AStar {
         return minKey;
     }
     private DuoParagraph createDuoParagraph(ArrayList<Integer> indexes1, ArrayList<Integer> indexes2, Book book1, Book book2){
-        DuoParagraph result = new DuoParagraph();
         ArrayList<Paragraph> paragraphs1 = new ArrayList<>();
         ArrayList<Paragraph> paragraphs2 = new ArrayList<>();
         for(Integer index : indexes1){

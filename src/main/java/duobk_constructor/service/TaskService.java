@@ -11,6 +11,7 @@ import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.Task;
 import duobk_constructor.repository.TaskRepository;
 import duobk_constructor.repository.UserRepository;
+import org.apache.el.lang.ELArithmetic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class TaskService {
     public List<Object> getAdminPool(){
         return taskRepository.getAdminPool();
     }
-    public Task create(String name, Integer entryId1, Integer entryId2, Integer bookId, String status){
+    public Task create(String name, Integer entryId1, Integer entryId2, Integer bookId, String status, String unprocessed1, String unprocessed2){
         Task task = new Task();
         task.setName(name);
         task.setEntry1_id(entryId1);
@@ -60,7 +61,6 @@ public class TaskService {
         task.setBookId(bookId);
         task.setStatus(status);
         task.setResult("<result></result>");
-        task.setProcessed("<processed></processed>");
         task.setBad("<bad></bad>");
         return taskRepository.save(task);
     }
@@ -80,6 +80,30 @@ public class TaskService {
     }
     public List<Task> getAllWithBookId(Integer bookId){
         return taskRepository.findByBookId(bookId);
+    }
+    /**
+     * Returns book in form of unprocessed_1/2 column of Task table
+     * */
+    public String formUnprocessedFromBook(Book book) throws ParserConfigurationException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = dbf.newDocumentBuilder();
+        Document doc = builder.newDocument();
+
+        // create the root element node
+        Element rootEl = doc.createElement("unprocessed");
+        for (Chapter chapter : book.getChapters()){
+            //Element chapterEl = doc.createElement("chapter");
+            for (Paragraph paragraph : chapter.getParagraphs()){
+                Element pEl = doc.createElement("p");
+                pEl.setAttribute("chapter", chapter.getIndex().toString());
+                pEl.setAttribute("index", paragraph.getIndex().toString());
+                Node textNode = doc.createTextNode(paragraph.toString());
+                pEl.appendChild(textNode);
+                rootEl.appendChild(pEl);
+            }
+        }
+        doc.appendChild(rootEl);
+        return docToString(doc);
     }
     /**
      * Returns HTML to be inserted inside of pre-precess.html selects.
@@ -105,6 +129,38 @@ public class TaskService {
             }
         }
         return new ResponseEntity<String>(builder.toString(), HttpStatus.OK);
+    }
+    public String formUnprocessedForPreProcess(String unprocessed_1, String unprocessed_2) throws IOException, SAXException, ParserConfigurationException {
+        StringBuilder builder = new StringBuilder();
+
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(unprocessed_1.getBytes(StandardCharsets.UTF_8));
+        Document doc = db.parse(stream);
+
+        NodeList pList = doc.getElementsByTagName("p");
+        for(int i =0 ; i< pList.getLength(); i++){
+            Element pEl = (Element) pList.item(i);
+            builder.append("<option");
+            builder.append(" value=").append(pEl.getAttribute("index"))
+                    .append(" chapter=").append(pEl.getAttribute("chapter")).append('>');
+            builder.append(pEl.getAttribute("index")).append(". ").append(extractTextChildren(pEl));
+            builder.append("</option>");
+        }
+
+        builder.append("!separator!");
+        stream = new ByteArrayInputStream(unprocessed_2.getBytes(StandardCharsets.UTF_8));
+        doc = db.parse(stream);
+
+        pList = doc.getElementsByTagName("p");
+        for(int i =0 ; i< pList.getLength(); i++){
+            Element pEl = (Element) pList.item(i);
+            builder.append("<option");
+            builder.append(" value=").append(pEl.getAttribute("index"))
+                    .append(" chapter=").append(pEl.getAttribute("chapter")).append('>');
+            builder.append(pEl.getAttribute("index")).append(". ").append(extractTextChildren(pEl));
+            builder.append("</option>");
+        }
+        return builder.toString();
     }
     /*
     * after Dijkstra algorithm, we convert it's result to string that will be saved in
@@ -224,7 +280,38 @@ public class TaskService {
         }
         return null;
     }
-
+    public DuoParagraph getDuoParagraphFromUnprocessed(String unproc1, String unproc2, ArrayList<String> indexes1, ArrayList<String> indexes2, String lang1, String lang2) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(unproc1.getBytes(StandardCharsets.UTF_8));
+        Document doc = db.parse(stream);
+        NodeList pList = doc.getElementsByTagName("p");
+        ArrayList<Paragraph> paragraphs1 = new ArrayList<>();
+        ArrayList<Paragraph> paragraphs2 = new ArrayList<>();
+        //NodeList p1List = doc.getElementsByTagName("p1");
+        //NodeList p2List = doc.getElementsByTagName("p2");
+        for (int q = 0; q < pList.getLength(); q++) {
+            Element p = (Element) pList.item(q);
+            if (indexes1.contains(p.getAttribute("index"))) {
+                String content = extractTextChildren(p);
+                Paragraph paragraph = new Paragraph(content, lang1);
+                paragraph.setIndex(Integer.parseInt(p.getAttribute("index")));
+                paragraphs1.add(paragraph);
+            }
+        }
+        stream = new ByteArrayInputStream(unproc2.getBytes(StandardCharsets.UTF_8));
+        doc = db.parse(stream);
+        pList = doc.getElementsByTagName("p");
+        for (int q = 0; q < pList.getLength(); q++) {
+            Element p = (Element) pList.item(q);
+            if (indexes2.contains(p.getAttribute("index"))) {
+                String content = extractTextChildren(p);
+                Paragraph paragraph = new Paragraph(content, lang2);
+                paragraph.setIndex(Integer.parseInt(p.getAttribute("index")));
+                paragraphs2.add(paragraph);
+            }
+        }
+        return new DuoParagraph(paragraphs1,paragraphs2);
+    }
     public DuoParagraph getDuoParagraphFromBad(String bad, ArrayList<String> indexes1, ArrayList<String> indexes2, String lang1, String lang2) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(bad.getBytes(StandardCharsets.UTF_8));
@@ -346,85 +433,13 @@ public class TaskService {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(dpString.getBytes(StandardCharsets.UTF_8));
         Document dpDoc = db.parse(stream);
+        stream = new ByteArrayInputStream(task.getResult().getBytes(StandardCharsets.UTF_8));
+        Document resultDoc = db.parse(stream);
         Element dp = (Element) dpDoc.getElementsByTagName("dp").item(0);
-        NodeList s1List = dpDoc.getElementsByTagName("s1");
-        NodeList s2List = dpDoc.getElementsByTagName("s2");
 
-        // delete from unprocessed
-        stream = new ByteArrayInputStream(task.getUnprocessed().getBytes(StandardCharsets.UTF_8));
-        Document unprocessedDoc = db.parse(stream);
-        NodeList dpList = unprocessedDoc.getElementsByTagName("dp");
-        //NodeList p2List = unprocessedDoc.getElementsByTagName("p2");
-        for(int i =0; i < dpList.getLength(); i++){
-            Element dpEl = (Element) dpList.item(i);
-            ArrayList<String> indexes1 = new ArrayList<String>(Arrays.asList(dpEl.getAttribute("indexes1").split(",")));
-            //ArrayList<String> indexes2 = new ArrayList<String>(Arrays.asList(dpEl.getAttribute("indexes2").split(",")));
-            for(int q=0; q< s1List.getLength(); q++){
-                Element s1 = (Element) s1List.item(q);
-                if(indexes1.contains(s1.getAttribute("pIndex"))){
-                    dpEl.getParentNode().removeChild(dpEl);
-                    break;
-                }
-            }
-
-        }
-
-        // delete from bad
-        stream = new ByteArrayInputStream(task.getBad().getBytes(StandardCharsets.UTF_8));
-        Document badDoc = db.parse(stream);
-        NodeList p1List = badDoc.getElementsByTagName("p1");
-        NodeList p2List = badDoc.getElementsByTagName("p2");
-        for(int i = 0 ; i < p1List.getLength(); i++){
-            Element p1 = (Element) p1List.item(i);
-            String index = p1.getAttribute("index");
-            for(int q = 0; q < s1List.getLength();q++){
-                Element s1 = (Element) s1List.item(q);
-                if(s1.getAttribute("pIndex").equals(index)){
-                    p1.getParentNode().removeChild(p1);
-                    i--;
-                    break;
-                }
-            }
-        }
-        for(int i = 0 ; i < p2List.getLength(); i++){
-            Element p2 = (Element) p2List.item(i);
-            String index = p2.getAttribute("index");
-            for(int q = 0; q < s2List.getLength();q++){
-                Element s2 = (Element) s2List.item(q);
-                if(s2.getAttribute("pIndex").equals(index)){
-                    p2.getParentNode().removeChild(p2);
-                    i--;
-                    break;
-                }
-            }
-        }
-
-        //modify processed
-        stream = new ByteArrayInputStream(task.getProcessed().getBytes(StandardCharsets.UTF_8));
-        Document processedDoc = db.parse(stream);
-        Element root = (Element) processedDoc.getElementsByTagName("processed").item(0);
-        Node newDp = processedDoc.importNode(dp,true);
-        root.appendChild(newDp);
-        //saving task
-        String unprocessed = prettyFormatXml(unprocessedDoc);
-        String bad = prettyFormatXml(badDoc);
-        String processed = prettyFormatXml(processedDoc);
-
-        task.setUnprocessed(unprocessed);
-        task.setBad(bad);
-        task.setProcessed(processed);
-
-        taskRepository.save(task);
-        return;
-    }
-
-    public void processToResult(Task task) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        InputStream stream = new ByteArrayInputStream(task.getProcessed().getBytes(StandardCharsets.UTF_8));
-        Document processedDoc = db.parse(stream);
 
         // 1. order s1 and s2 inside ds by indexes
-        NodeList dsList = processedDoc.getElementsByTagName("ds");
+        NodeList dsList = dpDoc.getElementsByTagName("ds");
         for(int i =0; i < dsList.getLength(); i++){
             NodeList s1List = ((Element)dsList.item(i)).getElementsByTagName("s1");
             NodeList s2List = ((Element)dsList.item(i)).getElementsByTagName("s2");
@@ -468,100 +483,212 @@ public class TaskService {
 
         }
         // 3. order ds inside of dp by index
-        NodeList dpList = processedDoc.getElementsByTagName("dp");
-        for(int q=0; q< dpList.getLength(); q++){
-            Element dp = (Element) dpList.item(q);
-            dsList = dp.getElementsByTagName("ds");
-            for(int i =1; i < dsList.getLength(); i++){
-                int z = 1;
-                Element currentDs = (Element) dsList.item(i);
-                while (i-z >= 0){
-                    Element dsToCompare = (Element) dsList.item(i-z);
-                    Integer currentIndex = Integer.parseInt(currentDs.getAttribute("index"));
-                    Integer indexToCompare = Integer.parseInt(dsToCompare.getAttribute("index"));
-                    if(currentIndex < indexToCompare){
-                        Element newCurrent = (Element) currentDs.cloneNode(true);
-                        processedDoc.importNode(newCurrent,true);
-                        currentDs.getParentNode().removeChild(currentDs);
-                        dsToCompare.getParentNode().insertBefore(newCurrent, dsToCompare);
-                        currentDs = newCurrent;
-                        //currentDs.getParentNode().removeChild(currentDs);
-                    }
-                    z++;
-                }
-            }
-        }
-        // 3.1 check if dp can be divided into several parts and do it if possible
-        for(int i=0; i < dpList.getLength();i++) {
-            Element thisDp = (Element) dpList.item(i);
-            ArrayList<Element> newDps = divideDp(thisDp);
-            for(int q=0; q < newDps.size(); q++){
-                Node newDp = processedDoc.importNode(newDps.get(q),true);
-                thisDp.getParentNode().insertBefore(newDp, thisDp);
-            }
-            thisDp.getParentNode().removeChild(thisDp);
-            i+= (newDps.size()-1);
-        }
-        // 5. add pIndex attribute to each dp
-        dpList = processedDoc.getElementsByTagName("dp");
-        for(int i =0; i <  dpList.getLength(); i++){
-            Element dp = (Element) dpList.item(i);
-            dp.setAttribute("pIndex", ((Element)dp.getElementsByTagName("ds").item(0)).getAttribute("pIndex"));
-        }
-
-        // 6. order dp by pIndex
-        dpList = processedDoc.getElementsByTagName("dp");
-        for(int i =1; i <  dpList.getLength(); i++){
-            Element currentDp = (Element) dpList.item(i);
+        for(int i =1; i < dsList.getLength(); i++){
             int z = 1;
-            while(i-z >=0){
-                Element dpToCompare = (Element) dpList.item(i-z);
-                Integer currentIndex = Integer.parseInt(currentDp.getAttribute("pIndex"));
-                Integer indexToCompare = Integer.parseInt(dpToCompare.getAttribute("pIndex"));
+            Element currentDs = (Element) dsList.item(i);
+            while (i-z >= 0){
+                Element dsToCompare = (Element) dsList.item(i-z);
+                Integer currentIndex = Integer.parseInt(currentDs.getAttribute("index"));
+                Integer indexToCompare = Integer.parseInt(dsToCompare.getAttribute("index"));
                 if(currentIndex < indexToCompare){
-                    Element newCurrent = (Element) currentDp.cloneNode(true);
-                    currentDp.getParentNode().removeChild(currentDp);
-                    dpToCompare.getParentNode().insertBefore(newCurrent,dpToCompare);
-                    currentDp = newCurrent;
-                    //currentDp.getParentNode().removeChild(currentDp);
+                    Element newCurrent = (Element) currentDs.cloneNode(true);
+                    dpDoc.importNode(newCurrent,true);
+                    currentDs.getParentNode().removeChild(currentDs);
+                    dsToCompare.getParentNode().insertBefore(newCurrent, dsToCompare);
+                    currentDs = newCurrent;
+                    //currentDs.getParentNode().removeChild(currentDs);
                 }
                 z++;
             }
         }
+        // 3.1 check if dp can be divided into several parts and do it if possible
+        ArrayList<Element> newDps = divideDp(dp);
+        // 5. add pIndex attribute to each dp
+        for(int i =0; i <  newDps.size(); i++){
+            Element dpEl = newDps.get(i);
+            dpEl.setAttribute("pIndex", ((Element)dpEl.getElementsByTagName("ds").item(0)).getAttribute("pIndex"));
+            // 6. inject dp's into result
+            integrateIntoResult(dpEl, resultDoc);
+        }
 
-        // 7. form result document with chapters;
 
-        stream = new ByteArrayInputStream("<result></result>".getBytes(StandardCharsets.UTF_8));
-        Document resultDoc = db.parse(stream);
-        Element rootResult = (Element) resultDoc.getElementsByTagName("result").item(0);
-        dpList = processedDoc.getElementsByTagName("dp");
-        for(int i=0; i < dpList.getLength(); i++){
-            boolean inserted = false;
-            Element dpEl = (Element) dpList.item(i);
-            String chapterIndex = dpEl.getAttribute("chapter");
-            NodeList resultChapters = resultDoc.getElementsByTagName("chapter");
-            for(int q =0; q < resultChapters.getLength(); i ++){
-                Element chapter = (Element) resultChapters.item(q);
-                if(chapter.getAttribute("index").equals(chapterIndex)){
-                    Node newDp = resultDoc.importNode(dpEl, true);
-                    chapter.appendChild(newDp);
-                    inserted = true;
+
+        NodeList s1List = dpDoc.getElementsByTagName("s1");
+        NodeList s2List = dpDoc.getElementsByTagName("s2");
+
+        // delete from unprocessed
+        stream = new ByteArrayInputStream(task.getUnprocessed().getBytes(StandardCharsets.UTF_8));
+        Document unprocessedDoc = db.parse(stream);
+        NodeList dpListUnproc = unprocessedDoc.getElementsByTagName("dp");
+        //NodeList p2List = unprocessedDoc.getElementsByTagName("p2");
+        for(int i =0; i < dpListUnproc.getLength(); i++){
+            Element dpEl = (Element) dpListUnproc.item(i);
+            ArrayList<String> indexes1 = new ArrayList<String>(Arrays.asList(dpEl.getAttribute("indexes1").split(",")));
+            for(int q=0; q< s1List.getLength(); q++){
+                Element s1 = (Element) s1List.item(q);
+                if(indexes1.contains(s1.getAttribute("pIndex"))){
+                    dpEl.getParentNode().removeChild(dpEl);
                     break;
                 }
             }
-            if(!inserted){
-                Element chapter = resultDoc.createElement("chapter");
-                chapter.setAttribute("index",chapterIndex);
-                Node newDp = resultDoc.importNode(dpEl,true);
-                chapter.appendChild(newDp);
-                rootResult.appendChild(chapter);
-            }
+
         }
 
-        // 8. result document toString and save task
-        task.setResult(prettyFormatXml(resultDoc));
-        taskRepository.save(task);
+        // delete from bad
+        stream = new ByteArrayInputStream(task.getBad().getBytes(StandardCharsets.UTF_8));
+        Document badDoc = db.parse(stream);
+        NodeList p1List = badDoc.getElementsByTagName("p1");
+        NodeList p2List = badDoc.getElementsByTagName("p2");
+        for(int i = 0 ; i < p1List.getLength(); i++){
+            Element p1 = (Element) p1List.item(i);
+            String index = p1.getAttribute("index");
+            for(int q = 0; q < s1List.getLength();q++){
+                Element s1 = (Element) s1List.item(q);
+                if(s1.getAttribute("pIndex").equals(index)){
+                    p1.getParentNode().removeChild(p1);
+                    i--;
+                    break;
+                }
+            }
+        }
+        for(int i = 0 ; i < p2List.getLength(); i++){
+            Element p2 = (Element) p2List.item(i);
+            String index = p2.getAttribute("index");
+            for(int q = 0; q < s2List.getLength();q++){
+                Element s2 = (Element) s2List.item(q);
+                if(s2.getAttribute("pIndex").equals(index)){
+                    p2.getParentNode().removeChild(p2);
+                    i--;
+                    break;
+                }
+            }
+        }
+        //delete from unprocessed_1
+        stream = new ByteArrayInputStream(task.getUnprocessed1().getBytes(StandardCharsets.UTF_8));
+        Document unprocessed1Doc = db.parse(stream);
+        NodeList pList = unprocessed1Doc.getElementsByTagName("p");
+        for(int i=0; i < pList.getLength(); i++){
+            Element pEl = (Element) pList.item(i);
+            for(int q = 0; q< s1List.getLength();q++){
+                Element s1El = (Element) s1List.item(q);
+                if(pEl.getAttribute("index").equals(s1El.getAttribute("pIndex"))){
+                    pEl.getParentNode().removeChild(pEl);
+                    i--;
+                    break;
+                }
+            }
+        }
+        //delete from unprocessed_2
+        stream = new ByteArrayInputStream(task.getUnprocessed2().getBytes(StandardCharsets.UTF_8));
+        Document unprocessed2Doc = db.parse(stream);
+        pList =  unprocessed2Doc.getElementsByTagName("p");
+        for(int i=0; i < pList.getLength(); i++){
+            Element pEl = (Element) pList.item(i);
+            for(int q = 0; q< s2List.getLength();q++){
+                Element s2El = (Element) s2List.item(q);
+                if(pEl.getAttribute("index").equals(s2El.getAttribute("pIndex"))){
+                    pEl.getParentNode().removeChild(pEl);
+                    i--;
+                    break;
+                }
+            }
+        }
+        //modify processed
+        //stream = new ByteArrayInputStream(task.getProcessed().getBytes(StandardCharsets.UTF_8));
+        //Document processedDoc = db.parse(stream);
+        //Element root = (Element) processedDoc.getElementsByTagName("processed").item(0);
+        //Node newDp = processedDoc.importNode(dp,true);
+        //root.appendChild(newDp);
+        //saving task
+        String unprocessed = prettyFormatXml(unprocessedDoc);
+        String bad = prettyFormatXml(badDoc);
+        //String processed = prettyFormatXml(processedDoc);
+        String result = prettyFormatXml(resultDoc);
+        String unprocessed1 = docToString(unprocessed1Doc);
+        String unprocessed2 = docToString(unprocessed2Doc);
 
+        task.setUnprocessed(unprocessed);
+        task.setBad(bad);
+        //task.setProcessed(processed);
+        task.setResult(result);
+        task.setUnprocessed1(unprocessed1);
+        task.setUnprocessed2(unprocessed2);
+
+        taskRepository.save(task);
+        return;
+    }
+    /**
+     * Removes paragraph from unprocessed1/2
+     * */
+    public void deleteFromUnprocessed(Task task, boolean fromFirst, ArrayList<Integer> indexes) throws ParserConfigurationException, IOException, SAXException {
+        if(indexes == null || indexes.size() ==0)
+            return;
+        String unproc ="";
+        if(fromFirst)
+            unproc = task.getUnprocessed1();
+        else
+            unproc = task.getUnprocessed2();
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputStream stream = new ByteArrayInputStream(unproc.getBytes(StandardCharsets.UTF_8));
+        Document doc = db.parse(stream);
+        NodeList pList = doc.getElementsByTagName("p");
+        for(int i=0; i < pList.getLength(); i++){
+            Element pEl = (Element)pList.item(i);
+            if(indexes.contains(Integer.parseInt(pEl.getAttribute("index")))){
+                pEl.getParentNode().removeChild(pEl);
+                i--;
+            }
+        }
+        if(fromFirst)
+            task.setUnprocessed1(docToString(doc));
+        else
+            task.setUnprocessed2(docToString(doc));
+        save(task);
+        return;
+    }
+    public void integrateIntoResult(Element dpEl, Document resultDoc){
+        Element rootEl = (Element)resultDoc.getElementsByTagName("result").item(0);
+
+        // find needed chapter
+        NodeList chapterList = rootEl.getElementsByTagName("chapter");
+        Element neededChapter = null;
+        for(int i =0; i < chapterList.getLength(); i++){
+            Element chapterEl = (Element)chapterList.item(i);
+            if(chapterEl.getAttribute("index").equals(dpEl.getAttribute("chapter"))){
+                neededChapter = chapterEl;
+                break;
+            }
+        }
+        if(neededChapter == null){
+            neededChapter = resultDoc.createElement("chapter");
+            neededChapter.setAttribute("index", dpEl.getAttribute("chapter"));
+            Node newDp = resultDoc.importNode(dpEl,true);
+            neededChapter.appendChild(newDp);
+            rootEl.appendChild(neededChapter);
+            return ;
+        }
+        else{
+            NodeList dpList = neededChapter.getElementsByTagName("dp");
+            if(dpList.getLength() == 0){
+                Node newDp =resultDoc.importNode(dpEl,true);
+                neededChapter.appendChild(newDp);
+                return;
+            }
+            else{
+                for(int i =0; i < dpList.getLength();i++){
+                    Element dpToCompare = (Element) dpList.item(i);
+                    if(Integer.parseInt(dpEl.getAttribute("pIndex")) < Integer.parseInt(dpToCompare.getAttribute("pIndex"))){
+                        Node newDp = resultDoc.importNode(dpEl, true);
+                        dpToCompare.getParentNode().insertBefore(newDp,dpToCompare);
+                        return;
+                    }
+                }
+                //we are here only if we didn't add dp to result
+                Node newDp = resultDoc.importNode(dpEl, true);
+                neededChapter.appendChild(newDp);
+                return;
+            }
+        }
     }
 
     private ArrayList<Element> divideDp(Element dpEl){
@@ -573,7 +700,7 @@ public class TaskService {
             for(Element el : result){
                 if(el.getAttribute("pIndex").equals(dsEl.getAttribute("pIndex"))){
                     Element newDs = (Element) dsEl.cloneNode(true);
-                    Element lastDsInDp = (Element) el.getLastChild();
+                    //Element lastDsInDp = (Element) el.getLastChild();
                     //newDs.setAttribute("index",String.valueOf(Integer.parseInt(lastDsInDp.getAttribute("index")) +1));
                     el.appendChild(newDs);
                     inserted = true;
@@ -678,5 +805,22 @@ public class TaskService {
             }
         }
         return result;
+    }
+
+    public static String docToString(Document doc) {
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            return sw.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException("Error converting to String", ex);
+        }
     }
 }

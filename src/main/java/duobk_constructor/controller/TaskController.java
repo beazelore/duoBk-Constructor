@@ -87,6 +87,7 @@ public class TaskController {
         }
         else{
             // if only one new entry, create only entry2
+            book1 = new Book(duoBookService.getDocumentFromValue(duoBook),new Language("en"));
             book2 = fileReaderService.read(form.getFiles()[0],form.getLanguage1());
             entry2 = entryService.create(book2, form.getAuthor1(),form.getTitle1(),form.getLanguage1());
         }
@@ -94,6 +95,11 @@ public class TaskController {
         task.setEntry2_id(entry2.getId());
         task.setBookId(form.getBook());
         task.setStatus("NEW");
+        task.setUnprocessed1(taskService.formUnprocessedFromBook(book1));
+        task.setUnprocessed2(taskService.formUnprocessedFromBook(book2));
+        task.setUnprocessed("<unprocessed></unprocessed>");
+        task.setResult("<result></result>");
+        task.setBad("<bad></bad>");
         taskService.save(task);
         if(form.getBookStatus().equals("NEW")){
             // here we should change the status of duoBook to FIRST_PROCESS (no other tasks can be added while book has this status)
@@ -176,9 +182,9 @@ public class TaskController {
         // get task
         Task task = taskService.getTaskById(indexesForm.getTaskId());
         // get current user
-        LinkedHashMap<String, Object> properties = (LinkedHashMap<String, Object>) authentication.getUserAuthentication().getDetails();
-        String email = (String)properties.get("email");
-        User user = userService.getByMail(email);
+        //LinkedHashMap<String, Object> properties = (LinkedHashMap<String, Object>) authentication.getUserAuthentication().getDetails();
+        //String email = (String)properties.get("email");
+        //User user = userService.getByMail(email);
         // get duoBook
         DuoBook duoBook = duoBookService.getById(task.getBookId());
         // get entries and create book instances
@@ -205,20 +211,20 @@ public class TaskController {
         String unprocessed = taskService.formUnprocessedAfterPreProcess(result);
         // set unprocessed to task and default values of other columns, save task to db
         task.setUnprocessed(unprocessed);
-        task.setProcessed("<processed></processed>");
+        //task.setProcessed("<processed></processed>");
         task.setBad("<bad></bad>");
-        task.setResult("<result></result>");
+        //task.setResult("<result></result>");
         task.setStatus("PROCESS");
         taskService.save(task);
         //creating history item
-        HistoryItem historyItem = new HistoryItem();
-        historyItem.setStatusBefore("NEW");
-        historyItem.setStatusAfter("PROCESS");
-        historyItem.setExplanation("PRE-PROCESS was done by "+ user.getMail() + ".");
-        historyItem.setMoment(new Date());
-        historyItem.setUserId(user.getId());
-        historyItem.setTaskId(task.getId());
-        historyService.save(historyItem);
+        //HistoryItem historyItem = new HistoryItem();
+        //historyItem.setStatusBefore("NEW");
+        //historyItem.setStatusAfter("PROCESS");
+        //historyItem.setExplanation("PRE-PROCESS was done by "+ user.getMail() + ".");
+        //historyItem.setMoment(new Date());
+        //historyItem.setUserId(user.getId());
+        //historyItem.setTaskId(task.getId());
+        //historyService.save(historyItem);
     }
     /**
      * Creates books from entries and returns html code for displaying inside of select element.
@@ -246,6 +252,11 @@ public class TaskController {
             book2 = new Book(entry2.getValue(), new Language(entry2.getLanguage()));
         }
         return taskService.formBooksResponse(book1,book2); //order of arguments very important here
+    }
+    @GetMapping(value = "/preProcess/getUnprocessedAsHTML")
+    public String getUnprocessedValuesAsHTMLOptions(@RequestParam(value = "id",required = true) String taskId) throws ParserConfigurationException, SAXException, IOException {
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        return  taskService.formUnprocessedForPreProcess(task.getUnprocessed1(), task.getUnprocessed2());
     }
     /**
      * If Pre-Process hasn't yet been done on this task(status == NEW), returns true
@@ -336,12 +347,14 @@ public class TaskController {
     /**
      * Does auto-connecting process for sentences from paragraphs in task's bad column.
      * Forms HTML code from auto-connecting result for displaying inside of process-sent.html
-     * @param indexesForm indexes of paragraphs to connect
+     * @param indexesForm indexes of paragraphs to connect;
+     * @param fromBad 1 or true if we should find that paragraphs in bad, else if in unprocessed1/2
      * in start1 should be indexes of paragraphs1, in start 2 of paragraphs2.)
      * */
     @RequestMapping(value = "/process/sent/correcting/do")
-    public ResponseEntity<?> doSentenceProcessFromCorrecting(@RequestParam(value = "id",required = true) String taskId
-            , @RequestBody IndexesForm indexesForm) throws IOException, SAXException, ParserConfigurationException {
+    public ResponseEntity<?> doSentenceProcessFromCorrecting(@RequestParam(value = "id",required = true) String taskId,
+            @RequestParam(value = "fromBad", required = true) String fromBad,
+            @RequestBody IndexesForm indexesForm) throws IOException, SAXException, ParserConfigurationException {
         // get task's bad column
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         String bad= task.getBad();
@@ -357,7 +370,11 @@ public class TaskController {
         ArrayList<String> indexes2 = new ArrayList<>();
         for(Integer index : indexesForm.getStart2())
             indexes2.add(index.toString());
-        DuoParagraph duoParagraph = taskService.getDuoParagraphFromBad(bad,indexes1,indexes2,lang1,lang2);
+        DuoParagraph duoParagraph;
+        if(fromBad.equals("1")|| fromBad.equals("true"))
+            duoParagraph = taskService.getDuoParagraphFromBad(bad,indexes1,indexes2,lang1,lang2);
+        else
+            duoParagraph = taskService.getDuoParagraphFromUnprocessed(task.getUnprocessed1(),task.getUnprocessed2(),indexes1,indexes2,lang1,lang2);
         // do auto-connecting process
         SentenceAStar aStar = new SentenceAStar();
         aStar.doAStar(duoParagraph);
@@ -404,14 +421,6 @@ public class TaskController {
     public void finishSentProcess(@RequestParam (value = "id", required = true) String taskId, @RequestBody String dp) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         taskService.finishSentProcess(dp,taskService.getTaskById(Integer.parseInt(taskId)));
         return;
-    }
-    /**
-     * Forms result column from processed column of task, save result to db.
-     * See TaskService.processToResult method to understand how result is formed rom processed
-     * */
-    @RequestMapping(value = "/process/finish")
-    public void finishProcess(@RequestParam (value = "id", required = true) String taskId) throws IOException, SAXException, ParserConfigurationException, TransformerException {
-        taskService.processToResult(taskService.getTaskById(Integer.parseInt(taskId)));
     }
     /**
      * Returns result column of task
@@ -528,5 +537,11 @@ public class TaskController {
             Entry entry2 = entryService.getEntryById(task.getEntry2_id());
             entryService.delete(entry2);
         }
+    }
+    @RequestMapping(value = "/deleteFromUnprocessed")
+    public void deleteParagraphFromUnprocessed(@RequestBody IndexesForm indexesForm, @RequestParam(value = "id",required = true) String taskId) throws IOException, SAXException, ParserConfigurationException {
+        Task task = taskService.getTaskById(Integer.parseInt(taskId));
+        taskService.deleteFromUnprocessed(task,true,indexesForm.getStart1());
+        taskService.deleteFromUnprocessed(task,false,indexesForm.getStart2());
     }
 }
