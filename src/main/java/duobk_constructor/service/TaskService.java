@@ -1,6 +1,5 @@
 package duobk_constructor.service;
 
-import duobk_constructor.logic.Language;
 import duobk_constructor.logic.book.Book;
 import duobk_constructor.logic.book.Chapter;
 import duobk_constructor.logic.book.Paragraph;
@@ -10,8 +9,6 @@ import duobk_constructor.logic.book.duo.DuoSentence;
 import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.Task;
 import duobk_constructor.repository.TaskRepository;
-import duobk_constructor.repository.UserRepository;
-import org.apache.el.lang.ELArithmetic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +77,9 @@ public class TaskService {
     }
     public List<Task> getAllWithBookId(Integer bookId){
         return taskRepository.findByBookId(bookId);
+    }
+    public Integer getTaskOwnerID(String taskId){
+        return taskRepository.getTaskOwnerID(taskId);
     }
     /**
      * Returns book in form of unprocessed_1/2 column of Task table

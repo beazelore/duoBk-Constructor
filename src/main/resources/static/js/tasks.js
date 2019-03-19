@@ -15,16 +15,7 @@ $(document).ready(function() {
                     console.log("ERROR : ", jqXHR.responseText);
                 }
     });
-    $('#logout').on('click',function(){
-        $.ajax({
-               type: "POST",
-               url: "/logout",
-               success: function(){
-                    window.location.href = "/";
-               }
-        });
 
-    });
     $('.table').on('click', '.dotaskbtn', function (){
         var id = this.value;
         $.ajax({

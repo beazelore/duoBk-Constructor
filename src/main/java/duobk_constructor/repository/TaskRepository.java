@@ -39,4 +39,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
             " inner join history_item on task.id=history_item.task_id" +
             " where user.mail=:mail group by history_item.task_id", nativeQuery = true)
     public List<Object> getUserTasks(@Param(value = "mail") String mail);
+    @Query(value = "select task.user_id from task where task.id=:taskId", nativeQuery = true)
+    public Integer getTaskOwnerID(@Param(value = "taskId") String taskId);
 }

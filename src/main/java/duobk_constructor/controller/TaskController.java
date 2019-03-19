@@ -181,10 +181,6 @@ public class TaskController {
     public void doPreProcess(@RequestBody IndexesForm indexesForm, OAuth2Authentication authentication) throws Exception {
         // get task
         Task task = taskService.getTaskById(indexesForm.getTaskId());
-        // get current user
-        //LinkedHashMap<String, Object> properties = (LinkedHashMap<String, Object>) authentication.getUserAuthentication().getDetails();
-        //String email = (String)properties.get("email");
-        //User user = userService.getByMail(email);
         // get duoBook
         DuoBook duoBook = duoBookService.getById(task.getBookId());
         // get entries and create book instances
@@ -538,10 +534,26 @@ public class TaskController {
             entryService.delete(entry2);
         }
     }
+    /**
+     * Remove paragraphs from unprocessed1/2
+     * @param indexesForm indexesForm.start1 for unprocessed1 indexes, indexesForm.start2 for unprocessed2 indexes
+     * */
     @RequestMapping(value = "/deleteFromUnprocessed")
     public void deleteParagraphFromUnprocessed(@RequestBody IndexesForm indexesForm, @RequestParam(value = "id",required = true) String taskId) throws IOException, SAXException, ParserConfigurationException {
         Task task = taskService.getTaskById(Integer.parseInt(taskId));
         taskService.deleteFromUnprocessed(task,true,indexesForm.getStart1());
         taskService.deleteFromUnprocessed(task,false,indexesForm.getStart2());
+    }
+    @GetMapping(value = "/checkPermission")
+    public ResponseEntity checkPermission(@RequestParam(value = "id", required = true) String taskId, OAuth2Authentication authentication){
+        // get current user
+        LinkedHashMap<String, Object> properties = (LinkedHashMap<String, Object>) authentication.getUserAuthentication().getDetails();
+        String email = (String)properties.get("email");
+        Integer userID = userService.getByMail(email).getId();
+        //get task owner ID
+        Integer taskOwnerID = taskService.getTaskOwnerID(taskId);
+        if(taskOwnerID.equals(userID))
+            return new ResponseEntity(HttpStatus.OK);
+        else return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 }
