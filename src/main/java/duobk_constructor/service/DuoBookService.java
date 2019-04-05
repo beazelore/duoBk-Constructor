@@ -55,5 +55,8 @@ public class DuoBookService {
         Document doc = db.parse(stream);
         return  doc;
     }
+    public List<Object> getMenuItems(){
+        return repository.getMenuItems();
+    }
 
 }

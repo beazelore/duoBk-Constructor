@@ -53,31 +53,6 @@ $(document).ready(function(){
     $('#unproc2-tab').on('click', function(){
         $('#unprocessed2Text').highlightWithinTextarea('update');
     });
-
-    $('#processedText').highlightWithinTextarea({
-       highlight:
-       [
-           {
-               highlight: /(<dp|<\/dp>)/g,
-               className: 'red'
-           },
-           {
-               highlight: /(<ds>|<\/ds>)/g,
-               className: 'green'
-           },
-           {
-               highlight: /(?<=<s1.+?>)(.+?)(?=<)/g,
-               className: 'blue'
-           },
-           {
-               highlight: /(?<=<s2.+?>)(.+?)(?=<)/g,
-               className: 'yellow'
-           }
-       ]
-    });
-    $('#processed-tab').on('click', function(){
-        $('#processedText').highlightWithinTextarea('update');
-    });
     $('#resultText').highlightWithinTextarea({
        highlight:
        [
@@ -124,7 +99,6 @@ function getTaskInfoAjax(taskId){
            success: function(data, textStatus, jqXHR) {
                document.getElementById("name").setAttribute("value",data.name);
                document.getElementById("unprocessedText").innerHTML=data.unprocessed;
-               document.getElementById("processedText").innerHTML=data.processed;
                document.getElementById("resultText").innerHTML=data.result;
                document.getElementById("unprocessed1Text").innerHTML=data.unprocessed1;
                document.getElementById("unprocessed2Text").innerHTML=data.unprocessed2;
@@ -215,12 +189,10 @@ function submitFormData(taskId){
     var data = new FormData(form);
     data.append("id",taskId);
     var unprocessed = document.getElementById("unprocessedText").value;
-    var processed = document.getElementById("processedText").value;
     var result = document.getElementById("resultText").value;
     var unprocessed1 = document.getElementById("unprocessed1Text".value);
     var unprocessed2 = document.getElementById("unprocessed2Text".value);
     data.append("unprocessed", unprocessed);
-    data.append("processed", processed);
     data.append("result", result);
     data.append("unprocessed1", unprocessed1);
     data.append("unprocessed2", unprocessed2);

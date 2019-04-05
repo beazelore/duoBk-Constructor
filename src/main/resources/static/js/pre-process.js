@@ -121,7 +121,7 @@ $(document).ready(function() {
 });
 document.onkeydown = function (e) {
     var keyCode = e.keyCode;
-    if(keyCode == 46) {
+    if(keyCode == 46 || keyCode == 8) {
         deleteActiveParagraphsFromUnprocessed(findGetParameter("id"));
     }
 };

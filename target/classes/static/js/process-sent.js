@@ -192,7 +192,7 @@ $(document).ready(function(){
             type: "POST",
             url: url,
             contentType: "text/plain",
-            data: cacheString,
+            data: cacheString.replace(/&nbsp;/g, ' '),
             success: function(textStatus, jqXHR) {
                   window.close();
             },

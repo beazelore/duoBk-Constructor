@@ -8,6 +8,7 @@ import duobk_constructor.service.DuoBookService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -92,5 +94,18 @@ public class AuthorController {
             authorService.delete(authorId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
+    }
+    @GetMapping(value = "/getMenuItems")
+    public List<Object> getMenuItems(){
+        return authorService.getMenuItems();
+    }
+    @GetMapping(value = "/getImage", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getImage(@RequestParam(value = "id",required = true) String authorId){
+        byte[] image = authorService.getById(authorId).getImage();
+        return image;
+    }
+    @GetMapping(value = "/getBiography")
+    public String getBio(@RequestParam(value = "id")String authorId){
+        return authorService.getAuthorBiography(authorId);
     }
 }

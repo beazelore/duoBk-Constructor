@@ -102,33 +102,8 @@ public class BookContrloller {
      * Returns list of items to display in menu. (Title, Author, Image, Languages)
      * */
     @GetMapping(value = "/getBookMenuItems")
-    public ArrayList<BookMenuItem> getMenuItems(@RequestParam (value = "withImage",required = false)String imageRequired){
-        Iterable<DuoBook> duoBooks = bookService.getAll();
-        ArrayList<BookMenuItem> menuItems = new ArrayList<>();
-        for(DuoBook book : duoBooks){
-            BookMenuItem item = new BookMenuItem();
-            item.setTitle(book.getName());
-            item.setId(book.getId());
-            List<Task> tasks = taskService.getAllWithBookId(book.getId());
-            ArrayList<String> languages = new ArrayList<>();
-            for(Task task : tasks){
-                if(task.getStatus().equals("LIVE")){
-                    if(task.getEntry1_id() != null){
-                        Entry entry = entryService.getEntryById(task.getEntry1_id());
-                        if(entry.getLanguage().equals("en"))
-                            item.setAuthor(entry.getAuthor());
-                        languages.add(entry.getLanguage());
-                    }
-                    if(task.getEntry2_id() != null)
-                        languages.add(entryService.getEntryById(task.getEntry2_id()).getLanguage());
-                }
-            }
-            item.setLanguages(languages);
-            if(imageRequired!= null && (imageRequired.equals("true") || imageRequired.equals("1")))
-                item.setThumb(book.getImage());
-            menuItems.add(item);
-        }
-        return menuItems;
+    public List<Object> getMenuItems(){
+        return bookService.getMenuItems();
     }
     @GetMapping(value = "/getImage", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] getImageBytes(@RequestParam(value = "id", required = true) String bookId){

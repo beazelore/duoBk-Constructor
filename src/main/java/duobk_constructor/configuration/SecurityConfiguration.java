@@ -22,7 +22,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/books/getImage**","/books/getBookMenuItems**","/", "/login**", "/webjars/**", "/error**", "/logout**", "/logout/**","/logout")
+                .antMatchers("/author/getBiography**","/authors/getMenuItems**","/authors/getImage**","/books/getImage**","/books/getBookMenuItems**","/", "/login**", "/webjars/**", "/error**", "/logout**", "/logout/**","/logout")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

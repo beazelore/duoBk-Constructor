@@ -51,4 +51,6 @@ public class AuthorService {
     }
     public Iterable<Author> getAll(){return repository.findAll();}
     public List<Object> getAllForMenu(){return repository.getAllForMenu();}
+    public List<Object> getMenuItems(){return repository.getMenuItems();}
+    public String getAuthorBiography(String authorId){return repository.getAuthorBiography(authorId);}
 }
