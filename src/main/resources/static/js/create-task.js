@@ -129,7 +129,7 @@ function ajaxSubmitForm(bookStatus) {
 function requestBooks(){
  $.ajax({
         type: "GET",
-        url: "/books/getAll",
+        url: "/books/getAllForMenu",
         success: function(data, textStatus, jqXHR) {
             var select = document.getElementById("bookpicker");
             populateSelect(select, data);
@@ -144,9 +144,9 @@ function requestBooks(){
 function populateSelect(select, arrayData){
     for(var i =0; i < arrayData.length; i++){
         var option = document.createElement("option");
-        option.text = arrayData[i].name;
-        option.setAttribute("value", arrayData[i].id);
-        option.setAttribute("status", arrayData[i].status);
+        option.text = arrayData[i][1];
+        option.setAttribute("value", arrayData[i][0]);
+        option.setAttribute("status", arrayData[i][2]);
         select.add(option);
     }
 }

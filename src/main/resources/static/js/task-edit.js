@@ -118,7 +118,7 @@ function getTaskInfoAjax(taskId){
 function requestBooks(selectedId){
  $.ajax({
         type: "GET",
-        url: "/books/getBookMenuItems?withImage=0",
+        url: "/books/getAllForMenu",
         success: function(data, textStatus, jqXHR) {
             var select = document.getElementById("bookpicker");
             populateSelect(select, data);
@@ -150,8 +150,8 @@ function requestUsers(selectedId){
 function populateSelect(select, arrayData){
     for(var i =0; i < arrayData.length; i++){
         var option = document.createElement("option");
-        option.text = arrayData[i].title;
-        option.setAttribute("value", arrayData[i].id);
+        option.text = arrayData[i][1];
+        option.setAttribute("value", arrayData[i][0]);
         select.add(option);
     }
 }

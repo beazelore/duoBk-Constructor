@@ -51,7 +51,7 @@ public class DuoBookService {
     }
     public Document getDocumentFromValue(DuoBook duoBook) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        InputStream stream = new ByteArrayInputStream(duoBook.getBook().getBytes(StandardCharsets.UTF_8));
+        InputStream stream = new ByteArrayInputStream(duoBook.getBook().replace("&nbsp;"," ").getBytes(StandardCharsets.UTF_8));
         Document doc = db.parse(stream);
         return  doc;
     }
