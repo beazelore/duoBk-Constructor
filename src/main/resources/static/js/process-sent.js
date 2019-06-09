@@ -56,7 +56,7 @@ $(document).ready(function(){
         var value ="";
         for(var i =0; i < options.length; i++){
             var myRegexp = /[0-9]+\. /;
-            var temp = options[i].innerHTML.split(myRegexp).pop();
+            var temp = options[i].textContent.split(myRegexp).pop();
             value += temp;
         }
         $('#correctingActive1').html(value);
@@ -94,12 +94,12 @@ $(document).ready(function(){
         for(var i=0; i < options1.length;i++){
             cacheString += "<s1 pIndex=\"" + options1[i].getAttribute("pIndex") + "\" index=\"" + options1[i].getAttribute("value") + "\">";
             var myRegexp = /[0-9]+\.  /;
-            cacheString += options1[i].innerHTML.split(myRegexp).pop() + "</s1>";
+            cacheString += escapeXml(options1[i].textContent.split(myRegexp).pop()) + "</s1>";
         }
         for(var i=0; i < options2.length;i++){
             cacheString += "<s2 pIndex=\"" + options2[i].getAttribute("pIndex") + "\" index=\"" + options2[i].getAttribute("value") + "\">";
             var myRegexp = /[0-9]+\.  /;
-            cacheString += options2[i].innerHTML.split(myRegexp).pop() + "</s2>";
+            cacheString += escapeXml(options2[i].textContent.split(myRegexp).pop()) + "</s2>";
         }
         cacheString += "</ds>";
         var row = document.getElementById(this.id).parentElement.parentElement.parentElement;
@@ -115,13 +115,13 @@ $(document).ready(function(){
         var selectCorrecting1 = document.getElementById("book1_list");
         var selectCorrecting2 = document.getElementById("book2_list");
         for(var i =0; i<options1.length;i++){
-                var option = new Option(options1[i].innerHTML);
+                var option = new Option(options1[i].textContent);
                 option.setAttribute("pIndex", options1[i].getAttribute("pIndex"));
                 option.setAttribute("value", options1[i].getAttribute("value"));
                 selectCorrecting1.options[selectCorrecting1.options.length] = option;
         }
         for(var i =0; i<options2.length;i++){
-                var option = new Option(options2[i].innerHTML);
+                var option = new Option(options2[i].textContent);
                 option.setAttribute("pIndex", options2[i].getAttribute("pIndex"));
                 option.setAttribute("value", options2[i].getAttribute("value"));
                 selectCorrecting2.options[selectCorrecting2.options.length] = option;
@@ -143,7 +143,7 @@ $(document).ready(function(){
                  var option = $('#book1_list option[value="'+ ind1[i] + '"]')[0];
                  cacheString += "<s1 pIndex=\"" + option.getAttribute("pIndex") + "\" index=\"" + option.getAttribute("value") + "\">";
                  var myRegexp = /[0-9]+\.  /;
-                 cacheString += option.innerHTML.split(myRegexp).pop() + "</s1>";
+                 cacheString += escapeXml(option.textContent.split(myRegexp).pop()) + "</s1>";
                  if(option)
                     option.parentNode.removeChild(option);
             }
@@ -151,7 +151,7 @@ $(document).ready(function(){
                  var option = $('#book2_list option[value="'+ ind2[i] + '"]')[0];
                  cacheString += "<s2 pIndex=\"" + option.getAttribute("pIndex") + "\" index=\"" + option.getAttribute("value") + "\">";
                  var myRegexp = /[0-9]+\.  /;
-                 cacheString += option.innerHTML.split(myRegexp).pop() + "</s2>";
+                 cacheString += escapeXml(option.textContent.split(myRegexp).pop()) + "</s2>";
                  if(option)
                     option.parentNode.removeChild(option);
             }
@@ -181,7 +181,7 @@ $(document).ready(function(){
             var option = options1[i];
             cacheString += "<s1 pIndex=\"" + option.getAttribute("pIndex")+ "\" index=\"" + option.getAttribute("value") +"\">";
             var myRegexp = /[0-9]+\.  /;
-            cacheString += option.innerHTML.split(myRegexp).pop() + "</s1>";
+            cacheString += escapeXml(option.textContent.split(myRegexp).pop()) + "</s1>";
         }
         if(options1.length>0)
             cacheString += "</ds>";
@@ -203,6 +203,19 @@ $(document).ready(function(){
         });
     });
 });
+
+var XML_CHAR_MAP = {
+	'<': '&lt;',
+	'>': '&gt;',
+	'&': '&amp;',
+	'"': '&quot;',
+	"'": '&apos;'
+};
+function escapeXml (s) {
+	return s.replace(/[<>&"']/g, function (ch) {
+		return XML_CHAR_MAP[ch];
+	});
+}
 
 function findGetParameter(parameterName) {
     var result = null,

@@ -21,7 +21,7 @@ $(document).ready(function(){
         for(var i=0; i< options.length;i++){
             options[i].selected = true;
             var myRegexp = /[0-9]+\.  /;
-            var temp = options[i].innerHTML.split(myRegexp).pop();
+            var temp = options[i].textContent.split(myRegexp).pop();
             value += temp;
         }
         $('#active1').html(value);
@@ -33,7 +33,7 @@ $(document).ready(function(){
         for(var i=0; i< options.length;i++){
             options[i].selected = true;
             var myRegexp = /[0-9]+\.  /;
-            var temp = options[i].innerHTML.split(myRegexp).pop();
+            var temp = options[i].textContent.split(myRegexp).pop();
             value += temp;
         }
         $('#active2').html(value);
@@ -44,7 +44,7 @@ $(document).ready(function(){
         var value ="";
         for(var i =0; i < options.length; i++){
             var myRegexp = /[0-9]+\.  /;
-            var temp = options[i].innerHTML.split(myRegexp).pop();
+            var temp = options[i].textContent.split(myRegexp).pop();
             value += temp;
         }
         $('#correctingActive1').html(value);
@@ -54,7 +54,7 @@ $(document).ready(function(){
         var value ="";
         for(var i =0; i < options.length; i++){
             var myRegexp = /[0-9]+\.  /;
-            var temp = options[i].innerHTML.split(myRegexp).pop();
+            var temp = options[i].textContent.split(myRegexp).pop();
             value += temp;
         }
         $('#correctingActive2').html(value);

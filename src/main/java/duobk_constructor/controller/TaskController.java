@@ -481,7 +481,7 @@ public class TaskController {
         return taskService.integrateTask(task,duoBook,entryService.getEntryById(task.getEntry2_id()).getLanguage());
     }
     /**
-     * Updates task status to DONE, updates task's result column, remove task's user, creates HistoryItem
+     * Updates task status to DONE, updates task's result column, removes task's user and clears unprocessed, bad, creates HistoryItem
      * */
     @RequestMapping(value = "/confirmBook", consumes = "text/plain")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -501,6 +501,10 @@ public class TaskController {
         task.setStatus("DONE");
         // remove task from user and save
         task.setUserId(null);
+        task.setUnprocessed("");
+        task.setUnprocessed1("");
+        task.setUnprocessed2("");
+        task.setBad("");
         taskService.save(task);
         duoBookService.save(duoBook);
         //creating history item

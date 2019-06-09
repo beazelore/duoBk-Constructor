@@ -1,5 +1,6 @@
 package duobk_constructor.service;
 
+import duobk_constructor.Tools;
 import duobk_constructor.logic.book.Book;
 import duobk_constructor.logic.book.Chapter;
 import duobk_constructor.logic.book.Paragraph;
@@ -9,6 +10,7 @@ import duobk_constructor.logic.book.duo.DuoSentence;
 import duobk_constructor.model.DuoBook;
 import duobk_constructor.model.Task;
 import duobk_constructor.repository.TaskRepository;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -136,7 +138,6 @@ public class TaskService {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(unprocessed_1.getBytes(StandardCharsets.UTF_8));
         Document doc = db.parse(stream);
-
         NodeList pList = doc.getElementsByTagName("p");
         for(int i =0 ; i< pList.getLength(); i++){
             Element pEl = (Element) pList.item(i);
@@ -206,7 +207,7 @@ public class TaskService {
                 stringBuilder.append("<p1 ");
             else stringBuilder.append("<p2 ");
             stringBuilder.append("index=\"").append(paragraph.getIndex()).append("\">")
-                    .append(paragraph.toString());
+                    .append(StringEscapeUtils.escapeXml11(paragraph.toString()));
             if(fromBook1)
                 stringBuilder.append("</p1>");
             else  stringBuilder.append("</p2>");
